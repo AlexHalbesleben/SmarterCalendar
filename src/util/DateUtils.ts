@@ -27,4 +27,15 @@ export default class DateUtils {
       (1000 * 60 * 60 * 24)
     );
   }
+
+  /**
+   * Applies a given offset in days to an existing date
+   * @param days the number of days to offset
+   * @param to the date to which the offset is applied
+   */
+  static applyDayOffset(days: number, to: Date): Date {
+    let rawTime = to.getTime();
+    rawTime += days * (1000 * 60 * 60 * 24);
+    return new Date(rawTime);
+  }
 }
