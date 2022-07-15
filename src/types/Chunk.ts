@@ -1,0 +1,15 @@
+import UserTask from "./Task";
+
+export default class Chunk {
+  task: UserTask;
+
+  duration: number;
+
+  date: Date;
+
+  constructor(task: UserTask, duration: number, date: Date) {
+    this.task = task;
+    this.duration = duration;
+    this.date = date;
+  }
+}
