@@ -1,29 +1,42 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+  <div id="app" class="container-fluid h-100 pr-0 pl-0">
+    <TaskModal />
+    <Navbar />
+    <div class="row mr-0 ml-0">
+      <Calendar class="col-12 col-lg-8" />
+      <TaskList class="col-lg" />
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import HelloWorld from "./components/HelloWorld.vue";
+import TaskList from "./components/TaskList.vue";
+import Calendar from "./components/Calendar.vue";
+import Navbar from "./components/Navbar.vue";
+import TaskModal from "./components/TaskModal.vue";
+import vxm from "./store/index";
+import { UserTask } from "./types/Task";
 
 @Component({
   components: {
-    HelloWorld,
+    TaskList,
+    Calendar,
+    Navbar,
+    TaskModal,
   },
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  get vxm(): typeof vxm {
+    return vxm;
+  }
+}
 </script>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+@import "./style.scss";
+
+body {
+  background-color: $secondary !important;
 }
 </style>

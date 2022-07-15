@@ -1,0 +1,10 @@
+$primary: #04E762;
+$secondary: #89023E;
+$info: #FFA987;
+
+$tertiary: #6D72C3;
+$quaternary: #F7EBE8;
+
+// Then import Bootstrap and BootstrapVue SCSS files (order is important)
+@import 'node_modules/bootstrap/scss/bootstrap.scss';
+@import 'node_modules/bootstrap-vue/src/index.scss';
