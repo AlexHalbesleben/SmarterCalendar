@@ -1,6 +1,6 @@
-export type UserTask = {
-  name: string;
-  duration: number;
-  chunks: number;
-  due: Date;
-};
+export default class UserTask {
+  name = "";
+  duration = 60;
+  chunks = 1;
+  due: Date = new Date();
+}

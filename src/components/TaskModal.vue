@@ -32,7 +32,7 @@
   </div>
 </template>
 <script lang="ts">
-import { UserTask } from "@/types/Task";
+import UserTask from "@/types/Task";
 import { Component, Prop, Vue } from "vue-property-decorator";
 import vxm from "../store/index";
 
@@ -54,7 +54,7 @@ export default class TaskModal extends Vue {
     // Sets the template based on whether a new task is being created or an exisiting one is being edited
     this.task =
       editedIndex === -1 // If there's no task to copy from
-        ? { name: "", duration: 60, chunks: 1, due: new Date() } // Use sensible defaults
+        ? new UserTask() // Use sensible defaults
         : vxm.store.tasks[editedIndex]; // If there's a task to copy from, do that
   }
 

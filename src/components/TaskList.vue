@@ -18,7 +18,7 @@
 import { Component, Prop, Vue } from "vue-property-decorator";
 import Task from "./Task.vue";
 import vxm from "../store/index";
-import { UserTask } from "../types/Task";
+import UserTask from "../types/Task";
 
 @Component({
   components: {
