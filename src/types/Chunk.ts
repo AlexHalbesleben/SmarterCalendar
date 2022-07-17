@@ -12,4 +12,10 @@ export default class Chunk {
     this.duration = duration;
     this.date = date;
   }
+
+  get desc(): string {
+    return `${this.duration} minute chunk of task ${
+      this.task.name
+    } due on ${this.date.toUTCString()}`;
+  }
 }

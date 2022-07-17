@@ -59,6 +59,7 @@ export default class TaskModal extends Vue {
   }
 
   submit() {
+    this.task.splitIntoChunks();
     let { editedIndex } = vxm.store;
     if (editedIndex === -1) {
       // If creating a new task

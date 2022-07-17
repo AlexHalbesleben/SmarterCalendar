@@ -38,4 +38,12 @@ export default class DateUtils {
     rawTime += days * (1000 * 60 * 60 * 24);
     return new Date(rawTime);
   }
+
+  /**
+   * Calculates the number of days until the given date (from the current date, as calculated by {@link currentDate})
+   * @param date the date on which to perform the comparison
+   */
+  static daysUntil(date: Date): number {
+    return this.daysBetween(this.currentDate, date);
+  }
 }

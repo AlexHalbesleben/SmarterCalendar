@@ -16,7 +16,8 @@ import Calendar from "./components/Calendar.vue";
 import Navbar from "./components/Navbar.vue";
 import TaskModal from "./components/TaskModal.vue";
 import vxm from "./store/index";
-import { UserTask } from "./types/Task";
+import UserTask from "./types/Task";
+import DateUtils from "./util/DateUtils";
 
 @Component({
   components: {
