@@ -41,8 +41,7 @@ export default class Day extends Vue {
   get chunks(): Chunk[] {
     return vxm.store.chunks.filter(
       (chunk) =>
-        chunk.date.getDate() === this.day - 1 &&
-        chunk.date.getMonth() == this.month
+        chunk.date.getDate() === this.day && chunk.date.getMonth() == this.month
     );
   }
 }
