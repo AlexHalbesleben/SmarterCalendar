@@ -39,4 +39,10 @@ export default class App extends Vue {
 body {
   background-color: $secondary !important;
 }
+
+@include media-breakpoint-up(sm) {
+  .day {
+    min-height: 100px;
+  }
+}
 </style>
