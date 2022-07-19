@@ -3,8 +3,10 @@
     <TaskModal />
     <Navbar />
     <div class="row mr-0 ml-0">
-      <Calendar class="col-12 col-xl-8" />
-      <TaskList class="col-xl" />
+      <Calendar class="col" />
+    </div>
+    <div class="row mr-0 ml-0">
+      <TaskList class="col" />
     </div>
   </div>
 </template>

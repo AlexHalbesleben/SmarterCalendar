@@ -5,6 +5,9 @@
       @show="onShow"
       @ok="submit"
       :title="`${editedIndex === -1 ? 'Create' : 'Edit'} Task`"
+      :cancel-title="editedIndex === -1 ? 'Cancel' : 'Delete'"
+      :cancel-variant="editedIndex === -1 ? 'secondary' : 'danger'"
+      @cancel="deleteTask"
     >
       <div class="container">
         <div class="row mb-2">
@@ -67,6 +70,17 @@ export default class TaskModal extends Vue {
       vxm.store.tasks[editedIndex] = this.task;
     }
     vxm.store.updateChunks();
+  }
+
+  deleteTask() {
+    if (this.editedIndex === -1) {
+      // If we're creating a task
+      return; // We can't delete a task that hasn't been created
+    }
+
+    // Using Vue.delete ensures reactivity
+    Vue.delete(vxm.store.tasks, this.editedIndex);
+    vxm.store.updateChunks(); // Update chunks
   }
 }
 </script>
