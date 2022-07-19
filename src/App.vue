@@ -3,8 +3,8 @@
     <TaskModal />
     <Navbar />
     <div class="row mr-0 ml-0">
-      <Calendar class="col-12 col-lg-8" />
-      <TaskList class="col-lg" />
+      <Calendar class="col-12 col-xl-8" />
+      <TaskList class="col-xl" />
     </div>
   </div>
 </template>
@@ -16,9 +16,6 @@ import Calendar from "./components/Calendar.vue";
 import Navbar from "./components/Navbar.vue";
 import TaskModal from "./components/TaskModal.vue";
 import vxm from "./store/index";
-import UserTask from "./types/Task";
-import DateUtils from "./util/DateUtils";
-
 @Component({
   components: {
     TaskList,

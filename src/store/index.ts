@@ -42,7 +42,7 @@ export class Store extends VuexModule {
       // For each chunk
       for (let i = 0; i < chunks; i++) {
         // Assign on the due date, then on the day before, and so on. When you can't go back, wrap around at the end date again
-        const dayToAssign = daysUntilDue - (daysUntilDue % (i + 1));
+        const dayToAssign = daysUntilDue % (i + 1);
 
         // Create day in object if it doesn't exist
         if (!chunksByDay[dayToAssign]) {
