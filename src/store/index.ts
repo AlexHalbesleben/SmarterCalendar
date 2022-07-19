@@ -25,22 +25,30 @@ export class Store extends VuexModule {
 
   chunks: Chunk[] = [];
 
+  /**
+   * Splits the tasks into chunks
+   */
   @mutation
   updateChunks() {
     // Each day is referenced by a number (the number of days after the current day) and has a list of chunks
     const chunksByDay: Record<number, Chunk[]> = {};
 
+    // TODO: Tasks should have a priority and higher-priority tasks are scheduled first
+    // For each task
     for (const task of this.tasks) {
       const { chunks, due } = task;
       const daysUntilDue = DateUtils.daysBetween(DateUtils.currentDate, due);
 
+      // For each chunk
       for (let i = 0; i < chunks; i++) {
+        // Assign on the due date, then on the day before, and so on. When you can't go back, wrap around at the end date again
         const dayToAssign = daysUntilDue - (daysUntilDue % (i + 1));
-        console.log(dayToAssign);
 
+        // Create day in object if it doesn't exist
         if (!chunksByDay[dayToAssign]) {
           chunksByDay[dayToAssign] = [];
         }
+        // Create the chunk and add it to the list
         chunksByDay[dayToAssign].push(
           new Chunk(
             task,
@@ -51,6 +59,7 @@ export class Store extends VuexModule {
       }
     }
 
+    // Get the values of the chunksByDay object (a nested array of Chunks) and flatten
     this.chunks = (Object.values(chunksByDay) as Chunk[][]).flat(1);
   }
 }
