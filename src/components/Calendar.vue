@@ -1,7 +1,7 @@
 <template>
   <div class="calendar-container">
     <div class="container p-2">
-      <div class="row ml-0 mr-0">
+      <div class="row ml-0 mr-0 text-center">
         <div
           v-for="weekday in ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']"
           :key="weekday"
@@ -27,16 +27,22 @@
         />
       </div>
     </div>
-    <div class="row justify-content-center align-items-center mb-2">
-      <b-button @click="month = (month + 11) % 12">&lt;</b-button>
+    <div class="row justify-content-center mb-2">
+      <b-button-group class="">
+        <b-button @click="month = (month + 11) % 12">&lt;</b-button>
+        <div
+          class="h-100 pl-2 pr-2 bg-secondary align-items-center row no-gutters"
+        >
+          <div class="text-light">
+            {{
+              strMonth.slice(0, 1).toUpperCase() +
+              strMonth.slice(1).toLowerCase()
+            }}
+          </div>
+        </div>
 
-      <div class="ml-2 mr-2">
-        {{
-          strMonth.slice(0, 1).toUpperCase() + strMonth.slice(1).toLowerCase()
-        }}
-      </div>
-
-      <b-button @click="month = (month + 1) % 12">&gt;</b-button>
+        <b-button @click="month = (month + 1) % 12">&gt;</b-button>
+      </b-button-group>
     </div>
   </div>
 </template>
