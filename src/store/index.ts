@@ -1,4 +1,5 @@
 import Chunk from "@/types/Chunk";
+import DateUtils from "@/util/DateUtils";
 import Vue from "vue";
 import Vuex from "vuex";
 import {
@@ -22,16 +23,35 @@ export class Store extends VuexModule {
 
   editedIndex = -1; // -1 indicates a new task is being created (as opposed to an existing one being edited)
 
-  get chunks(): Chunk[] {
-    const ret: Chunk[] = [];
+  chunks: Chunk[] = [];
+
+  @mutation
+  updateChunks() {
+    // Each day is referenced by a number (the number of days after the current day) and has a list of chunks
+    const chunksByDay: Record<number, Chunk[]> = {};
 
     for (const task of this.tasks) {
-      for (const chunk of task._chunks) {
-        ret.push(chunk);
+      const { chunks, due } = task;
+      const daysUntilDue = DateUtils.daysBetween(DateUtils.currentDate, due);
+
+      for (let i = 0; i < chunks; i++) {
+        const dayToAssign = daysUntilDue - (daysUntilDue % (i + 1));
+        console.log(dayToAssign);
+
+        if (!chunksByDay[dayToAssign]) {
+          chunksByDay[dayToAssign] = [];
+        }
+        chunksByDay[dayToAssign].push(
+          new Chunk(
+            task,
+            task.duration / chunks,
+            DateUtils.applyDayOffset(dayToAssign, DateUtils.currentDate)
+          )
+        );
       }
     }
 
-    return ret;
+    this.chunks = (Object.values(chunksByDay) as Chunk[][]).flat(1);
   }
 }
 
