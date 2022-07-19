@@ -5,7 +5,7 @@
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { UserTask } from "@/types/Task";
+import UserTask from "@/types/Task";
 import vxm from "@/store";
 
 @Component
