@@ -22,9 +22,9 @@
   </div>
 </template>
 <script lang="ts">
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import Task from "./Task.vue";
-import vxm from "../store/index";
+import vxm from "../store/index.vuex";
 import UserTask from "../types/Task";
 
 @Component({
@@ -46,7 +46,4 @@ export default class TaskList extends Vue {
   }
 }
 </script>
-<style scoped>
-.task-list-container {
-}
-</style>
+<style scoped></style>

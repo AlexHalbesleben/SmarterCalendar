@@ -36,8 +36,8 @@
 </template>
 <script lang="ts">
 import UserTask from "@/types/Task";
-import { Component, Prop, Vue } from "vue-property-decorator";
-import vxm from "../store/index";
+import { Component, Vue } from "vue-property-decorator";
+import vxm from "../store/index.vuex";
 
 @Component
 export default class TaskModal extends Vue {

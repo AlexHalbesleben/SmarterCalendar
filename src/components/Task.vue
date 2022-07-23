@@ -6,7 +6,7 @@
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
 import UserTask from "@/types/Task";
-import vxm from "@/store";
+import vxm from "@/store/index.vuex";
 
 @Component
 export default class Task extends Vue {
@@ -26,7 +26,4 @@ export default class Task extends Vue {
   }
 }
 </script>
-<style scoped>
-.task-list-item {
-}
-</style>
+<style scoped></style>

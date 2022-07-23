@@ -18,7 +18,7 @@ import TaskList from "./components/TaskList.vue";
 import Calendar from "./components/Calendar.vue";
 import Navbar from "./components/Navbar.vue";
 import TaskModal from "./components/TaskModal.vue";
-import vxm from "./store/index";
+import vxm from "./store/index.vuex";
 @Component({
   components: {
     TaskList,

@@ -17,8 +17,8 @@
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { Months, WeekDays } from "../types/Calendar";
-import vxm from "../store";
+import { WeekDays } from "../types/Calendar";
+import vxm from "../store/index.vuex";
 import Chunk from "@/types/Chunk";
 
 @Component
@@ -46,7 +46,4 @@ export default class Day extends Vue {
   }
 }
 </script>
-<style lang="scss" scoped>
-.chunk {
-}
-</style>
+<style lang="scss" scoped></style>
