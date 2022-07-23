@@ -12,7 +12,7 @@
     "deploy": "node scripts/gh-pages-deploy.js"
   },
   "dependencies": {
-    "bootstrap": "^5.2.0",
+    "bootstrap": "4.6.0",
     "bootstrap-vue": "^2.22.0",
     "core-js": "^3.8.3",
     "execa": "^1.0.0",
