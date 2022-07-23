@@ -70,6 +70,7 @@ export default class TaskModal extends Vue {
       vxm.store.tasks[editedIndex] = this.task;
     }
     vxm.store.updateChunks();
+    vxm.store.uploadTasks();
   }
 
   deleteTask() {
@@ -81,6 +82,7 @@ export default class TaskModal extends Vue {
     // Using Vue.delete ensures reactivity
     Vue.delete(vxm.store.tasks, this.editedIndex);
     vxm.store.updateChunks(); // Update chunks
+    vxm.store.uploadTasks();
   }
 }
 </script>

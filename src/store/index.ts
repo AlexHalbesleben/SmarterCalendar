@@ -62,6 +62,35 @@ export class Store extends VuexModule {
     // Get the values of the chunksByDay object (a nested array of Chunks) and flatten
     this.chunks = (Object.values(chunksByDay) as Chunk[][]).flat(1);
   }
+
+  @action
+  async uploadTasks() {
+    localStorage["tasks"] = JSON.stringify(this.tasks);
+  }
+
+  constructor() {
+    super();
+
+    if (localStorage["tasks"]) {
+      const retrievedData: {
+        name: string;
+        chunks: string;
+        duration: number;
+        due: string;
+      }[] = JSON.parse(localStorage["tasks"]);
+
+      this.tasks = retrievedData.map((task) => {
+        return {
+          name: task.name,
+          chunks: parseInt(task.chunks),
+          duration: task.duration,
+          due: new Date(task.due),
+        };
+      });
+
+      this.updateChunks();
+    }
+  }
 }
 
 export const store = new Vuex.Store({
