@@ -5,6 +5,7 @@
     <div class="row mr-0 ml-0">
       <Calendar class="col" />
     </div>
+    <hr />
     <div class="row mr-0 ml-0">
       <TaskList class="col" />
     </div>
@@ -44,5 +45,14 @@ body {
   .day {
     min-height: 100px;
   }
+}
+
+hr {
+  background-color: $secondary-lightened !important;
+  border-color: $secondary-lightened !important;
+}
+
+.invalid-day {
+  background-color: $secondary-darkened;
 }
 </style>

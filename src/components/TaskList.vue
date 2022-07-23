@@ -11,7 +11,14 @@
         :idx="i"
       />
     </b-list-group>
-    <b-button @click="createTask" v-b-modal.task-modal> Add Task </b-button>
+    <b-button
+      @click="createTask"
+      v-b-modal.task-modal
+      variant="primary"
+      class="text-dark"
+    >
+      Add Task
+    </b-button>
   </div>
 </template>
 <script lang="ts">
@@ -41,6 +48,5 @@ export default class TaskList extends Vue {
 </script>
 <style scoped>
 .task-list-container {
-  background-color: red;
 }
 </style>

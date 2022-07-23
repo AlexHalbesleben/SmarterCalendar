@@ -1,9 +1,18 @@
 $primary: #04E762;
+$primary-lightened: lighten($primary, 20%);
+
 $secondary: #89023E;
+$secondary-lightened: lighten($secondary, 20%);
+$secondary-darkened: darken($secondary, 10%);
+
 $info: #FFA987;
 
 $tertiary: #6D72C3;
+$tertiary-darkened: darken($tertiary, 20%); 
+
 $quaternary: #F7EBE8;
+
+$dark: rgba(0, 0, 0, 0.9);
 
 // Then import Bootstrap and BootstrapVue SCSS files (order is important)
 @import 'node_modules/bootstrap/scss/bootstrap.scss';

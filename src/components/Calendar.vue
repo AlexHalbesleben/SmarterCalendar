@@ -1,6 +1,6 @@
 <template>
   <div class="calendar-container">
-    <div class="container p-2">
+    <div class="container p-2 text-light">
       <div class="row ml-0 mr-0 text-center">
         <div
           v-for="weekday in ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']"
@@ -21,6 +21,7 @@
         <Day
           v-for="d in days.slice(i * 7 - 7, i * 7)"
           class="col-xs col-sm"
+          :class="d[0] === month ? '' : 'invalid-day'"
           :key="`calendar_day_${d}`"
           :month="d[0]"
           :day="d[1]"
@@ -28,12 +29,17 @@
       </div>
     </div>
     <div class="row justify-content-center mb-2">
-      <b-button-group class="">
-        <b-button @click="month = (month + 11) % 12">&lt;</b-button>
-        <div
-          class="h-100 pl-2 pr-2 bg-secondary align-items-center row no-gutters"
+      <b-button-group>
+        <b-button
+          @click="month = (month + 11) % 12"
+          variant="primary"
+          class="text-dark"
+          >&lt;</b-button
         >
-          <div class="text-light">
+        <div
+          class="h-100 pl-2 pr-2 bg-primary align-items-center row no-gutters"
+        >
+          <div class="text-dark">
             {{
               strMonth.slice(0, 1).toUpperCase() +
               strMonth.slice(1).toLowerCase()
@@ -41,7 +47,13 @@
           </div>
         </div>
 
-        <b-button @click="month = (month + 1) % 12">&gt;</b-button>
+        <b-button
+          @click="month = (month + 1) % 12"
+          variant="primary"
+          class="text-dark"
+        >
+          &gt;
+        </b-button>
       </b-button-group>
     </div>
   </div>
@@ -143,7 +155,16 @@ export default class Calendar extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.calendar-container {
-  background-color: green;
+.day {
+  border-top: 1px solid gray;
+  border-left: 1px solid gray;
+}
+
+.container > .row:last-child {
+  border-bottom: 1px solid gray;
+}
+
+.row > .day:last-child {
+  border-right: 1px solid gray;
 }
 </style>

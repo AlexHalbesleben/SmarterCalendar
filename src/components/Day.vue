@@ -6,7 +6,7 @@
     <div
       v-for="(chunk, i) in chunks"
       :key="`${month}/${day}_chunk_${i}`"
-      class="chunk row m-0 mb-1 justify-content-between"
+      class="chunk row m-0 mb-1 justify-content-between bg-primary rounded text-dark"
     >
       <div class="col-auto">
         {{ chunk.task.name }}
@@ -47,10 +47,6 @@ export default class Day extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.day {
-  border: 1px gray solid;
-}
 .chunk {
-  background-color: yellow;
 }
 </style>
