@@ -8,7 +8,8 @@
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
     "start": "npm run serve",
-    "test": "npm run test:unit"
+    "test": "npm run test:unit",
+    "deploy": "node scripts/gh-pages-deploy.js"
   },
   "dependencies": {
     "bootstrap": "^5.2.0",
