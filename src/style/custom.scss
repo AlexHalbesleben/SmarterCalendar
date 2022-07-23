@@ -13,7 +13,3 @@ $tertiary-darkened: darken($tertiary, 20%);
 $quaternary: #F7EBE8;
 
 $dark: rgba(0, 0, 0, 0.9);
-
-// Then import Bootstrap and BootstrapVue SCSS files (order is important)
-@import 'node_modules/bootstrap/scss/bootstrap.scss';
-@import 'node_modules/bootstrap-vue/src/index.scss';

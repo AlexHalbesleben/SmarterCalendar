@@ -35,7 +35,7 @@ export default class App extends Vue {
 </script>
 
 <style lang="scss">
-@import "./style.scss";
+@import "./style/style.scss";
 
 body {
   background-color: $secondary !important;
