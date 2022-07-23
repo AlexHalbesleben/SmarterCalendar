@@ -4,7 +4,7 @@ import { store } from "./store";
 
 import { BootstrapVue } from "bootstrap-vue";
 
-import "./style.scss";
+import "./style/style.scss";
 
 Vue.use(BootstrapVue);
 
