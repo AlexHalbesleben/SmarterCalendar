@@ -9,6 +9,8 @@
         :key="`task${i}_${task.name}`"
         :task="task"
         :idx="i"
+        role="button"
+        tabindex="0"
       />
     </b-list-group>
     <b-button
