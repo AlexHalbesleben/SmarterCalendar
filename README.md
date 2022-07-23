@@ -1,6 +1,7 @@
 # SmarterCalendar
 
 [![CodeQL](https://github.com/AlexHalbesleben/SmarterCalendar/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/AlexHalbesleben/SmarterCalendar/actions/workflows/codeql-analysis.yml)
+[![Deploy to Github Pages](https://github.com/AlexHalbesleben/SmarterCalendar/actions/workflows/main.yml/badge.svg)](https://github.com/AlexHalbesleben/SmarterCalendar/actions/workflows/main.yml)
 
 https://alexhalbesleben.github.io/SmarterCalendar/
 
