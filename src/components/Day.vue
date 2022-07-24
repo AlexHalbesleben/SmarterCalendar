@@ -11,7 +11,10 @@
       <div class="col-auto">
         {{ chunk.task.name }}
       </div>
-      <div class="col-auto">{{ chunk.duration }} min</div>
+      <div class="col-auto">
+        <!-- Rounds to 2 decimal places -->
+        {{ Math.round(chunk.duration * 100) / 100 }} min
+      </div>
     </div>
   </div>
 </template>
