@@ -142,7 +142,17 @@ export class Store extends VuexModule {
     }
 
     if (localStorage["settings"]) {
-      this.settings = JSON.parse(localStorage["settings"]);
+      const settings: {
+        maxPreferredDailyTime: string | number;
+        maxPreferredDayTimeDiff: string | number;
+      } = JSON.parse(localStorage["settings"]);
+
+      this.settings.maxPreferredDailyTime = parseInt(
+        settings.maxPreferredDailyTime.toString()
+      );
+      this.settings.maxPreferredDayTimeDiff = parseInt(
+        settings.maxPreferredDayTimeDiff.toString()
+      );
     }
   }
 }
