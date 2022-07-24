@@ -42,6 +42,9 @@ export default class Day extends Vue {
     return date.getDay();
   }
 
+  /**
+   * Gets the chunks scheduled for this day
+   */
   get chunks(): Chunk[] {
     return vxm.store.chunks.filter(
       (chunk) =>
