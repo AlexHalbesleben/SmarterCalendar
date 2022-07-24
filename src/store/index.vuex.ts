@@ -77,6 +77,19 @@ export class Store extends VuexModule {
           break; // Don't keep going
         }
 
+        // -1 indicates that no days were ideal. In this case, pick the day with the least work
+        if (dayToAssign === -1) {
+          let bestDay = 0;
+          for (let day = 0; day <= daysUntilDue; day++) {
+            if (
+              getTotalTime(chunksByDay[day]) <=
+              getTotalTime(chunksByDay[bestDay])
+            ) {
+              bestDay = day;
+            }
+          }
+        }
+
         // Avoids errors (if there are no tasks/chunks)
         chunksByDay[dayToAssign] = chunksByDay[dayToAssign] ?? [];
 
