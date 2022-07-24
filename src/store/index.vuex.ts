@@ -36,6 +36,9 @@ export class Store extends VuexModule {
     // Each day is referenced by a number (the number of days after the current day) and has a list of chunks
     const chunksByDay: Record<number, Chunk[]> = {};
 
+    const getTotalTime = (day: Chunk[]) =>
+      day.reduce((prev, curr) => prev + curr.duration, 0);
+
     // TODO: Tasks should have a priority and higher-priority tasks are scheduled first
     // For each task
     for (const task of this.tasks) {
@@ -44,13 +47,39 @@ export class Store extends VuexModule {
 
       // For each chunk
       for (let i = 0; i < chunks; i++) {
-        // Assign on the due date, then on the day before, and so on. When you can't go back, wrap around at the end date again
-        const dayToAssign = daysUntilDue % (i + 1);
+        let dayToAssign = -1; // Default value if no days are optimal
 
-        // Create day in object if it doesn't exist
-        if (!chunksByDay[dayToAssign]) {
-          chunksByDay[dayToAssign] = [];
+        // Goes through each day that the chunk could be assigned, counting backwards
+        for (let day = daysUntilDue; day >= 0; day--) {
+          chunksByDay[day] = chunksByDay[day] ?? []; // Makes sure all the days we'll be accessing exist
+          if (day != 0 && !chunksByDay[day - 1]) {
+            // Makes sure the day before exists
+            chunksByDay[day - 1] = [];
+          }
+
+          const dayTotalTime = getTotalTime(chunksByDay[day]);
+          // If the time spent on chunks that day is already more than the max, don't assign it on th at day
+          if (dayTotalTime > this.settings.maxPreferredDailyTime) {
+            continue;
+          }
+
+          // If the time spent on chunks is enough more than the previous day, don't assign on that day
+          if (
+            day !== 0 &&
+            dayTotalTime - getTotalTime(chunksByDay[day - 1]) >=
+              this.settings.maxPreferredDayTimeDiff
+          ) {
+            continue;
+          }
+
+          // If the day will work (read: it passed the previous checks), assign it
+          dayToAssign = day;
+          break; // Don't keep going
         }
+
+        // Avoids errors (if there are no tasks/chunks)
+        chunksByDay[dayToAssign] = chunksByDay[dayToAssign] ?? [];
+
         // Create the chunk and add it to the list
         chunksByDay[dayToAssign].push(
           new Chunk(
