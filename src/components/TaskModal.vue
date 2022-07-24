@@ -17,17 +17,27 @@
         </div>
         <div class="row mb-2">
           <b-input-group prepend="Duration" append="minutes" class="col">
-            <b-form-input v-model="task.duration" type="number" />
+            <b-form-input
+              v-model="task.duration"
+              type="number"
+              :number="true"
+            />
           </b-input-group>
         </div>
         <div class="row mb-2">
           <b-input-group prepend="Chunks" class="col">
-            <b-form-input v-model="task.chunks" />
+            <b-form-input v-model="task.chunks" type="number" :number="true" />
           </b-input-group>
         </div>
         <div class="row">
           <b-input-group prepend="Due" class="col">
             <b-form-datepicker v-model="task.due" value-as-date />
+          </b-input-group>
+        </div>
+        <hr />
+        <div class="row mb-2">
+          <b-input-group class="col" prepend="Effort">
+            <b-form-input v-model="task.effort" type="number" :number="true" />
           </b-input-group>
         </div>
       </div>

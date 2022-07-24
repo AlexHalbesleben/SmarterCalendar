@@ -126,18 +126,9 @@ export class Store extends VuexModule {
     super();
 
     if (localStorage["tasks"]) {
-      const retrievedData: {
-        name: string;
-        chunks: string;
-        duration: number;
-        due: string;
-      }[] = JSON.parse(localStorage["tasks"]);
-
-      this.tasks = retrievedData.map((task) => {
+      this.tasks = JSON.parse(localStorage["tasks"]).map((task: UserTask) => {
         return {
-          name: task.name,
-          chunks: parseInt(task.chunks),
-          duration: task.duration,
+          ...task,
           due: new Date(task.due),
         };
       });
