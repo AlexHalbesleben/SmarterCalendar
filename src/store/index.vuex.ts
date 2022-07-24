@@ -1,4 +1,5 @@
 import Chunk from "@/types/Chunk";
+import Settings from "@/types/Settings";
 import DateUtils from "@/util/DateUtils";
 import Vue from "vue";
 import Vuex from "vuex";
@@ -24,6 +25,8 @@ export class Store extends VuexModule {
   editedIndex = -1; // -1 indicates a new task is being created (as opposed to an existing one being edited)
 
   chunks: Chunk[] = [];
+
+  settings: Settings = new Settings();
 
   /**
    * Splits the tasks into chunks
