@@ -44,6 +44,7 @@ export class Store extends VuexModule {
     for (const task of this.tasks) {
       const { chunks, due } = task;
       const daysUntilDue = DateUtils.daysBetween(DateUtils.currentDate, due);
+      const chunkDuration = task.duration / task.chunks;
 
       // For each chunk
       for (let i = 0; i < chunks; i++) {
@@ -59,14 +60,17 @@ export class Store extends VuexModule {
 
           const dayTotalTime = getTotalTime(chunksByDay[day]);
           // If the time spent on chunks that day is already more than the max, don't assign it on th at day
-          if (dayTotalTime > this.settings.maxPreferredDailyTime) {
+          if (
+            dayTotalTime + chunkDuration >
+            this.settings.maxPreferredDailyTime
+          ) {
             continue;
           }
 
           // If the time spent on chunks is enough more than the previous day, don't assign on that day
           if (
             day !== 0 &&
-            dayTotalTime - getTotalTime(chunksByDay[day - 1]) >=
+            dayTotalTime + chunkDuration - getTotalTime(chunksByDay[day - 1]) >=
               this.settings.maxPreferredDayTimeDiff
           ) {
             continue;
@@ -97,7 +101,7 @@ export class Store extends VuexModule {
         chunksByDay[dayToAssign].push(
           new Chunk(
             task,
-            task.duration / chunks,
+            chunkDuration,
             DateUtils.applyDayOffset(dayToAssign, DateUtils.currentDate)
           )
         );
