@@ -6,6 +6,7 @@
       ok-only
       @ok="updateSettings"
       @close="updateSettings"
+      size="lg"
     >
       <div class="container">
         <div class="row">
