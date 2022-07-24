@@ -1,6 +1,7 @@
 <template>
   <div id="app" class="container-fluid h-100 pr-0 pl-0">
     <TaskModal />
+    <SettingsModal />
     <Navbar />
     <div class="row mr-0 ml-0">
       <Calendar class="col" />
@@ -19,12 +20,14 @@ import Calendar from "./components/Calendar.vue";
 import Navbar from "./components/Navbar.vue";
 import TaskModal from "./components/TaskModal.vue";
 import vxm from "./store/index.vuex";
+import SettingsModal from "./components/SettingsModal.vue";
 @Component({
   components: {
     TaskList,
     Calendar,
     Navbar,
     TaskModal,
+    SettingsModal,
   },
 })
 export default class App extends Vue {
