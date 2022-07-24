@@ -113,6 +113,11 @@ export class Store extends VuexModule {
     localStorage["tasks"] = JSON.stringify(this.tasks);
   }
 
+  @action
+  async uploadSettings() {
+    localStorage["settings"] = JSON.stringify(this.settings);
+  }
+
   constructor() {
     super();
 
@@ -134,6 +139,10 @@ export class Store extends VuexModule {
       });
 
       this.updateChunks();
+    }
+
+    if (localStorage["settings"]) {
+      this.settings = JSON.parse(localStorage["settings"]);
     }
   }
 }
