@@ -13,6 +13,10 @@ export default class Chunk {
     this.date = date;
   }
 
+  get effort(): number {
+    return this.duration * this.task.effort;
+  }
+
   get desc(): string {
     return `${this.duration} minute chunk of task ${
       this.task.name

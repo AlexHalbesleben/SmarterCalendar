@@ -3,4 +3,5 @@ export default class UserTask {
   duration = 60;
   chunks = 1;
   due: Date = new Date();
+  effort = 1;
 }
