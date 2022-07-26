@@ -2,6 +2,7 @@
   <div id="app" class="container-fluid h-100 pr-0 pl-0">
     <TaskModal />
     <SettingsModal />
+    <DayModal />
     <Navbar />
     <div class="row mr-0 ml-0">
       <Calendar class="col" />
@@ -21,6 +22,7 @@ import Navbar from "./components/Navbar.vue";
 import TaskModal from "./components/TaskModal.vue";
 import vxm from "./store/index.vuex";
 import SettingsModal from "./components/SettingsModal.vue";
+import DayModal from "./components/DayModal.vue";
 @Component({
   components: {
     TaskList,
@@ -28,6 +30,7 @@ import SettingsModal from "./components/SettingsModal.vue";
     Navbar,
     TaskModal,
     SettingsModal,
+    DayModal,
   },
 })
 export default class App extends Vue {
@@ -57,5 +60,9 @@ hr {
 
 .invalid-day {
   background-color: $secondary-darkened;
+}
+
+.day:hover {
+  background-color: $secondary-lightened;
 }
 </style>
