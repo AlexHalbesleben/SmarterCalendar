@@ -24,6 +24,10 @@ export class Store extends VuexModule {
 
   editedIndex = -1; // -1 indicates a new task is being created (as opposed to an existing one being edited)
 
+  dayModalMonth = 0;
+
+  dayModalDay = 0;
+
   chunks: Chunk[] = [];
 
   settings: Settings = new Settings();
