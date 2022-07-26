@@ -41,7 +41,7 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-vue": "^8.0.3",
     "jest": "^27.0.5",
-    "lint-staged": "^11.1.2",
+    "lint-staged": "^13.0.3",
     "prettier": "^2.4.1",
     "sass": "^1.54.0",
     "sass-loader": "^13.0.2",
