@@ -36,11 +36,17 @@ import vxm from "../store/index.vuex";
 
 @Component
 export default class SettingsModal extends Vue {
+  /**
+   * Formally updates the settings. Uploads them to local storage and rechunks.
+   */
   updateSettings() {
     vxm.store.uploadSettings();
     vxm.store.updateChunks();
   }
 
+  /**
+   * Whether the effort weight setting is below 1. Used for determining the rounding behavior and snap value of the setting on the modal.
+   */
   get valUnderOne(): boolean {
     return vxm.store.settings.effortWeight < 1;
   }
