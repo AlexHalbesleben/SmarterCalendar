@@ -85,10 +85,16 @@ const DaysPerMonth: Record<number, number> = {
 export default class Calendar extends Vue {
   month: number = new Date().getMonth();
 
+  /**
+   * @returns the number of days in the current month
+   */
   get numberOfDays(): number {
     return DaysPerMonth[this.month];
   }
 
+  /**
+   * @returns the number of days in the month before that need to be shown
+   */
   get numberOfFrontFillers(): number {
     let firstOfMonth = new Date();
     firstOfMonth.setMonth(this.month);
@@ -101,6 +107,9 @@ export default class Calendar extends Vue {
     return firstOfMonth.getDay();
   }
 
+  /**
+   * @returns the day of the previous month at which the front fillers should start
+   */
   get frontFillerStart(): number {
     return DaysPerMonth[(this.month + 11) % 12] - this.numberOfFrontFillers;
   }
