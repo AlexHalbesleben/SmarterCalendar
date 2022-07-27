@@ -31,7 +31,7 @@
             <b-form-input
               type="number"
               :number="true"
-              v-model="vxm.store.settings.maxPreferredDayTimeDiff"
+              v-model="vxm.store.settings.maxPreferredTimeDiff"
             />
           </b-input-group>
         </div>
