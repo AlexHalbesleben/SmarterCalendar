@@ -87,7 +87,7 @@ export class Store extends VuexModule {
         /** Same format as {@link dayDifferences} but combines the effort and time differences into a single value */
         const combinedDayDifferences: number[] = Object.values(
           dayDifferences
-        ).map((day) => day.effort + day.time);
+        ).map((day) => day.effort * this.settings.effortWeight + day.time);
 
         // Finds the day with that has the lowest effort compared to the next and sets that as the chunk's due date
         for (let d = 0; d <= daysUntilDue; d++) {
@@ -136,23 +136,13 @@ export class Store extends VuexModule {
           due: new Date(task.due),
         };
       });
-
-      this.updateChunks();
     }
 
     if (localStorage["settings"]) {
-      const settings: {
-        maxPreferredDailyTime: string | number;
-        maxPreferredDayTimeDiff: string | number;
-      } = JSON.parse(localStorage["settings"]);
-
-      this.settings.maxPreferredDailyTime = parseInt(
-        settings.maxPreferredDailyTime.toString()
-      );
-      this.settings.maxPreferredTimeDiff = parseInt(
-        settings.maxPreferredDayTimeDiff.toString()
-      );
+      this.settings = JSON.parse(localStorage["settings"]);
     }
+
+    this.updateChunks();
   }
 }
 
