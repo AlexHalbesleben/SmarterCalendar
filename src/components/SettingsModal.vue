@@ -11,28 +11,19 @@
       <div class="container">
         <div class="row">
           <b-input-group
-            class="mb-2"
-            prepend="Maximum ideal time"
-            append="minutes each day"
+            prepend="Effort weight"
+            :append="
+              vxm.store.settings.effortWeight.toPrecision(valUnderOne ? 1 : 2)
+            "
           >
             <b-form-input
-              type="number"
+              type="range"
+              v-model="vxm.store.settings.effortWeight"
+              min="0"
+              max="5"
+              :step="valUnderOne ? 0.1 : 0.5"
               :number="true"
-              v-model="vxm.store.settings.maxPreferredDailyTime"
-            />
-          </b-input-group>
-        </div>
-        <div class="row">
-          <b-input-group
-            class="mb-2"
-            prepend="Maximum ideal time difference"
-            append="minutes between days"
-          >
-            <b-form-input
-              type="number"
-              :number="true"
-              v-model="vxm.store.settings.maxPreferredDayTimeDiff"
-            />
+            ></b-form-input>
           </b-input-group>
         </div>
       </div>
@@ -48,6 +39,10 @@ export default class SettingsModal extends Vue {
   updateSettings() {
     vxm.store.uploadSettings();
     vxm.store.updateChunks();
+  }
+
+  get valUnderOne(): boolean {
+    return vxm.store.settings.effortWeight < 1;
   }
 
   get vxm(): typeof vxm {

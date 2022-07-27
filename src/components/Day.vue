@@ -1,5 +1,5 @@
 <template>
-  <div class="day p-1">
+  <div class="day p-1" @click="launchModal" v-b-modal.day-modal>
     <div class="row justify-content-center font-weight-bold">
       <div>{{ month + 1 }}/{{ day }}</div>
     </div>
@@ -7,6 +7,7 @@
       v-for="(chunk, i) in chunks"
       :key="`${month}/${day}_chunk_${i}`"
       class="chunk row m-0 mb-1 justify-content-between bg-primary rounded text-dark"
+      @click.stop
     >
       <div class="col-auto">
         {{ chunk.task.name }}
@@ -49,6 +50,11 @@ export default class Day extends Vue {
       (chunk) =>
         chunk.date.getDate() === this.day && chunk.date.getMonth() == this.month
     );
+  }
+
+  launchModal() {
+    vxm.store.dayModalDay = this.day;
+    vxm.store.dayModalMonth = this.month;
   }
 }
 </script>

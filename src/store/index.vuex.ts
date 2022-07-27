@@ -24,6 +24,10 @@ export class Store extends VuexModule {
 
   editedIndex = -1; // -1 indicates a new task is being created (as opposed to an existing one being edited)
 
+  dayModalMonth = 0;
+
+  dayModalDay = 0;
+
   chunks: Chunk[] = [];
 
   settings: Settings = new Settings();
@@ -38,59 +42,59 @@ export class Store extends VuexModule {
 
     const getTotalTime = (day: Chunk[]) =>
       day.reduce((prev, curr) => prev + curr.duration, 0);
+    const getTotalEffort = (day: Chunk[]) =>
+      day.reduce((prev, curr) => prev + curr.effort, 0);
 
-    // TODO: Tasks should have a priority and higher-priority tasks are scheduled first
-    // For each task
-    for (const task of this.tasks) {
+    // For each task, with tasks due earlier scheduled first
+    for (const task of this.tasks.sort(
+      (a, b) => a.due.getTime() - b.due.getTime()
+    )) {
       const { chunks, due } = task;
       const daysUntilDue = DateUtils.daysBetween(DateUtils.currentDate, due);
       const chunkDuration = task.duration / task.chunks;
 
       // For each chunk
       for (let i = 0; i < chunks; i++) {
-        let dayToAssign = -1; // Default value if no days are optimal
+        let dayToAssign = 0;
 
-        // Goes through each day that the chunk could be assigned, counting backwards
-        for (let day = daysUntilDue; day >= 0; day--) {
-          chunksByDay[day] = chunksByDay[day] ?? []; // Makes sure all the days we'll be accessing exist
-          if (day != 0 && !chunksByDay[day - 1]) {
-            // Makes sure the day before exists
-            chunksByDay[day - 1] = [];
-          }
-
-          const dayTotalTime = getTotalTime(chunksByDay[day]);
-          // If the time spent on chunks that day is already more than the max, don't assign it on th at day
-          if (
-            dayTotalTime + chunkDuration >
-            this.settings.maxPreferredDailyTime
-          ) {
-            continue;
-          }
-
-          // If the time spent on chunks is enough more than the previous day, don't assign on that day
-          if (
-            day !== 0 &&
-            dayTotalTime + chunkDuration - getTotalTime(chunksByDay[day - 1]) >=
-              this.settings.maxPreferredDayTimeDiff
-          ) {
-            continue;
-          }
-
-          // If the day will work (read: it passed the previous checks), assign it
-          dayToAssign = day;
-          break; // Don't keep going
+        /** The effort and time of each day, with the first value (index 0) being the current date */
+        const dayData: { effort: number; time: number }[] = [];
+        for (let i = 0; i <= daysUntilDue + 1; i++) {
+          chunksByDay[i] = chunksByDay[i] || [];
+          const day = chunksByDay[i];
+          dayData.push({
+            effort: getTotalEffort(day),
+            time: getTotalTime(day),
+          });
         }
 
-        // -1 indicates that no days were ideal. In this case, pick the day with the least work
-        if (dayToAssign === -1) {
-          let bestDay = 0;
-          for (let day = 0; day <= daysUntilDue; day++) {
-            if (
-              getTotalTime(chunksByDay[day]) <=
-              getTotalTime(chunksByDay[bestDay])
-            ) {
-              bestDay = day;
-            }
+        /** Each index of this array refers to a date that is index number of days after the current day. The values are the current day's effort and time minus the next day's. */
+        const dayDifferences: { effort: number; time: number }[] = [];
+        for (let i = 0; i <= daysUntilDue; i++) {
+          const currentDay = dayData[i];
+          const nextDay = dayData[i + 1];
+
+          // Don't consider this if this is the due date and the next day has no tasks
+          const dontCountDiff =
+            nextDay.effort <= 0 && nextDay.time <= 0 && i === daysUntilDue;
+
+          dayDifferences.push({
+            effort: !dontCountDiff ? currentDay.effort - nextDay.effort : 0,
+            time: !dontCountDiff ? currentDay.time - nextDay.time : 0,
+          });
+        }
+
+        /** Same format as {@link dayDifferences} but combines the effort and time differences into a single value */
+        const combinedDayDifferences: number[] = Object.values(
+          dayDifferences
+        ).map((day) => day.effort * this.settings.effortWeight + day.time);
+
+        // Finds the day with that has the lowest effort compared to the next and sets that as the chunk's due date
+        for (let d = 0; d <= daysUntilDue; d++) {
+          if (
+            combinedDayDifferences[d] <= combinedDayDifferences[dayToAssign]
+          ) {
+            dayToAssign = d;
           }
         }
 
@@ -126,38 +130,19 @@ export class Store extends VuexModule {
     super();
 
     if (localStorage["tasks"]) {
-      const retrievedData: {
-        name: string;
-        chunks: string;
-        duration: number;
-        due: string;
-      }[] = JSON.parse(localStorage["tasks"]);
-
-      this.tasks = retrievedData.map((task) => {
+      this.tasks = JSON.parse(localStorage["tasks"]).map((task: UserTask) => {
         return {
-          name: task.name,
-          chunks: parseInt(task.chunks),
-          duration: task.duration,
+          ...task,
           due: new Date(task.due),
         };
       });
-
-      this.updateChunks();
     }
 
     if (localStorage["settings"]) {
-      const settings: {
-        maxPreferredDailyTime: string | number;
-        maxPreferredDayTimeDiff: string | number;
-      } = JSON.parse(localStorage["settings"]);
-
-      this.settings.maxPreferredDailyTime = parseInt(
-        settings.maxPreferredDailyTime.toString()
-      );
-      this.settings.maxPreferredDayTimeDiff = parseInt(
-        settings.maxPreferredDayTimeDiff.toString()
-      );
+      this.settings = JSON.parse(localStorage["settings"]);
     }
+
+    this.updateChunks();
   }
 }
 
