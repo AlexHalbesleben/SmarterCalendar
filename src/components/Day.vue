@@ -3,18 +3,20 @@
     <div class="row justify-content-center font-weight-bold">
       <div>{{ month + 1 }}/{{ day }}</div>
     </div>
-    <div
-      v-for="(chunk, i) in chunks"
-      :key="`${month}/${day}_chunk_${i}`"
-      class="chunk row m-0 mb-1 justify-content-between bg-primary rounded text-dark"
-      @click.stop
-    >
-      <div class="col-auto">
-        {{ chunk.task.name }}
-      </div>
-      <div class="col-auto">
-        <!-- Rounds to 2 decimal places -->
-        {{ Math.round(chunk.duration * 100) / 100 }} min
+    <div class="day-chunks-container">
+      <div
+        v-for="(chunk, i) in chunks"
+        :key="`${month}/${day}_chunk_${i}`"
+        class="chunk row m-0 mb-1 justify-content-between bg-primary rounded text-dark"
+        @click.stop
+      >
+        <div class="col-auto">
+          {{ chunk.task.name }}
+        </div>
+        <div class="col-auto">
+          <!-- Rounds to 2 decimal places -->
+          {{ Math.round(chunk.duration * 100) / 100 }} min
+        </div>
       </div>
     </div>
   </div>
@@ -58,4 +60,10 @@ export default class Day extends Vue {
   }
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.day-chunks-container {
+  max-height: 208px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+</style>

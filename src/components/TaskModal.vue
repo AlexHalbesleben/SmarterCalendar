@@ -16,6 +16,11 @@
           </b-input-group>
         </div>
         <div class="row mb-2">
+          <b-input-group prepend="Due" class="col">
+            <b-form-datepicker v-model="task.due" value-as-date />
+          </b-input-group>
+        </div>
+        <div class="row mb-2">
           <b-input-group prepend="Duration" append="minutes" class="col">
             <b-form-input
               v-model="task.duration"
@@ -29,16 +34,14 @@
             <b-form-input v-model="task.chunks" type="number" :number="true" />
           </b-input-group>
         </div>
-        <div class="row">
-          <b-input-group prepend="Due" class="col">
-            <b-form-datepicker v-model="task.due" value-as-date />
-          </b-input-group>
-        </div>
-        <hr />
         <div class="row mb-2">
           <b-input-group class="col" prepend="Effort">
             <b-form-input v-model="task.effort" type="number" :number="true" />
           </b-input-group>
+        </div>
+        <div class="row mb-2 no-gutters">
+          <b-form-textarea class="col px-2" v-model="task.description">
+          </b-form-textarea>
         </div>
       </div>
     </b-modal>
