@@ -4,6 +4,7 @@ export default class UserTask {
   chunks = 1;
   due: Date = new Date();
   effort = 1;
+  description = "";
 
   get totalEffort(): number {
     return this.effort * this.duration;
