@@ -16,7 +16,12 @@
           </b-input-group>
         </div>
         <div class="row mb-2">
-          <b-input-group prepend="Due" class="col">
+          <b-input-group
+            prepend="Due"
+            class="col"
+            v-b-tooltip.hover
+            :title="taskTooltips['due']"
+          >
             <b-form-datepicker v-model="task.due" value-as-date />
           </b-input-group>
         </div>
@@ -26,29 +31,43 @@
               v-model="task.duration"
               type="number"
               :number="true"
+              v-b-tooltip.hover
+              :title="taskTooltips['duration']"
             />
           </b-input-group>
         </div>
         <div class="row mb-2">
-          <b-input-group prepend="Chunks" class="col">
+          <b-input-group
+            prepend="Chunks"
+            class="col"
+            v-b-tooltip.hover
+            :title="taskTooltips['chunks']"
+          >
             <b-form-input v-model="task.chunks" type="number" :number="true" />
           </b-input-group>
         </div>
         <div class="row mb-2">
-          <b-input-group class="col" prepend="Effort">
+          <b-input-group
+            class="col"
+            prepend="Effort"
+            v-b-tooltip.hover
+            :title="taskTooltips['effort']"
+          >
             <b-form-input v-model="task.effort" type="number" :number="true" />
           </b-input-group>
         </div>
         <div class="row mb-2 no-gutters">
-          <b-form-textarea class="col px-2" v-model="task.description">
-          </b-form-textarea>
+          <b-input-group class="col" prepend="Description">
+            <b-form-textarea class="px-2" v-model="task.description">
+            </b-form-textarea>
+          </b-input-group>
         </div>
       </div>
     </b-modal>
   </div>
 </template>
 <script lang="ts">
-import UserTask from "@/types/Task";
+import UserTask, { TASK_DESCRIPTIONS } from "@/types/Task";
 import { Component, Vue } from "vue-property-decorator";
 import vxm from "../store/index.vuex";
 
@@ -96,6 +115,10 @@ export default class TaskModal extends Vue {
     Vue.delete(vxm.store.tasks, this.editedIndex);
     vxm.store.updateChunks(); // Update chunks
     vxm.store.uploadTasks();
+  }
+
+  get taskTooltips(): Record<string, string> {
+    return TASK_DESCRIPTIONS;
   }
 }
 </script>
