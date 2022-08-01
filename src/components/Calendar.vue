@@ -111,7 +111,7 @@ export default class Calendar extends Vue {
    * @returns the day of the previous month at which the front fillers should start
    */
   get frontFillerStart(): number {
-    return DaysPerMonth[(this.month + 11) % 12] - this.numberOfFrontFillers;
+    return DaysPerMonth[(this.month + 11) % 12] - this.numberOfFrontFillers + 1;
   }
 
   /*
