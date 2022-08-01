@@ -12,6 +12,8 @@
         <div class="row">
           <b-input-group
             prepend="Effort weight"
+            v-b-tooltip.hover
+            :title="settingsTooltips['effortWeight']"
             :append="
               vxm.store.settings.effortWeight.toPrecision(valUnderOne ? 1 : 2)
             "
@@ -33,6 +35,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import vxm from "../store/index.vuex";
+import { SETTINGS_DESCRIPTIONS } from "@/types/Settings";
 
 @Component
 export default class SettingsModal extends Vue {
@@ -42,6 +45,10 @@ export default class SettingsModal extends Vue {
   updateSettings() {
     vxm.store.uploadSettings();
     vxm.store.updateChunks();
+  }
+
+  get settingsTooltips(): Record<string, string> {
+    return SETTINGS_DESCRIPTIONS;
   }
 
   /**

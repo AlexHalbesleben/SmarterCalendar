@@ -10,3 +10,11 @@ export default class UserTask {
     return this.effort * this.duration;
   }
 }
+
+export const TASK_DESCRIPTIONS = {
+  duration: "How long, in minutes, the task will take to complete",
+  chunks: "How many chunks the task should be split into",
+  due: "The day on which the task must be completed. Chunks can be assigned on this day.",
+  effort:
+    "A measure of how much effort the task will take. A task with an effort of 2 will take twice as much effort to complete than a task with an effort of 1.",
+};
