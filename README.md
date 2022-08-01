@@ -6,30 +6,8 @@
 
 https://alexhalbesleben.github.io/SmarterCalendar/
 
-## Project setup
-```
-npm install
-```
+This is my attempt at creating an intelligent calendar. This calendar will divide your tasks into chunks and intelligently schedule them.
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+This project is under active development but is usable in its current state. Click the link above to try it out.
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Run your unit tests
-```
-npm run test:unit
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+If you want to contribute, thank you! See [CONTRIBUTING.md](CONTRIBUTING.md) for more information.
