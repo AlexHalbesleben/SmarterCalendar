@@ -25,7 +25,7 @@
               max="5"
               :step="valUnderOne ? 0.1 : 0.5"
               :number="true"
-            ></b-form-input>
+            />
           </b-input-group>
         </div>
       </div>
