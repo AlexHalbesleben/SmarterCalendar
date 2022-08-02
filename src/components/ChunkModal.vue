@@ -1,9 +1,12 @@
 <template>
   <div class="chunkmodal-container">
-    <b-modal id="chunk-modal" :title="chunk?.task.name">
+    <b-modal
+      id="chunk-modal"
+      :title="`${chunk?.task.name} - ${chunk?.duration} minutes`"
+    >
       <div class="container">
-        <div class="row" v-if="chunk">
-          <b-input-group prepend="Date">
+        <div class="row mb-2" v-if="chunk">
+          <b-input-group prepend="Date" class="col">
             <b-form-datepicker
               v-model="chunk.date"
               value-as-date
@@ -18,9 +21,10 @@
             </b-input-group-append>
           </b-input-group>
         </div>
+        <div class="row no-gutters">
+          <b-button class="col" @click="launchTask">Edit Task</b-button>
+        </div>
       </div>
-      <br />
-      <b-button @click="launchTask">Edit Task</b-button>
     </b-modal>
   </div>
 </template>
