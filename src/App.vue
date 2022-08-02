@@ -40,6 +40,24 @@ export default class App extends Vue {
   get vxm(): typeof vxm {
     return vxm;
   }
+
+  mounted() {
+    window.addEventListener("keypress", (ev: KeyboardEvent) => {
+      switch (ev.key) {
+        case "n":
+          this.newTask();
+          break;
+        case "s":
+          this.$bvModal.show("settings-modal");
+          break;
+      }
+    });
+  }
+
+  newTask() {
+    vxm.store.editedIndex = -1;
+    this.$bvModal.show("settings-modal");
+  }
 }
 </script>
 

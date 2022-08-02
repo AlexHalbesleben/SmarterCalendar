@@ -5,6 +5,7 @@
       :title="`${chunk?.task.name} - ${chunk?.duration} minutes`"
       cancel-title="Complete"
       @cancel="completeChunk"
+      v-model="displayed"
     >
       <div class="container">
         <div class="row mb-2" v-if="chunk">
@@ -120,6 +121,17 @@ export default class ChunkModal extends Vue {
 
     vxm.store.uploadTasks();
     vxm.store.updateChunks();
+  }
+
+  displayed = false;
+
+  mounted() {
+    window.addEventListener("keypress", (ev) => {
+      if (this.displayed && ev.key === "c") {
+        this.completeChunk();
+        this.$bvModal.hide("chunk-modal");
+      }
+    });
   }
 }
 </script>

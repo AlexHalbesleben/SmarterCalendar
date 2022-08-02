@@ -85,6 +85,19 @@ const DaysPerMonth: Record<number, number> = {
 export default class Calendar extends Vue {
   month: number = new Date().getMonth();
 
+  mounted() {
+    window.addEventListener("keydown", (ev) => {
+      switch (ev.code) {
+        case "ArrowRight":
+          this.month = (this.month + 1) % 12;
+          break;
+        case "ArrowLeft":
+          this.month = (this.month + 11) % 12;
+          break;
+      }
+    });
+  }
+
   /**
    * @returns the number of days in the current month
    */
