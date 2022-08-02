@@ -5,8 +5,6 @@
       @show="onShow"
       @ok="submit"
       :title="`${editedIndex === -1 ? 'Create' : 'Edit'} Task`"
-      :cancel-title="editedIndex === -1 ? 'Cancel' : 'Delete'"
-      :cancel-variant="editedIndex === -1 ? 'secondary' : 'danger'"
       @cancel="deleteTask"
     >
       <div class="container">
@@ -63,6 +61,15 @@
           </b-input-group>
         </div>
       </div>
+      <template #modal-footer="{ ok, cancel }">
+        <b-button
+          :variant="editedIndex !== -1 ? 'secondary' : 'danger'"
+          @click="cancel()"
+        >
+          {{ editedIndex === -1 ? "Cancel" : "Complete" }}
+        </b-button>
+        <b-button @click="ok()" variant="primary"> OK </b-button>
+      </template>
     </b-modal>
   </div>
 </template>
