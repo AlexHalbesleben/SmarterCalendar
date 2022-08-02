@@ -6,8 +6,9 @@
       @ok="submit"
       :title="`${editedIndex === -1 ? 'Create' : 'Edit'} Task`"
       @cancel="deleteTask"
+      v-model="displayed"
     >
-      <div class="container">
+      <div class="container" @keydown.stop @keypress.enter="submit">
         <div class="row mb-2">
           <b-input-group prepend="Name" class="col">
             <b-form-input v-model="task.name" />
@@ -97,16 +98,33 @@ export default class TaskModal extends Vue {
     this.task =
       editedIndex === -1 // If there's no task to copy from
         ? new UserTask() // Use sensible defaults
-        : vxm.store.tasks[editedIndex]; // If there's a task to copy from, do that
+        : {
+            get totalEffort(): number {
+              return this.effort * this.duration;
+            },
+            ...vxm.store.tasks[editedIndex],
+          }; // If there's a task to copy from, do that
   }
 
   submit() {
+    this.$bvModal.hide("task-modal");
+
     let { editedIndex } = vxm.store;
     if (editedIndex === -1) {
       // If creating a new task
-      vxm.store.tasks.push(this.task);
+      vxm.store.tasks.push({
+        get totalEffort(): number {
+          return this.effort * this.duration;
+        },
+        ...this.task,
+      });
     } else {
-      vxm.store.tasks[editedIndex] = this.task;
+      vxm.store.tasks[editedIndex] = {
+        get totalEffort(): number {
+          return this.effort * this.duration;
+        },
+        ...this.task,
+      };
     }
     vxm.store.updateChunks();
     vxm.store.uploadTasks();
@@ -126,6 +144,17 @@ export default class TaskModal extends Vue {
 
   get taskTooltips(): Record<string, string> {
     return TASK_DESCRIPTIONS;
+  }
+
+  displayed = false;
+
+  mounted() {
+    window.addEventListener("keypress", (ev) => {
+      if (this.displayed && ev.key === "c") {
+        this.deleteTask();
+        this.$bvModal.hide("task-modal");
+      }
+    });
   }
 }
 </script>

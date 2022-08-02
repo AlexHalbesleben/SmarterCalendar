@@ -25,6 +25,7 @@
               max="5"
               :step="valUnderOne ? 0.1 : 0.5"
               :number="true"
+              @keydown.stop
             />
           </b-input-group>
         </div>
