@@ -3,6 +3,7 @@
     <TaskModal />
     <SettingsModal />
     <DayModal />
+    <ChunkModal />
     <Navbar />
     <div class="row mr-0 ml-0">
       <Calendar class="col" />
@@ -23,6 +24,7 @@ import TaskModal from "./components/TaskModal.vue";
 import vxm from "./store/index.vuex";
 import SettingsModal from "./components/SettingsModal.vue";
 import DayModal from "./components/DayModal.vue";
+import ChunkModal from "./components/ChunkModal.vue";
 @Component({
   components: {
     TaskList,
@@ -31,6 +33,7 @@ import DayModal from "./components/DayModal.vue";
     TaskModal,
     SettingsModal,
     DayModal,
+    ChunkModal,
   },
 })
 export default class App extends Vue {
