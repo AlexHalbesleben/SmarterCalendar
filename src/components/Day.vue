@@ -1,6 +1,9 @@
 <template>
   <div class="day p-1" @click="launchModal" v-b-modal.day-modal>
-    <div class="row justify-content-center font-weight-bold">
+    <div
+      class="row justify-content-center font-weight-bold"
+      :class="`${isCurrentDay ? 'text-primary' : ''}`"
+    >
       <div>{{ month + 1 }}/{{ day }}</div>
     </div>
     <div class="day-chunks-container">
@@ -26,6 +29,7 @@ import { Component, Prop, Vue } from "vue-property-decorator";
 import { WeekDays } from "../types/Calendar";
 import vxm from "../store/index.vuex";
 import Chunk from "@/types/Chunk";
+import DateUtils from "@/util/DateUtils";
 
 @Component
 export default class Day extends Vue {
@@ -62,6 +66,14 @@ export default class Day extends Vue {
   launchChunk(chunk: Chunk) {
     vxm.store.editedChunk = chunk;
     this.$bvModal.show("chunk-modal");
+  }
+
+  get isCurrentDay(): boolean {
+    const currentDate = DateUtils.currentDate;
+    return (
+      this.day === currentDate.getDate() &&
+      this.month === currentDate.getMonth()
+    );
   }
 }
 </script>
