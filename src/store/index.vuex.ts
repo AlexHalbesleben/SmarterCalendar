@@ -148,7 +148,6 @@ export class Store extends VuexModule {
 
   @action
   async uploadTasks() {
-    console.log(this.tasks);
     localStorage["tasks"] = JSON.stringify(this.tasks);
   }
 

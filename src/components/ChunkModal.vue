@@ -3,6 +3,8 @@
     <b-modal
       id="chunk-modal"
       :title="`${chunk?.task.name} - ${chunk?.duration} minutes`"
+      cancel-title="Complete"
+      @cancel="completeChunk"
     >
       <div class="container">
         <div class="row mb-2" v-if="chunk">
@@ -70,7 +72,6 @@ export default class ChunkModal extends Vue {
   }
 
   unlock() {
-    console.log("unlocked");
     if (!this.chunk) {
       return;
     }
@@ -82,7 +83,6 @@ export default class ChunkModal extends Vue {
   }
 
   lock() {
-    console.log("locked");
     if (
       this.chunk?.task.lockedChunks.some(
         (chunk) => chunk.number === this.chunk?.number
@@ -101,6 +101,25 @@ export default class ChunkModal extends Vue {
     }
     vxm.store.editedIndex = vxm.store.tasks.indexOf(this.chunk?.task);
     this.$bvModal.show("task-modal");
+  }
+
+  completeChunk() {
+    if (!this.chunk) {
+      return;
+    }
+    const { duration } = this.chunk;
+
+    if (this.locked) this.unlock();
+
+    this.chunk.task.chunks--;
+    this.chunk.task.duration -= duration;
+
+    if (this.chunk.task.chunks === 0) {
+      Vue.delete(vxm.store.tasks, vxm.store.tasks.indexOf(this.chunk.task));
+    }
+
+    vxm.store.uploadTasks();
+    vxm.store.updateChunks();
   }
 }
 </script>
