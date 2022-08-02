@@ -1,5 +1,3 @@
-import Chunk from "./Chunk";
-
 export default class UserTask {
   name = "";
   duration = 60;
@@ -8,7 +6,7 @@ export default class UserTask {
   effort = 1;
   description = "";
 
-  lockedChunks: Chunk[] = [];
+  lockedChunks: { date: Date; number: number }[] = [];
 
   get totalEffort(): number {
     return this.effort * this.duration;
