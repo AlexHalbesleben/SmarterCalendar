@@ -47,11 +47,24 @@ export class Store extends VuexModule {
     const getTotalEffort = (day: Chunk[]) =>
       day.reduce((prev, curr) => prev + curr.effort, 0);
 
+    for (const task of this.tasks) {
+      for (const lockedChunk of task.lockedChunks) {
+        const convertedDay = DateUtils.daysBetween(
+          DateUtils.currentDate,
+          lockedChunk.date
+        );
+        chunksByDay[convertedDay] = chunksByDay[convertedDay] ?? [];
+        chunksByDay[convertedDay].push(lockedChunk);
+      }
+    }
+
     // For each task, with tasks due earlier scheduled first
     for (const task of this.tasks.sort(
       (a, b) => a.due.getTime() - b.due.getTime()
     )) {
-      const { chunks, due } = task;
+      let { chunks } = task;
+      chunks -= task.lockedChunks.length;
+      const { due } = task;
       const daysUntilDue = DateUtils.daysBetween(DateUtils.currentDate, due);
       const chunkDuration = task.duration / task.chunks;
 
