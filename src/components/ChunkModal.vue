@@ -2,18 +2,20 @@
   <div class="chunkmodal-container">
     <b-modal id="chunk-modal" :title="chunk?.task.name">
       <div class="container">
-        <div class="row">
-          <b-input-group prepend="Locked">
-            <b-form-checkbox :checked="locked" @input="handleChange" />
-          </b-input-group>
-        </div>
         <div class="row" v-if="chunk">
-          <b-input-group>
+          <b-input-group prepend="Date">
             <b-form-datepicker
               v-model="chunk.date"
               value-as-date
               @input="lock"
             />
+            <b-input-group-append is-text>
+              <b-form-checkbox
+                :checked="locked"
+                @input="handleChange"
+                class="mr-n2"
+              />
+            </b-input-group-append>
           </b-input-group>
         </div>
       </div>
