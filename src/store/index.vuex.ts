@@ -32,6 +32,8 @@ export class Store extends VuexModule {
 
   settings: Settings = new Settings();
 
+  editedChunk: Chunk | undefined = undefined;
+
   /**
    * Splits the tasks into chunks
    */
