@@ -68,4 +68,8 @@ hr {
 .day:hover {
   background-color: $secondary-lightened;
 }
+
+.chunk:hover {
+  background-color: $primary-darkened !important;
+}
 </style>
