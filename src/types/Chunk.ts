@@ -7,10 +7,13 @@ export default class Chunk {
 
   date: Date;
 
-  constructor(task: UserTask, duration: number, date: Date) {
+  number: number;
+
+  constructor(task: UserTask, duration: number, date: Date, number: number) {
     this.task = task;
     this.duration = duration;
     this.date = date;
+    this.number = number;
   }
 
   get effort(): number {

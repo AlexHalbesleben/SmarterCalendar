@@ -1,9 +1,24 @@
 <template>
   <div class="chunkmodal-container">
     <b-modal id="chunk-modal" :title="chunk?.task.name">
-      {{ chunk?.duration }} minutes
+      <div class="container">
+        <div class="row">
+          <b-input-group prepend="Locked">
+            <b-form-checkbox :checked="locked" @input="handleChange" />
+          </b-input-group>
+        </div>
+        <div class="row" v-if="chunk">
+          <b-input-group>
+            <b-form-datepicker
+              v-model="chunk.date"
+              value-as-date
+              @input="lock"
+            />
+          </b-input-group>
+        </div>
+      </div>
       <br />
-      <b-button @click="launchTask">Task</b-button>
+      <b-button @click="launchTask">Edit Task</b-button>
     </b-modal>
   </div>
 </template>
@@ -11,11 +26,67 @@
 import { Component, Vue } from "vue-property-decorator";
 import vxm from "@/store/index.vuex";
 import Chunk from "@/types/Chunk";
+import DateUtils from "@/util/DateUtils";
 
 @Component
 export default class ChunkModal extends Vue {
   get chunk(): Chunk | undefined {
     return vxm.store.editedChunk;
+  }
+
+  get simplifiedChunk(): {
+    date: Date;
+    number: number;
+  } {
+    const { date, number } = this.chunk || {
+      date: DateUtils.currentDate,
+      number: 0,
+    };
+    return { date, number };
+  }
+
+  get locked() {
+    return (
+      this.chunk &&
+      this.simplifiedChunk &&
+      this.chunk.task.lockedChunks.some(
+        (chunk) => chunk.number === this.chunk?.number
+      )
+    );
+  }
+
+  handleChange(checked: boolean) {
+    if (checked) {
+      this.lock();
+    } else {
+      this.unlock();
+    }
+  }
+
+  unlock() {
+    console.log("unlocked");
+    if (!this.chunk) {
+      return;
+    }
+    this.chunk.task.lockedChunks = this.chunk.task.lockedChunks.filter(
+      (chunk) => chunk.number !== this.chunk?.number
+    );
+    vxm.store.uploadTasks();
+    vxm.store.updateChunks();
+  }
+
+  lock() {
+    console.log("locked");
+    if (
+      this.chunk?.task.lockedChunks.some(
+        (chunk) => chunk.number === this.chunk?.number
+      )
+    ) {
+      return;
+    }
+    this.chunk?.task.lockedChunks.push(this.simplifiedChunk);
+    vxm.store.uploadTasks();
+    vxm.store.updateChunks();
   }
 
   launchTask() {

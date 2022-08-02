@@ -6,6 +6,7 @@
         v-for="(chunk, i) in chunks"
         :key="`${month}/${day}_chunk_${i}`"
         class="chunk row m-0 mb-1 justify-content-between bg-primary rounded text-dark"
+        @click="launchChunk(chunk)"
       >
         <div class="col-auto">
           {{ chunk.task.name }}
@@ -41,6 +42,11 @@ export default class DayModal extends Vue {
 
   get month(): number {
     return vxm.store.dayModalMonth;
+  }
+
+  launchChunk(chunk: Chunk) {
+    vxm.store.editedChunk = chunk;
+    this.$bvModal.show("chunk-modal");
   }
 
   get chunks(): Chunk[] {

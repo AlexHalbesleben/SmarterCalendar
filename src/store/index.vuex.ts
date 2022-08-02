@@ -54,7 +54,13 @@ export class Store extends VuexModule {
           lockedChunk.date
         );
         chunksByDay[convertedDay] = chunksByDay[convertedDay] ?? [];
-        chunksByDay[convertedDay].push(lockedChunk);
+        const newChunk = new Chunk(
+          task,
+          task.duration / task.chunks,
+          lockedChunk.date,
+          lockedChunk.number
+        );
+        chunksByDay[convertedDay].push(newChunk);
       }
     }
 
@@ -67,6 +73,8 @@ export class Store extends VuexModule {
       const { due } = task;
       const daysUntilDue = DateUtils.daysBetween(DateUtils.currentDate, due);
       const chunkDuration = task.duration / task.chunks;
+
+      const usedNumbers = task.lockedChunks.map((chunk) => chunk.number);
 
       // For each chunk
       for (let i = 0; i < chunks; i++) {
@@ -116,12 +124,19 @@ export class Store extends VuexModule {
         // Avoids errors (if there are no tasks/chunks)
         chunksByDay[dayToAssign] = chunksByDay[dayToAssign] ?? [];
 
+        let number = 0;
+        while (usedNumbers.includes(number)) {
+          number++;
+        }
+        usedNumbers.push(number);
+
         // Create the chunk and add it to the list
         chunksByDay[dayToAssign].push(
           new Chunk(
             task,
             chunkDuration,
-            DateUtils.applyDayOffset(dayToAssign, DateUtils.currentDate)
+            DateUtils.applyDayOffset(dayToAssign, DateUtils.currentDate),
+            number
           )
         );
       }
@@ -133,6 +148,7 @@ export class Store extends VuexModule {
 
   @action
   async uploadTasks() {
+    console.log(this.tasks);
     localStorage["tasks"] = JSON.stringify(this.tasks);
   }
 
@@ -149,6 +165,12 @@ export class Store extends VuexModule {
         return {
           ...task,
           due: new Date(task.due),
+          lockedChunks: task.lockedChunks.map((lockedChunk) => {
+            return {
+              date: new Date(lockedChunk.date),
+              number: lockedChunk.number,
+            };
+          }),
         };
       });
     }
