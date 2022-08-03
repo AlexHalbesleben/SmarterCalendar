@@ -1,11 +1,33 @@
 export default class Settings {
-  effortWeight = 1;
+  effortWeight;
 
-  baseStartTime = 930;
-  baseEndTime = 1380;
+  baseStartTime;
+  baseEndTime;
 
-  dailyStartTimes: Record<number, string> = {};
-  dailyEndTimes: Record<number, string> = {};
+  dailyStartTimes: Record<number, string>;
+  dailyEndTimes: Record<number, string>;
+
+  constructor(
+    config: {
+      effortWeight?: number;
+      baseStartTime?: number;
+      baseEndTime?: number;
+      dailyStartTimes?: Record<number, string>;
+      dailyEndTimes?: Record<number, string>;
+    } = {
+      effortWeight: 1,
+      baseStartTime: 930,
+      baseEndTime: 1380,
+      dailyStartTimes: {},
+      dailyEndTimes: {},
+    }
+  ) {
+    this.effortWeight = config.effortWeight || 1;
+    this.baseStartTime = config.baseStartTime || 930;
+    this.baseEndTime = config.baseEndTime || 1380;
+    this.dailyStartTimes = config.dailyStartTimes || {};
+    this.dailyEndTimes = config.dailyEndTimes || {};
+  }
 
   get dailyTimes(): number[] {
     const ret: number[] = [];
