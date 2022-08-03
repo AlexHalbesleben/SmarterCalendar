@@ -37,6 +37,12 @@
               :value="startTime"
               @blur="vxm.store.updateChunks()"
               minutes-step="5"
+              :state="
+                vxm.store.settings.baseEndTime >
+                vxm.store.settings.baseStartTime
+                  ? null
+                  : false
+              "
             />
           </b-input-group>
         </div>
@@ -47,6 +53,12 @@
               :value="endTime"
               @blur="vxm.store.updateChunks()"
               minutes-step="5"
+              :state="
+                vxm.store.settings.baseEndTime >
+                vxm.store.settings.baseStartTime
+                  ? null
+                  : false
+              "
             />
           </b-input-group>
         </div>
