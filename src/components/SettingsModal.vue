@@ -36,6 +36,7 @@
               @input="updateStart"
               :value="startTime"
               @blur="vxm.store.updateChunks()"
+              minutes-step="5"
             />
           </b-input-group>
         </div>
@@ -45,6 +46,7 @@
               @input="updateEnd"
               :value="endTime"
               @blur="vxm.store.updateChunks()"
+              minutes-step="5"
             />
           </b-input-group>
         </div>
@@ -63,6 +65,7 @@
                         ? vxm.store.settings.dailyStartTimes[i]
                         : startTime
                     "
+                    minutes-step="5"
                     @input="handleStartInput($event, i)"
                     @blur="vxm.store.updateChunks"
                   />
@@ -86,6 +89,7 @@
                         ? vxm.store.settings.dailyEndTimes[i]
                         : endTime
                     "
+                    minutes-step="5"
                     @input="handleEndInput($event, i)"
                     @blur="vxm.store.updateChunks"
                   />
