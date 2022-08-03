@@ -46,4 +46,22 @@ export default class DateUtils {
   static daysUntil(date: Date): number {
     return this.daysBetween(this.currentDate, date);
   }
+
+  /**
+   * @param date the date of which to determine the day of the week
+   * @returns the day of the week of the given date
+   */
+  static dayOfWeek(date: Date): number {
+    return date.getDay();
+  }
+
+  /**
+   * Literally just combines {@link applyDayOffset} and {@link dayOfWeek}
+   * @param date the date on which to apply the offset
+   * @param offset the offset to apply to the date
+   * @returns the day of the week of the day that is a given offset from a certain date
+   */
+  static offsetDayOfWeek(date: Date, offset: number): number {
+    return this.dayOfWeek(this.applyDayOffset(offset, date));
+  }
 }
