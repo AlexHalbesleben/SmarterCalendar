@@ -114,10 +114,11 @@ export class Store extends VuexModule {
 
         // Assign to the latest possible day (if none work, will be due date) by default
         for (let d = 0; d <= daysUntilDue; d++) {
-          const dayOfWeek = DateUtils.offsetDayOfWeek(DateUtils.currentDate, d);
           const dayHasTime =
             getTotalTime(chunksByDay[d]) + chunkDuration <=
-            this.settings.dailyTimes[dayOfWeek];
+            this.settings.timeOnDay(
+              DateUtils.applyDayOffset(d, DateUtils.currentDate)
+            );
 
           if (dayHasTime) {
             dayToAssign = d;
@@ -128,10 +129,11 @@ export class Store extends VuexModule {
 
         // Finds the day with that has the lowest effort compared to the next and sets that as the chunk's due date
         for (let d = 0; d <= daysUntilDue; d++) {
-          const dayOfWeek = DateUtils.offsetDayOfWeek(DateUtils.currentDate, d);
           const dayHasTime =
             getTotalTime(chunksByDay[d]) + chunkDuration <=
-            this.settings.dailyTimes[dayOfWeek];
+            this.settings.timeOnDay(
+              DateUtils.applyDayOffset(d, DateUtils.currentDate)
+            );
 
           if (dayHasTime) {
             anyDaysWork = true;
