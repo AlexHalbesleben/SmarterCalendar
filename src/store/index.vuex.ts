@@ -78,8 +78,6 @@ export class Store extends VuexModule {
 
       // For each chunk
       for (let i = 0; i < chunks; i++) {
-        let dayToAssign = 0;
-
         /** The effort and time of each day, with the first value (index 0) being the current date */
         const dayData: { effort: number; time: number }[] = [];
         for (let i = 0; i <= daysUntilDue + 1; i++) {
@@ -112,12 +110,51 @@ export class Store extends VuexModule {
           dayDifferences
         ).map((day) => day.effort * this.settings.effortWeight + day.time);
 
+        let dayToAssign = daysUntilDue;
+
+        // Assign to the latest possible day (if none work, will be due date) by default
+        for (let d = 0; d <= daysUntilDue; d++) {
+          const dayOfWeek = DateUtils.offsetDayOfWeek(DateUtils.currentDate, d);
+          const dayHasTime =
+            getTotalTime(chunksByDay[d]) + chunkDuration <=
+            this.settings.dailyTimes[dayOfWeek];
+
+          if (dayHasTime) {
+            dayToAssign = d;
+          }
+        }
+
+        let anyDaysWork = false;
+
         // Finds the day with that has the lowest effort compared to the next and sets that as the chunk's due date
         for (let d = 0; d <= daysUntilDue; d++) {
+          const dayOfWeek = DateUtils.offsetDayOfWeek(DateUtils.currentDate, d);
+          const dayHasTime =
+            getTotalTime(chunksByDay[d]) + chunkDuration <=
+            this.settings.dailyTimes[dayOfWeek];
+
+          if (dayHasTime) {
+            anyDaysWork = true;
+          } else {
+            continue; // If the time is greater than what we can spend on this day, try the next one
+          }
+
           if (
             combinedDayDifferences[d] <= combinedDayDifferences[dayToAssign]
           ) {
             dayToAssign = d;
+          }
+        }
+
+        // If none of the days have enough time, choose the one using the normal algorithm disregarding the time limits
+        if (!anyDaysWork) {
+          // Finds the day with that has the lowest effort compared to the next and sets that as the chunk's due date
+          for (let d = 0; d <= daysUntilDue; d++) {
+            if (
+              combinedDayDifferences[d] <= combinedDayDifferences[dayToAssign]
+            ) {
+              dayToAssign = d;
+            }
           }
         }
 
@@ -175,7 +212,7 @@ export class Store extends VuexModule {
     }
 
     if (localStorage["settings"]) {
-      this.settings = JSON.parse(localStorage["settings"]);
+      this.settings = new Settings(JSON.parse(localStorage["settings"]));
     }
 
     this.updateChunks();
