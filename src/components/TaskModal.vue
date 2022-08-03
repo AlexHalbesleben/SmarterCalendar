@@ -11,7 +11,7 @@
       <div class="container" @keydown.stop @keypress.enter="submit">
         <div class="row mb-2">
           <b-input-group prepend="Name" class="col">
-            <b-form-input v-model="task.name" />
+            <b-form-input v-model="task.name" @keypress.stop />
           </b-input-group>
         </div>
         <div class="row mb-2">
