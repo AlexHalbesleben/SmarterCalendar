@@ -57,9 +57,21 @@
                   <b-input-group-prepend is-text class="settings-day-prepend">
                     Start time
                   </b-input-group-prepend>
-                  <b-form-timepicker />
+                  <b-form-timepicker
+                    :value="
+                      daysStartLocked[i]
+                        ? vxm.store.settings.dailyStartTimes[i]
+                        : startTime
+                    "
+                    @input="handleStartInput($event, i)"
+                    @blur="vxm.store.updateChunks"
+                  />
                   <b-input-group-append is-text class="settings-day-append-top">
-                    <b-form-checkbox class="mr-n2" />
+                    <b-form-checkbox
+                      class="mr-n2"
+                      @change="handleStartCheck(i)"
+                      :checked="daysStartLocked[i]"
+                    />
                   </b-input-group-append>
                 </b-input-group>
                 <b-input-group
@@ -68,12 +80,24 @@
                   <b-input-group-prepend is-text class="settings-day-prepend">
                     End time
                   </b-input-group-prepend>
-                  <b-form-timepicker />
+                  <b-form-timepicker
+                    :value="
+                      daysEndLocked[i]
+                        ? vxm.store.settings.dailyEndTimes[i]
+                        : endTime
+                    "
+                    @input="handleEndInput($event, i)"
+                    @blur="vxm.store.updateChunks"
+                  />
                   <b-input-group-append
                     is-text
                     class="settings-day-append-bottom"
                   >
-                    <b-form-checkbox class="mr-n2" />
+                    <b-form-checkbox
+                      class="mr-n2"
+                      @change="handleEndCheck(i)"
+                      :checked="daysEndLocked[i]"
+                    />
                   </b-input-group-append>
                 </b-input-group>
               </div>
@@ -87,7 +111,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import vxm from "../store/index.vuex";
-import { SETTINGS_DESCRIPTIONS } from "@/types/Settings";
+import Settings, { SETTINGS_DESCRIPTIONS } from "@/types/Settings";
 import { WeekDays } from "@/types/Calendar";
 
 @Component
@@ -149,20 +173,88 @@ export default class SettingsModal extends Vue {
     return `${Math.floor(end / 60)}:${Math.floor(end % 60)}`;
   }
 
+  startTimes: string[] = [];
+  endTimes: string[] = [];
+
+  mounted() {
+    for (let i = 0; i < 6; i++) {
+      this.startTimes.push(
+        vxm.store.settings.dailyStartTimes[i] || this.startTime
+      );
+      this.endTimes.push(vxm.store.settings.dailyEndTimes[i] || this.endTime);
+    }
+  }
+
   weekday(num: number): string {
     return WeekDays[num];
   }
 
-  dayStartLocked(day: number): boolean {
-    return Object.keys(vxm.store.settings.dailyStartTimes).includes(
-      day.toString()
-    );
+  get daysStartLocked(): boolean[] {
+    let ret = [];
+
+    for (let i = 0; i < 7; i++) {
+      ret.push(vxm.store.settings.dailyStartTimes[i] ? true : false);
+    }
+
+    return ret;
   }
 
-  dayEndLocked(day: number): boolean {
-    return Object.keys(vxm.store.settings.dailyStartTimes).includes(
-      day.toString()
-    );
+  get daysEndLocked(): boolean[] {
+    let ret = [];
+
+    for (let i = 0; i < 7; i++) {
+      ret.push(vxm.store.settings.dailyEndTimes[i] ? true : false);
+    }
+
+    return ret;
+  }
+
+  handleStartInput(event: string, day: number) {
+    this.startTimes[day] = event; // Update local data
+    // Changing the time "locks" the settings
+    Vue.set(vxm.store.settings.dailyStartTimes, day, event);
+
+    // Upload changes
+    vxm.store.uploadSettings();
+  }
+
+  /** {@link handleStartInput}, just for the end time */
+  handleEndInput(event: string, day: number) {
+    this.endTimes[day] = event;
+
+    Vue.set(vxm.store.settings.dailyEndTimes, day, event);
+
+    vxm.store.uploadSettings();
+  }
+
+  handleStartCheck(day: number) {
+    let locked = this.daysStartLocked[day];
+    if (!locked) {
+      // If unlocked, lock
+      Vue.set(vxm.store.settings.dailyStartTimes, day, this.startTimes[day]);
+    } else {
+      // If locked, unlock
+      Vue.delete(vxm.store.settings.dailyStartTimes, day);
+    }
+
+    this.pushUpdate();
+  }
+
+  /** {@link handleStartCheck}, just for the end time */
+  handleEndCheck(day: number) {
+    const locked = this.daysEndLocked[day];
+    if (!locked) {
+      Vue.set(vxm.store.settings.dailyEndTimes, day, this.endTimes[day]);
+    } else {
+      Vue.delete(vxm.store.settings.dailyEndTimes, day);
+    }
+
+    this.pushUpdate();
+  }
+
+  pushUpdate() {
+    vxm.store.uploadSettings();
+    vxm.store.updateChunks();
   }
 }
 </script>
