@@ -3,6 +3,9 @@ export default class Settings {
 
   baseStartTime = 930;
   baseEndTime = 1380;
+
+  dailyStartTimes: Record<number, string> = {};
+  dailyEndTimes: Record<number, string> = {};
 }
 
 export const SETTINGS_DESCRIPTIONS = {
