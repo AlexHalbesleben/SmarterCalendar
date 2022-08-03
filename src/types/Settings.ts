@@ -1,3 +1,5 @@
+import DateUtils from "@/util/DateUtils";
+
 export default class Settings {
   effortWeight;
 
@@ -7,6 +9,9 @@ export default class Settings {
   dailyStartTimes: Record<number, string>;
   dailyEndTimes: Record<number, string>;
 
+  dayStartTimes: Record<number, string>;
+  dayEndTimes: Record<number, string>;
+
   constructor(
     config: {
       effortWeight?: number;
@@ -14,12 +19,16 @@ export default class Settings {
       baseEndTime?: number;
       dailyStartTimes?: Record<number, string>;
       dailyEndTimes?: Record<number, string>;
+      dayStartTimes?: Record<number, string>;
+      dayEndTimes?: Record<number, string>;
     } = {
       effortWeight: 1,
       baseStartTime: 930,
       baseEndTime: 1380,
       dailyStartTimes: {},
       dailyEndTimes: {},
+      dayStartTimes: {},
+      dayEndTimes: {},
     }
   ) {
     this.effortWeight = config.effortWeight || 1;
@@ -27,36 +36,41 @@ export default class Settings {
     this.baseEndTime = config.baseEndTime || 1380;
     this.dailyStartTimes = config.dailyStartTimes || {};
     this.dailyEndTimes = config.dailyEndTimes || {};
+    this.dayStartTimes = config.dayStartTimes || {};
+    this.dayEndTimes = config.dayEndTimes || {};
   }
 
-  get dailyTimes(): number[] {
-    const ret: number[] = [];
+  stringToTime(str: string): number {
+    const extracted = str.match(/([0-9]{2}):([0-9]{2})/);
 
-    for (let day = 0; day < 7; day++) {
-      let startTime = this.baseStartTime;
-      if (this.dailyStartTimes[day]) {
-        const strStartTime = this.dailyStartTimes[day];
-        const extracted = strStartTime.match(/([0-9]{2}):([0-9]{2})/);
-
-        if (extracted && extracted[1] && extracted[2]) {
-          startTime = parseInt(extracted[1]) * 60 + parseInt(extracted[2]);
-        }
-      }
-
-      let endTime = this.baseEndTime;
-      if (this.dailyEndTimes[day]) {
-        const strEndTime = this.dailyEndTimes[day];
-        const extracted = strEndTime.match(/([0-9]{2}):([0-9]{2})/);
-
-        if (extracted && extracted[1] && extracted[2]) {
-          endTime = parseInt(extracted[1]) * 60 + parseInt(extracted[2]);
-        }
-      }
-
-      ret.push(endTime - startTime);
+    if (extracted && extracted[1] && extracted[2]) {
+      return parseInt(extracted[1]) * 60 + parseInt(extracted[2]);
     }
+    return 0;
+  }
 
-    return ret;
+  stringToTimeOptional(str: string | undefined): number | undefined {
+    if (str === undefined) {
+      return undefined;
+    }
+    return this.stringToTime(str);
+  }
+
+  timeOnDay(day: Date): number {
+    const numKey = DateUtils.stripTime(day).getTime();
+    const dayOfWeek = DateUtils.dayOfWeek(day);
+
+    const start =
+      this.stringToTimeOptional(this.dayStartTimes[numKey]) ||
+      this.stringToTimeOptional(this.dailyStartTimes[dayOfWeek]) ||
+      this.baseStartTime;
+
+    const end =
+      this.stringToTimeOptional(this.dayEndTimes[numKey]) ||
+      this.stringToTimeOptional(this.dailyEndTimes[dayOfWeek]) ||
+      this.baseEndTime;
+
+    return end - start;
   }
 }
 
