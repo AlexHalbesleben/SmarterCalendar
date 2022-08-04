@@ -177,7 +177,8 @@ export default class DayModal extends Vue {
   get timeLeft(): number {
     return (
       this.timeAvailable -
-      this.events.reduce((prev, curr) => prev + curr.duration, 0)
+      this.events.reduce((prev, curr) => prev + curr.duration, 0) -
+      this.time
     );
   }
 

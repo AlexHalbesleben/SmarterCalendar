@@ -110,13 +110,6 @@ export class Store extends VuexModule {
           });
         }
 
-        /** Same format as {@link dayDifferences} but combines the effort and time differences into a single value */
-        const combinedDayDifferences: number[] = Object.values(
-          dayDifferences
-        ).map((day) => day.effort * this.settings.effortWeight + day.time);
-
-        let dayToAssign = daysUntilDue;
-
         const eventTimeOnDay = (d: number) => {
           const trueDate = DateUtils.applyDayOffset(d, DateUtils.currentDate);
           const events = this.events.filter(
@@ -126,6 +119,18 @@ export class Store extends VuexModule {
           );
           return events.reduce((prev, curr) => prev + curr.duration, 0);
         };
+
+        /** Same format as {@link dayDifferences} but combines the effort and time differences into a single value */
+        const combinedDayDifferences: number[] = Object.values(
+          dayDifferences
+        ).map(
+          (day, d) =>
+            day.effort * this.settings.effortWeight +
+            day.time +
+            (this.settings.timeIncludesEvents ? eventTimeOnDay(d) : 0)
+        );
+
+        let dayToAssign = daysUntilDue;
 
         // Assign to the latest possible day (if none work, will be due date) by default
         for (let d = 0; d <= daysUntilDue; d++) {
