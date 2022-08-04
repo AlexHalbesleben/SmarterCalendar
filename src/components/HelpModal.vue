@@ -18,25 +18,8 @@
 
       <p>
         You can customize SmarterCalendar in <b>settings</b> by clicking on the
-        "settings" button. Doing so will launch the settings menu. The first
-        setting is <b>"effort weight."</b> If you increase this value,
-        SmarterCalendar will focus more on making sure each day has the same
-        effort than the same amount of time spent on tasks. If you decrease it,
-        SmarterCalendar will focus more on making sure you spend the same amount
-        of time each day, even if some days take more effort.
-      </p>
-
-      <p>
-        The other settings customize what times you can do tasks each day. The
-        first time-pickers you see are the default <b>start and end times</b>.
-        You begin and end doing tasks at these times each day unless you specify
-        otherwise. You can override these values for days of the week (for
-        example, you stop work earlier on Wednesdays or start later on Mondays).
-        You can also override them for individual days by clicking on the day in
-        the calendar. When you override a start or end time, the checkbox next
-        to the time-picker will be checkex, indicating that you have manually
-        entered a new time. Unchecking the checkbox will return the time to the
-        default state.
+        "settings" button. Doing so will launch the settings menu. Hover over a
+        setting to see a tooltip that explains what it does.
       </p>
 
       <p>
