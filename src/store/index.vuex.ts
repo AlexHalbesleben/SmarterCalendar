@@ -117,13 +117,24 @@ export class Store extends VuexModule {
 
         let dayToAssign = daysUntilDue;
 
+        const eventTimeOnDay = (d: number) => {
+          const trueDate = DateUtils.applyDayOffset(d, DateUtils.currentDate);
+          const events = this.events.filter(
+            (event: UserEvent) =>
+              DateUtils.daysBetween(trueDate, event.date) === 0 &&
+              DateUtils.daysBetween(event.date, trueDate) === 0
+          );
+          return events.reduce((prev, curr) => prev + curr.duration, 0);
+        };
+
         // Assign to the latest possible day (if none work, will be due date) by default
         for (let d = 0; d <= daysUntilDue; d++) {
           const dayHasTime =
             getTotalTime(chunksByDay[d]) + chunkDuration <=
             this.settings.timeOnDay(
               DateUtils.applyDayOffset(d, DateUtils.currentDate)
-            );
+            ) -
+              eventTimeOnDay(d);
 
           if (dayHasTime) {
             dayToAssign = d;
@@ -138,7 +149,8 @@ export class Store extends VuexModule {
             getTotalTime(chunksByDay[d]) + chunkDuration <=
             this.settings.timeOnDay(
               DateUtils.applyDayOffset(d, DateUtils.currentDate)
-            );
+            ) -
+              eventTimeOnDay(d);
 
           if (dayHasTime) {
             anyDaysWork = true;

@@ -20,18 +20,40 @@
           {{ Math.round(chunk.duration * 100) / 100 }} min
         </div>
       </div>
+      <div class="day-events-container">
+        <div
+          v-for="(event, i) in events"
+          :key="`${month}/${day}_event_${i}`"
+          class="event row m-0 mb-1 justify-content-between bg-primary rounded text-dark"
+          @click.stop="launchEvent(event)"
+        >
+          <div class="col-auto">
+            {{ event.name }}
+          </div>
+          <div class="col-auto">
+            <!-- Rounds to 2 decimal places -->
+            {{ Math.round(event.duration * 100) / 100 }} min
+          </div>
+        </div>
+      </div>
       <div class="">
         <div class="row">
-          <div class="col">Time spent</div>
+          <div class="col">Total available time</div>
+          <div class="col">{{ timeAvailable }} minutes</div>
+        </div>
+        <div class="row">
+          <div class="col">Events</div>
+          <div class="col">
+            {{ events.reduce((prev, curr) => prev + curr.duration, 0) }} minutes
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">Tasks</div>
           <div class="col">{{ time }} minutes</div>
         </div>
         <div class="row">
           <div class="col">Total effort</div>
           <div class="col">{{ effort }}</div>
-        </div>
-        <div class="row">
-          <div class="col">Total available time</div>
-          <div class="col">{{ timeAvailable }} minutes</div>
         </div>
         <div class="row">
           <b-input-group
@@ -82,6 +104,7 @@ import { Component, Vue } from "vue-property-decorator";
 import vxm from "@/store/index.vuex";
 import Chunk from "@/types/Chunk";
 import DateUtils from "@/util/DateUtils";
+import UserEvent from "@/types/Event";
 
 @Component
 export default class DayModal extends Vue {
@@ -102,10 +125,23 @@ export default class DayModal extends Vue {
     this.$bvModal.show("chunk-modal");
   }
 
+  launchEvent(event: UserEvent) {
+    vxm.store.editedEventIndex = vxm.store.events.indexOf(event);
+    this.$bvModal.show("event-modal");
+  }
+
   get chunks(): Chunk[] {
     return vxm.store.chunks.filter(
       (chunk) =>
         chunk.date.getDate() === this.day && chunk.date.getMonth() == this.month
+    );
+  }
+
+  get events(): UserEvent[] {
+    return vxm.store.events.filter(
+      (event: UserEvent) =>
+        event.date.getDate() === this.day &&
+        event.date.getMonth() === this.month
     );
   }
 
