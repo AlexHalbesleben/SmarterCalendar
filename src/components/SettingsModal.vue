@@ -156,37 +156,21 @@ export default class SettingsModal extends Vue {
   }
 
   updateStart(time: string) {
-    const extracted = time.match(/([0-9]{2}):([0-9]{2})/);
-    if (!extracted || !extracted[1] || !extracted[2]) {
-      return;
-    }
-    const hour = parseInt(extracted[1]);
-    const minute = parseInt(extracted[2]);
-
-    vxm.store.settings.baseStartTime = hour * 60 + minute;
+    vxm.store.settings.baseStartTime = vxm.store.settings.stringToTime(time);
     vxm.store.uploadSettings();
   }
 
   get startTime(): string {
-    const start = vxm.store.settings.baseStartTime;
-    return `${Math.floor(start / 60)}:${Math.floor(start % 60)}`;
+    return vxm.store.settings.timeToString(vxm.store.settings.baseStartTime);
   }
 
   updateEnd(time: string) {
-    const extracted = time.match(/([0-9]{2}):([0-9]{2})/);
-    if (!extracted || !extracted[1] || !extracted[2]) {
-      return;
-    }
-    const hour = parseInt(extracted[1]);
-    const minute = parseInt(extracted[2]);
-
-    vxm.store.settings.baseEndTime = hour * 60 + minute;
+    vxm.store.settings.baseEndTime = vxm.store.settings.stringToTime(time);
     vxm.store.uploadSettings();
   }
 
   get endTime(): string {
-    const end = vxm.store.settings.baseEndTime;
-    return `${Math.floor(end / 60)}:${Math.floor(end % 60)}`;
+    return vxm.store.settings.timeToString(vxm.store.settings.baseEndTime);
   }
 
   startTimes: string[] = [];

@@ -65,6 +65,12 @@ export default class DateUtils {
     return this.dayOfWeek(this.applyDayOffset(offset, date));
   }
 
+  /**
+   * Creates a Date from a given day and month. The year is set to the current year and time is stripped ({@link stripTime})
+   * @param day the day of the new date
+   * @param month the month of the new date
+   * @returns a new date with the given date and month
+   */
   static constructDate(day: number, month: number): Date {
     const template = this.stripTime(new Date());
     template.setDate(day);
