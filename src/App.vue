@@ -19,7 +19,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import TaskList from "./components/Task/TaskList.vue";
-import Calendar from "./components/Calendar.vue";
+import Calendar from "./components/Day/Calendar.vue";
 import Navbar from "./components/Navbar.vue";
 import TaskModal from "./components/Task/TaskModal.vue";
 import vxm from "./store/index.vuex";
