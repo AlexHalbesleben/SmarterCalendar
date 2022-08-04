@@ -4,6 +4,7 @@
     <SettingsModal />
     <DayModal />
     <ChunkModal />
+    <EventModal />
     <Navbar />
     <div class="row mr-0 ml-0">
       <Calendar class="col" />
@@ -27,6 +28,7 @@ import SettingsModal from "./components/SettingsModal.vue";
 import DayModal from "./components/Day/DayModal.vue";
 import ChunkModal from "./components/ChunkModal.vue";
 import EventList from "./components/Event/EventList.vue";
+import EventModal from "./components/Event/EventModal.vue";
 
 @Component({
   components: {
@@ -38,6 +40,7 @@ import EventList from "./components/Event/EventList.vue";
     DayModal,
     ChunkModal,
     EventList,
+    EventModal,
   },
 })
 export default class App extends Vue {

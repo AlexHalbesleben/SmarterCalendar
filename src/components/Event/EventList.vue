@@ -4,6 +4,14 @@
       <b-list-group-item v-if="events.length === 0">
         No events!
       </b-list-group-item>
+      <Event
+        v-for="(event, i) in events"
+        :key="i"
+        :idx="i"
+        :event="event"
+        role="button"
+        tabindex="0"
+      />
     </b-list-group>
     <b-button
       @click="createEvent"
@@ -19,8 +27,13 @@
 import { Component, Vue } from "vue-property-decorator";
 import vxm from "@/store/index.vuex";
 import UserEvent from "@/types/Event";
+import Event from "./Event.vue";
 
-@Component
+@Component({
+  components: {
+    Event,
+  },
+})
 export default class TaskList extends Vue {
   get events(): UserEvent[] {
     return this.vxm.store.events;
