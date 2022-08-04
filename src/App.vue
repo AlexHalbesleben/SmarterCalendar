@@ -112,4 +112,8 @@ hr {
 .event:hover {
   background-color: $info-darkened;
 }
+
+input[type="radio"] + span {
+  color: $dark !important;
+}
 </style>

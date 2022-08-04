@@ -17,7 +17,7 @@
             :append="
               vxm.store.settings.effortWeight.toPrecision(valUnderOne ? 1 : 2)
             "
-            class="col"
+            class="col text-dark"
           >
             <b-form-input
               type="range"
@@ -28,6 +28,22 @@
               :number="true"
               @keydown.stop
             />
+          </b-input-group>
+        </div>
+        <div class="row mb-2">
+          <b-input-group prepend="Time chunking mode" class="col">
+            <b-form-radio-group
+              class="flex-grow-1 time-select-radio"
+              button-variant="info"
+              buttons
+              :options="[
+                { text: 'Consider time spent', value: true },
+                { text: 'Consider time remaining', value: false },
+              ]"
+              v-model="vxm.store.settings.timeChunkingModeSpent"
+              @input="pushUpdate"
+            >
+            </b-form-radio-group>
           </b-input-group>
         </div>
         <div class="row mb-2">
@@ -261,7 +277,10 @@ export default class SettingsModal extends Vue {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
+.time-select-radio > label:first-child {
+  border-radius: 0;
+}
 .settings-day-prepend > .input-group-text {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
