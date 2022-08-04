@@ -27,6 +27,8 @@ export class Store extends VuexModule {
 
   editedIndex = -1; // -1 indicates a new task is being created (as opposed to an existing one being edited)
 
+  editedEventIndex = -1;
+
   dayModalMonth = 0;
 
   dayModalDay = 0;
