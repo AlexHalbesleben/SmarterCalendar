@@ -63,6 +63,9 @@ export default class App extends Vue {
         case "s":
           this.$bvModal.show("settings-modal");
           break;
+        case "h":
+          this.$bvModal.show("help-modal");
+          break;
       }
     });
   }
