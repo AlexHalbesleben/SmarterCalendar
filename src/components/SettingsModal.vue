@@ -130,7 +130,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import vxm from "../store/index.vuex";
-import Settings, { SETTINGS_DESCRIPTIONS } from "@/types/Settings";
+import { SETTINGS_DESCRIPTIONS } from "@/types/Settings";
 import { WeekDays } from "@/types/Calendar";
 
 @Component
