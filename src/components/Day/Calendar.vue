@@ -177,16 +177,7 @@ export default class Calendar extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.day {
-  border-top: 1px solid gray;
-  border-left: 1px solid gray;
-}
-
 .container > .row:last-child {
-  border-bottom: 1px solid gray;
-}
-
-.row > .day:last-child {
-  border-right: 1px solid gray;
+  border-bottom: 1px solid !important;
 }
 </style>

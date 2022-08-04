@@ -79,11 +79,11 @@ body {
   .day {
     min-height: 100px;
   }
-}
-
-@include media-breakpoint-down(sm) {
-  .day {
-    border-right: 1px solid gray;
+  .day:not(:last-child) {
+    border-right: 0 !important;
+  }
+  .row > .day:last-child {
+    border-right: 1px solid !important;
   }
 }
 
@@ -102,5 +102,14 @@ hr {
 
 .chunk:hover {
   background-color: $primary-darkened !important;
+}
+
+.event {
+  background-color: $info;
+  color: $dark;
+}
+
+.event:hover {
+  background-color: $info-darkened;
 }
 </style>

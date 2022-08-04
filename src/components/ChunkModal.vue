@@ -5,6 +5,7 @@
       :title="`${chunk?.task.name} - ${chunk?.duration} minutes`"
       cancel-title="Complete"
       @cancel="completeChunk"
+      cancel-variant="info"
       v-model="displayed"
     >
       <div class="container">
@@ -25,9 +26,19 @@
           </b-input-group>
         </div>
         <div class="row no-gutters">
-          <b-button class="col" @click="launchTask">Edit Task</b-button>
+          <b-button class="col text-dark" @click="launchTask" variant="info"
+            >Edit Task</b-button
+          >
         </div>
       </div>
+      <template #modal-footer="{ ok, cancel }">
+        <b-button variant="info" @click="cancel()" class="text-dark">
+          Complete
+        </b-button>
+        <b-button variant="primary" @click="ok()" class="text-dark">
+          OK
+        </b-button>
+      </template>
     </b-modal>
   </div>
 </template>

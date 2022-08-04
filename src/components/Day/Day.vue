@@ -1,5 +1,9 @@
 <template>
-  <div class="day p-1" @click="launchModal" v-b-modal.day-modal>
+  <div
+    class="day p-1 border border-bottom-0"
+    @click="launchModal"
+    v-b-modal.day-modal
+  >
     <div
       class="row justify-content-center font-weight-bold"
       :class="`${isCurrentDay ? 'text-primary' : ''}`"
@@ -26,7 +30,7 @@
       <div
         v-for="(event, i) in events"
         :key="`${month}/${day}_event_${i}`"
-        class="event row m-0 mb-1 justify-content-between bg-primary rounded text-dark"
+        class="event row m-0 mb-1 justify-content-between rounded text-dark"
         @click.stop="launchEvent(event)"
       >
         <div class="col-auto">
@@ -113,5 +117,9 @@ export default class Day extends Vue {
   max-height: 208px;
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+.day {
+  border-right: 1px solid !important;
 }
 </style>

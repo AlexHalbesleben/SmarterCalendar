@@ -1,16 +1,17 @@
 $primary: #04E762;
 $primary-lightened: lighten($primary, 20%);
-$primary-darkened: darken($primary, 10%);
+$primary-darkened: #03c152;
 
 $secondary: #89023E;
 $secondary-lightened: lighten($secondary, 10%);
-$secondary-darkened: darken($secondary, 10%);
+$secondary-darkened: #63012d;
 
-$info: #FFA987;
+$info: #5FA5D3;
+$info-darkened: #4194cb;
 
-$tertiary: #6D72C3;
-$tertiary-darkened: darken($tertiary, 20%); 
+$warning: #F5B700;
+$warning-darkened: darken($warning, 10%); 
 
-$quaternary: #F7EBE8;
+$tertiary: #F7EBE8;
 
 $dark: rgba(0, 0, 0, 0.9);
