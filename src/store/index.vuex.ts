@@ -1,4 +1,5 @@
 import Chunk from "@/types/Chunk";
+import UserEvent from "@/types/Event";
 import Settings from "@/types/Settings";
 import DateUtils from "@/util/DateUtils";
 import Vue from "vue";
@@ -21,6 +22,8 @@ const VuexModule = createModule({
 
 export class Store extends VuexModule {
   tasks: UserTask[] = []; // The user's tasks
+
+  events: UserEvent[] = [];
 
   editedIndex = -1; // -1 indicates a new task is being created (as opposed to an existing one being edited)
 
@@ -195,6 +198,11 @@ export class Store extends VuexModule {
     localStorage["settings"] = JSON.stringify(this.settings);
   }
 
+  @action
+  async uploadEvents() {
+    localStorage["events"] = JSON.stringify(this.events);
+  }
+
   constructor() {
     super();
 
@@ -215,6 +223,18 @@ export class Store extends VuexModule {
 
     if (localStorage["settings"]) {
       this.settings = new Settings(JSON.parse(localStorage["settings"]));
+    }
+
+    if (localStorage["events"]) {
+      this.events = JSON.parse(localStorage["events"]).map(
+        (event: UserEvent) =>
+          new UserEvent({
+            date: new Date(event.date),
+            name: event.name,
+            duration: event.duration,
+            description: event.description,
+          })
+      );
     }
 
     this.updateChunks();
