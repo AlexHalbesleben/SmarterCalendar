@@ -77,7 +77,7 @@
 <script lang="ts">
 import UserTask, { TASK_DESCRIPTIONS } from "@/types/Task";
 import { Component, Vue } from "vue-property-decorator";
-import vxm from "../store/index.vuex";
+import vxm from "@/store/index.vuex";
 
 @Component
 export default class TaskModal extends Vue {

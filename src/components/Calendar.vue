@@ -60,7 +60,7 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import Day from "./Day.vue";
+import Day from "./Day/Day.vue";
 
 const DaysPerMonth: Record<number, number> = {
   0: 31, // January

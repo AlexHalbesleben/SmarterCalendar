@@ -26,8 +26,8 @@
 </template>
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator";
-import { WeekDays } from "../types/Calendar";
-import vxm from "../store/index.vuex";
+import { WeekDays } from "@/types/Calendar";
+import vxm from "@/store/index.vuex";
 import Chunk from "@/types/Chunk";
 import DateUtils from "@/util/DateUtils";
 
