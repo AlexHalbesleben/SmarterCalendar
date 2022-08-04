@@ -64,4 +64,11 @@ export default class DateUtils {
   static offsetDayOfWeek(date: Date, offset: number): number {
     return this.dayOfWeek(this.applyDayOffset(offset, date));
   }
+
+  static constructDate(day: number, month: number): Date {
+    const template = this.stripTime(new Date());
+    template.setDate(day);
+    template.setMonth(month);
+    return template;
+  }
 }

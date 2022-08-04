@@ -18,12 +18,38 @@
       </div>
       <div class="">
         <div class="row">
-          <div class="col">Time</div>
+          <div class="col">Time spent</div>
           <div class="col">{{ time }} minutes</div>
         </div>
         <div class="row">
           <div class="col">Total effort</div>
           <div class="col">{{ effort }}</div>
+        </div>
+        <div class="row">
+          <div class="col">Total available time</div>
+          <div class="col">{{ timeAvailable }} minutes</div>
+        </div>
+        <div class="row">
+          <b-input-group
+            class="col chunk-modal-time-edit-top"
+            prepend="Start time"
+          >
+            <b-form-timepicker />
+            <b-input-group-append is-text>
+              <b-form-checkbox class="mr-n2" />
+            </b-input-group-append>
+          </b-input-group>
+        </div>
+        <div class="row">
+          <b-input-group
+            class="col chunk-modal-time-edit-bottom"
+            prepend="End time"
+          >
+            <b-form-timepicker />
+            <b-input-group-append is-text>
+              <b-form-checkbox class="mr-n2" />
+            </b-input-group-append>
+          </b-input-group>
         </div>
       </div>
     </b-modal>
@@ -33,6 +59,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import vxm from "@/store/index.vuex";
 import Chunk from "@/types/Chunk";
+import DateUtils from "@/util/DateUtils";
 
 @Component
 export default class DayModal extends Vue {
@@ -63,6 +90,31 @@ export default class DayModal extends Vue {
   get effort(): number {
     return this.chunks.reduce((prev, curr) => prev + curr.effort, 0);
   }
+
+  get timeAvailable(): number {
+    return vxm.store.settings.timeOnDay(
+      DateUtils.constructDate(this.day, this.month)
+    );
+  }
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.chunk-modal-time-edit-top > .input-group-prepend > .input-group-text {
+  border-bottom-left-radius: 0;
+}
+.chunk-modal-time-edit-top > .input-group-append > .input-group-text {
+  border-bottom-right-radius: 0;
+}
+
+.chunk-modal-time-edit-bottom > .input-group-prepend > .input-group-text {
+  border-top-left-radius: 0;
+}
+
+.chunk-modal-time-edit-bottom > .input-group-append > .input-group-text {
+  border-top-right-radius: 0;
+}
+
+.chunk-modal-time-edit-bottom {
+  margin-top: -1px; // Avoid double border
+}
+</style>
