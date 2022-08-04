@@ -5,6 +5,7 @@
     <DayModal />
     <ChunkModal />
     <EventModal />
+    <HelpModal />
     <Navbar />
     <div class="row mr-0 ml-0">
       <Calendar class="col" />
@@ -31,6 +32,7 @@ import ChunkModal from "./components/ChunkModal.vue";
 import EventList from "./components/Event/EventList.vue";
 import EventModal from "./components/Event/EventModal.vue";
 import Footer from "@/components/Footer.vue";
+import HelpModal from "./components/HelpModal.vue";
 
 @Component({
   components: {
@@ -44,6 +46,7 @@ import Footer from "@/components/Footer.vue";
     EventList,
     EventModal,
     Footer,
+    HelpModal,
   },
 })
 export default class App extends Vue {
