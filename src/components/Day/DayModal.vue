@@ -20,11 +20,12 @@
           {{ Math.round(chunk.duration * 100) / 100 }} min
         </div>
       </div>
+      <p class="h6" v-show="events.length">Events ({{ events.length }})</p>
       <div class="day-events-container">
         <div
           v-for="(event, i) in events"
           :key="`${month}/${day}_event_${i}`"
-          class="event row m-0 mb-1 justify-content-between bg-primary rounded text-dark"
+          class="event row m-0 mb-1 justify-content-between rounded text-dark"
           @click.stop="launchEvent(event)"
         >
           <div class="col-auto">

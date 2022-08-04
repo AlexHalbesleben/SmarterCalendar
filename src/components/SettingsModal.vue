@@ -121,6 +121,9 @@
           </div>
         </div>
       </div>
+      <template #modal-footer="{ ok }">
+        <b-button variant="primary" class="text-dark" @click="ok">OK</b-button>
+      </template>
     </b-modal>
   </div>
 </template>

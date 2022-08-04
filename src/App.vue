@@ -79,11 +79,11 @@ body {
   .day {
     min-height: 100px;
   }
-}
-
-@include media-breakpoint-down(sm) {
-  .day {
-    border-right: 1px solid gray;
+  .day:not(:last-child) {
+    border-right: 0 !important;
+  }
+  .row > .day:last-child {
+    border-right: 1px solid !important;
   }
 }
 

@@ -37,12 +37,15 @@
       </div>
       <template #modal-footer="{ ok, cancel }">
         <b-button
-          :variant="editedIndex === -1 ? 'secondary' : 'danger'"
+          :variant="editedIndex === -1 ? 'info' : 'danger'"
+          :class="editedIndex === -1 ? 'text-dark' : 'text-light'"
           @click="cancel()"
         >
           {{ editedIndex === -1 ? "Cancel" : "Delete" }}
         </b-button>
-        <b-button @click="ok()" variant="primary"> OK </b-button>
+        <b-button @click="ok()" variant="primary" class="text-dark">
+          OK
+        </b-button>
       </template>
     </b-modal>
   </div>

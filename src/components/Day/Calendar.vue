@@ -180,8 +180,4 @@ export default class Calendar extends Vue {
 .container > .row:last-child {
   border-bottom: 1px solid !important;
 }
-
-.row > .day:last-child {
-  border-right: 1px solid !important;
-}
 </style>
