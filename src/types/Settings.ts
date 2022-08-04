@@ -6,7 +6,7 @@ export default class Settings {
   baseStartTime;
   baseEndTime;
 
-  timeChunkingModeSpent: boolean;
+  timeIncludesEvents: boolean;
 
   dailyStartTimes: Record<number, string>;
   dailyEndTimes: Record<number, string>;
@@ -22,7 +22,7 @@ export default class Settings {
     dailyEndTimes = {},
     dayStartTimes = {},
     dayEndTimes = {},
-    timeChunkingModeSpent = true,
+    timeIncludesEvents = false,
   }) {
     this.effortWeight = effortWeight;
     this.baseStartTime = baseStartTime;
@@ -31,7 +31,7 @@ export default class Settings {
     this.dailyEndTimes = dailyEndTimes;
     this.dayStartTimes = dayStartTimes;
     this.dayEndTimes = dayEndTimes;
-    this.timeChunkingModeSpent = timeChunkingModeSpent;
+    this.timeIncludesEvents = timeIncludesEvents;
   }
 
   stringToTime(str: string): number {

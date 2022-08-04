@@ -42,10 +42,10 @@
               button-variant="info"
               buttons
               :options="[
-                { text: 'Consider time spent', value: true },
-                { text: 'Consider time remaining', value: false },
+                { text: 'Consider time spent', value: false },
+                { text: 'Consider time spent and events', value: true },
               ]"
-              v-model="vxm.store.settings.timeChunkingModeSpent"
+              v-model="vxm.store.settings.timeIncludesEvents"
               @input="pushUpdate"
             >
             </b-form-radio-group>
