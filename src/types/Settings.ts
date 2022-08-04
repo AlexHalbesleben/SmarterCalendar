@@ -6,38 +6,32 @@ export default class Settings {
   baseStartTime;
   baseEndTime;
 
+  timeChunkingModeSpent: boolean;
+
   dailyStartTimes: Record<number, string>;
   dailyEndTimes: Record<number, string>;
 
   dayStartTimes: Record<number, string>;
   dayEndTimes: Record<number, string>;
 
-  constructor(
-    config: {
-      effortWeight?: number;
-      baseStartTime?: number;
-      baseEndTime?: number;
-      dailyStartTimes?: Record<number, string>;
-      dailyEndTimes?: Record<number, string>;
-      dayStartTimes?: Record<number, string>;
-      dayEndTimes?: Record<number, string>;
-    } = {
-      effortWeight: 1,
-      baseStartTime: 930,
-      baseEndTime: 1380,
-      dailyStartTimes: {},
-      dailyEndTimes: {},
-      dayStartTimes: {},
-      dayEndTimes: {},
-    }
-  ) {
-    this.effortWeight = config.effortWeight || 1;
-    this.baseStartTime = config.baseStartTime || 930;
-    this.baseEndTime = config.baseEndTime || 1380;
-    this.dailyStartTimes = config.dailyStartTimes || {};
-    this.dailyEndTimes = config.dailyEndTimes || {};
-    this.dayStartTimes = config.dayStartTimes || {};
-    this.dayEndTimes = config.dayEndTimes || {};
+  constructor({
+    effortWeight = 1,
+    baseStartTime = 930,
+    baseEndTime = 1380,
+    dailyStartTimes = {},
+    dailyEndTimes = {},
+    dayStartTimes = {},
+    dayEndTimes = {},
+    timeChunkingModeSpent = true,
+  }) {
+    this.effortWeight = effortWeight;
+    this.baseStartTime = baseStartTime;
+    this.baseEndTime = baseEndTime;
+    this.dailyStartTimes = dailyStartTimes;
+    this.dailyEndTimes = dailyEndTimes;
+    this.dayStartTimes = dayStartTimes;
+    this.dayEndTimes = dayEndTimes;
+    this.timeChunkingModeSpent = timeChunkingModeSpent;
   }
 
   stringToTime(str: string): number {
