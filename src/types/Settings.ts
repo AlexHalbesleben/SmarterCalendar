@@ -73,5 +73,8 @@ export default class Settings {
 }
 
 export const SETTINGS_DESCRIPTIONS = {
-  effortWeight: "How much the algorithm weights effort when chunking tasks",
+  effortWeight:
+    "The higher the value, the more the algorithm tries to make sure days have the same effort instead of the same time",
+  timeChunkingModeSpent:
+    "Whether the algorithm should try to make sure every day has the same time spent on tasks or time remaining after tasks are completed",
 };
