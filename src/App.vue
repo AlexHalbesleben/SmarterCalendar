@@ -14,6 +14,7 @@
       <TaskList class="col-sm" />
       <EventList class="col-sm" />
     </div>
+    <Footer />
   </div>
 </template>
 
@@ -29,6 +30,7 @@ import DayModal from "./components/Day/DayModal.vue";
 import ChunkModal from "./components/ChunkModal.vue";
 import EventList from "./components/Event/EventList.vue";
 import EventModal from "./components/Event/EventModal.vue";
+import Footer from "@/components/Footer.vue";
 
 @Component({
   components: {
@@ -41,6 +43,7 @@ import EventModal from "./components/Event/EventModal.vue";
     ChunkModal,
     EventList,
     EventModal,
+    Footer,
   },
 })
 export default class App extends Vue {
