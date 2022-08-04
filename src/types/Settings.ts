@@ -56,6 +56,10 @@ export default class Settings {
     return this.stringToTime(str);
   }
 
+  timeToString(time: number): string {
+    return `${Math.floor(time / 60)}:${Math.floor(time % 60)}`;
+  }
+
   timeOnDay(day: Date): number {
     const numKey = DateUtils.stripTime(day).getTime();
     const dayOfWeek = DateUtils.dayOfWeek(day);

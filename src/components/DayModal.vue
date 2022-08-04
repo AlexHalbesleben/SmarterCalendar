@@ -1,6 +1,10 @@
 <template>
   <div class="daymodal-container">
-    <b-modal id="day-modal" :title="`${month + 1}/${day}`">
+    <b-modal
+      id="day-modal"
+      :title="`${month + 1}/${day}`"
+      @hide="vxm.store.updateChunks"
+    >
       <p class="h6" v-show="chunks.length">Chunks ({{ chunks.length }})</p>
       <div
         v-for="(chunk, i) in chunks"
@@ -34,9 +38,18 @@
             class="col chunk-modal-time-edit-top"
             prepend="Start time"
           >
-            <b-form-timepicker />
+            <b-form-timepicker
+              :value="startTimeValue"
+              @input="startInput"
+              minutes-step="5"
+              @blur="vxm.store.updateChunks"
+            />
             <b-input-group-append is-text>
-              <b-form-checkbox class="mr-n2" />
+              <b-form-checkbox
+                class="mr-n2"
+                @change="startCheck"
+                :checked="startTimeLocked"
+              />
             </b-input-group-append>
           </b-input-group>
         </div>
@@ -45,9 +58,18 @@
             class="col chunk-modal-time-edit-bottom"
             prepend="End time"
           >
-            <b-form-timepicker />
+            <b-form-timepicker
+              :value="endTimeValue"
+              @input="endInput"
+              minutes-step="5"
+              @blur="vxm.store.updateChunks"
+            />
             <b-input-group-append is-text>
-              <b-form-checkbox class="mr-n2" />
+              <b-form-checkbox
+                class="mr-n2"
+                @change="endCheck"
+                :checked="endTimeLocked"
+              />
             </b-input-group-append>
           </b-input-group>
         </div>
@@ -63,6 +85,10 @@ import DateUtils from "@/util/DateUtils";
 
 @Component
 export default class DayModal extends Vue {
+  get vxm(): typeof vxm {
+    return vxm;
+  }
+
   get day(): number {
     return vxm.store.dayModalDay;
   }
@@ -91,9 +117,98 @@ export default class DayModal extends Vue {
     return this.chunks.reduce((prev, curr) => prev + curr.effort, 0);
   }
 
+  get date(): Date {
+    return DateUtils.constructDate(this.day, this.month);
+  }
+
   get timeAvailable(): number {
-    return vxm.store.settings.timeOnDay(
-      DateUtils.constructDate(this.day, this.month)
+    return vxm.store.settings.timeOnDay(this.date);
+  }
+
+  get numKey() {
+    return this.date.getTime();
+  }
+
+  get startTimeLocked() {
+    return vxm.store.settings.dayStartTimes[this.numKey] ? true : false;
+  }
+
+  get endTimeLocked() {
+    return vxm.store.settings.dayEndTimes[this.numKey] ? true : false;
+  }
+
+  startTime = "00:00:00";
+  endTime = "00:00:00";
+
+  lockStart() {
+    Vue.set(vxm.store.settings.dayStartTimes, this.numKey, this.startTime);
+    vxm.store.uploadSettings();
+    vxm.store.updateChunks();
+  }
+
+  lockEnd() {
+    Vue.set(vxm.store.settings.dayEndTimes, this.numKey, this.endTime);
+    vxm.store.uploadSettings();
+    vxm.store.updateChunks();
+  }
+
+  unlockStart() {
+    Vue.delete(vxm.store.settings.dayStartTimes, this.numKey);
+    vxm.store.uploadSettings();
+    vxm.store.updateChunks();
+  }
+
+  unlockEnd() {
+    Vue.delete(vxm.store.settings.dayEndTimes, this.numKey);
+    vxm.store.uploadSettings();
+    vxm.store.updateChunks();
+  }
+
+  startInput(event: string) {
+    this.startTime = event;
+    Vue.set(vxm.store.settings.dayStartTimes, this.numKey, event);
+    vxm.store.uploadSettings();
+  }
+
+  endInput(event: string) {
+    this.endTime = event;
+    Vue.set(vxm.store.settings.dayEndTimes, this.numKey, event);
+    vxm.store.uploadSettings();
+  }
+
+  startCheck() {
+    if (this.startTimeLocked) {
+      this.unlockStart();
+    } else {
+      this.lockStart();
+    }
+  }
+
+  endCheck() {
+    if (this.endTimeLocked) {
+      this.unlockEnd();
+    } else {
+      this.lockEnd();
+    }
+  }
+
+  get startTimeValue(): string {
+    const { dayStartTimes, dailyStartTimes, baseStartTime, timeToString } =
+      vxm.store.settings;
+    return (
+      dayStartTimes[this.numKey] ||
+      dailyStartTimes[DateUtils.dayOfWeek(this.date)] ||
+      timeToString(baseStartTime)
+    );
+  }
+
+  get endTimeValue(): string {
+    const { dayEndTimes, dailyEndTimes, baseEndTime, timeToString } =
+      vxm.store.settings;
+    return (
+      dayEndTimes[this.numKey] ||
+      dailyEndTimes[DateUtils.dayOfWeek(this.date)] ||
+      timeToString(baseEndTime)
     );
   }
 }
