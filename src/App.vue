@@ -6,16 +6,18 @@
     <ChunkModal />
     <EventModal />
     <HelpModal />
-    <Navbar />
-    <div class="row mr-0 ml-0">
-      <Calendar class="col" />
+    <div id="content">
+      <Navbar />
+      <div class="row mr-0 ml-0">
+        <Calendar class="col" />
+      </div>
+      <hr />
+      <div class="row mr-0 ml-0 last-row">
+        <TaskList class="col-sm" />
+        <EventList class="col-sm" />
+      </div>
+      <Footer />
     </div>
-    <hr />
-    <div class="row mr-0 ml-0">
-      <TaskList class="col-sm" />
-      <EventList class="col-sm" />
-    </div>
-    <Footer />
   </div>
 </template>
 
@@ -56,23 +58,20 @@ export default class App extends Vue {
 
   mounted() {
     window.addEventListener("keypress", (ev: KeyboardEvent) => {
-      switch (ev.key) {
-        case "n":
-          this.newTask();
-          break;
-        case "s":
-          this.$bvModal.show("settings-modal");
-          break;
-        case "h":
-          this.$bvModal.show("help-modal");
-          break;
-      }
+      let fn = (
+        {
+          n: () => this.newTask(),
+          s: () => this.$bvModal.show("settings-modal"),
+          h: () => this.$bvModal.show("help-modal"),
+        } as Record<string, () => void>
+      )[ev.key];
+      if (fn) fn();
     });
   }
 
   newTask() {
     vxm.store.editedIndex = -1;
-    this.$bvModal.show("settings-modal");
+    this.$bvModal.show("task-modal");
   }
 }
 </script>
@@ -124,5 +123,9 @@ hr {
 
 input[type="radio"] + span {
   color: $dark !important;
+}
+
+.last-row {
+  margin-bottom: 5%;
 }
 </style>

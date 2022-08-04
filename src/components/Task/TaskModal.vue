@@ -57,7 +57,11 @@
         </div>
         <div class="row mb-2 no-gutters">
           <b-input-group class="col" prepend="Description">
-            <b-form-textarea class="px-2" v-model="task.description">
+            <b-form-textarea
+              class="px-2"
+              v-model="task.description"
+              @keypress.stop
+            >
             </b-form-textarea>
           </b-input-group>
         </div>
