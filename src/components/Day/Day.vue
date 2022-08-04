@@ -22,6 +22,22 @@
         </div>
       </div>
     </div>
+    <div class="day-events-container">
+      <div
+        v-for="(event, i) in events"
+        :key="`${month}/${day}_event_${i}`"
+        class="event row m-0 mb-1 justify-content-between bg-primary rounded text-dark"
+        @click.stop="launchEvent(event)"
+      >
+        <div class="col-auto">
+          {{ event.name }}
+        </div>
+        <div class="col-auto">
+          <!-- Rounds to 2 decimal places -->
+          {{ Math.round(event.duration * 100) / 100 }} min
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -30,6 +46,7 @@ import { WeekDays } from "@/types/Calendar";
 import vxm from "@/store/index.vuex";
 import Chunk from "@/types/Chunk";
 import DateUtils from "@/util/DateUtils";
+import UserEvent from "@/types/Event";
 
 @Component
 export default class Day extends Vue {
@@ -54,7 +71,16 @@ export default class Day extends Vue {
   get chunks(): Chunk[] {
     return vxm.store.chunks.filter(
       (chunk) =>
-        chunk.date.getDate() === this.day && chunk.date.getMonth() == this.month
+        chunk.date.getDate() === this.day &&
+        chunk.date.getMonth() === this.month
+    );
+  }
+
+  get events(): UserEvent[] {
+    return vxm.store.events.filter(
+      (event: UserEvent) =>
+        event.date.getDate() === this.day &&
+        event.date.getMonth() === this.month
     );
   }
 
@@ -66,6 +92,11 @@ export default class Day extends Vue {
   launchChunk(chunk: Chunk) {
     vxm.store.editedChunk = chunk;
     this.$bvModal.show("chunk-modal");
+  }
+
+  launchEvent(event: UserEvent) {
+    vxm.store.editedEventIndex = vxm.store.events.indexOf(event);
+    this.$bvModal.show("event-modal");
   }
 
   get isCurrentDay(): boolean {
