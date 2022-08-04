@@ -43,6 +43,10 @@
           <div class="col">{{ timeAvailable }} minutes</div>
         </div>
         <div class="row">
+          <div class="col">Total unused time</div>
+          <div class="col">{{ timeLeft }} minutes</div>
+        </div>
+        <div class="row">
           <div class="col">Events</div>
           <div class="col">
             {{ events.reduce((prev, curr) => prev + curr.duration, 0) }} minutes
@@ -168,6 +172,13 @@ export default class DayModal extends Vue {
 
   get timeAvailable(): number {
     return vxm.store.settings.timeOnDay(this.date);
+  }
+
+  get timeLeft(): number {
+    return (
+      this.timeAvailable -
+      this.events.reduce((prev, curr) => prev + curr.duration, 0)
+    );
   }
 
   get numKey() {
