@@ -26,8 +26,8 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import Task from "./Task.vue";
-import vxm from "../store/index.vuex";
-import UserTask from "../types/Task";
+import vxm from "@/store/index.vuex";
+import UserTask from "@/types/Task";
 
 @Component({
   components: {

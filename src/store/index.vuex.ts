@@ -1,4 +1,5 @@
 import Chunk from "@/types/Chunk";
+import UserEvent from "@/types/Event";
 import Settings from "@/types/Settings";
 import DateUtils from "@/util/DateUtils";
 import Vue from "vue";
@@ -22,7 +23,11 @@ const VuexModule = createModule({
 export class Store extends VuexModule {
   tasks: UserTask[] = []; // The user's tasks
 
+  events: UserEvent[] = [];
+
   editedIndex = -1; // -1 indicates a new task is being created (as opposed to an existing one being edited)
+
+  editedEventIndex = -1;
 
   dayModalMonth = 0;
 
@@ -112,13 +117,24 @@ export class Store extends VuexModule {
 
         let dayToAssign = daysUntilDue;
 
+        const eventTimeOnDay = (d: number) => {
+          const trueDate = DateUtils.applyDayOffset(d, DateUtils.currentDate);
+          const events = this.events.filter(
+            (event: UserEvent) =>
+              DateUtils.daysBetween(trueDate, event.date) === 0 &&
+              DateUtils.daysBetween(event.date, trueDate) === 0
+          );
+          return events.reduce((prev, curr) => prev + curr.duration, 0);
+        };
+
         // Assign to the latest possible day (if none work, will be due date) by default
         for (let d = 0; d <= daysUntilDue; d++) {
           const dayHasTime =
             getTotalTime(chunksByDay[d]) + chunkDuration <=
             this.settings.timeOnDay(
               DateUtils.applyDayOffset(d, DateUtils.currentDate)
-            );
+            ) -
+              eventTimeOnDay(d);
 
           if (dayHasTime) {
             dayToAssign = d;
@@ -133,7 +149,8 @@ export class Store extends VuexModule {
             getTotalTime(chunksByDay[d]) + chunkDuration <=
             this.settings.timeOnDay(
               DateUtils.applyDayOffset(d, DateUtils.currentDate)
-            );
+            ) -
+              eventTimeOnDay(d);
 
           if (dayHasTime) {
             anyDaysWork = true;
@@ -195,6 +212,11 @@ export class Store extends VuexModule {
     localStorage["settings"] = JSON.stringify(this.settings);
   }
 
+  @action
+  async uploadEvents() {
+    localStorage["events"] = JSON.stringify(this.events);
+  }
+
   constructor() {
     super();
 
@@ -215,6 +237,18 @@ export class Store extends VuexModule {
 
     if (localStorage["settings"]) {
       this.settings = new Settings(JSON.parse(localStorage["settings"]));
+    }
+
+    if (localStorage["events"]) {
+      this.events = JSON.parse(localStorage["events"]).map(
+        (event: UserEvent) =>
+          new UserEvent({
+            date: new Date(event.date),
+            name: event.name,
+            duration: event.duration,
+            description: event.description,
+          })
+      );
     }
 
     this.updateChunks();

@@ -4,27 +4,32 @@
     <SettingsModal />
     <DayModal />
     <ChunkModal />
+    <EventModal />
     <Navbar />
     <div class="row mr-0 ml-0">
       <Calendar class="col" />
     </div>
     <hr />
     <div class="row mr-0 ml-0">
-      <TaskList class="col" />
+      <TaskList class="col-sm" />
+      <EventList class="col-sm" />
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import TaskList from "./components/TaskList.vue";
-import Calendar from "./components/Calendar.vue";
+import TaskList from "./components/Task/TaskList.vue";
+import Calendar from "./components/Day/Calendar.vue";
 import Navbar from "./components/Navbar.vue";
-import TaskModal from "./components/TaskModal.vue";
+import TaskModal from "./components/Task/TaskModal.vue";
 import vxm from "./store/index.vuex";
 import SettingsModal from "./components/SettingsModal.vue";
-import DayModal from "./components/DayModal.vue";
+import DayModal from "./components/Day/DayModal.vue";
 import ChunkModal from "./components/ChunkModal.vue";
+import EventList from "./components/Event/EventList.vue";
+import EventModal from "./components/Event/EventModal.vue";
+
 @Component({
   components: {
     TaskList,
@@ -34,6 +39,8 @@ import ChunkModal from "./components/ChunkModal.vue";
     SettingsModal,
     DayModal,
     ChunkModal,
+    EventList,
+    EventModal,
   },
 })
 export default class App extends Vue {
@@ -71,6 +78,12 @@ body {
 @include media-breakpoint-up(sm) {
   .day {
     min-height: 100px;
+  }
+}
+
+@include media-breakpoint-down(sm) {
+  .day {
+    border-right: 1px solid gray;
   }
 }
 

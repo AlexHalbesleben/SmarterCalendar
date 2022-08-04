@@ -16,7 +16,7 @@
     <b-button
       @click="createEvent"
       v-b-modal.event-modal
-      variant="info"
+      variant="primary"
       class="text-dark"
     >
       Add Event
