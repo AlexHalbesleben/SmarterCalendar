@@ -1,18 +1,26 @@
 <template>
-  <footer class="w-100 bg-primary fixed-bottom p-2">
-    <b-link
-      href="https://github.com/AlexHalbesleben/SmarterCalendar"
-      class="text-secondary"
-    >
-      Code
-    </b-link>
-    by
-    <b-link href="https://github.com/AlexHalbesleben" class="text-secondary">
-      Alex Halbesleben
-    </b-link>
+  <footer
+    class="w-100 bg-primary fixed-bottom p-2 row no-gutters align-items-center"
+  >
+    <div class="col">
+      <b-link
+        href="https://github.com/AlexHalbesleben/SmarterCalendar"
+        class="text-secondary"
+      >
+        Code
+      </b-link>
+      by
+      <b-link href="https://github.com/AlexHalbesleben" class="text-secondary">
+        Alex Halbesleben
+      </b-link>
+    </div>
 
-    <div class="float-right">
-      <b-button variant="info" class="text-dark" v-b-modal.how-to-use-modal>
+    <div class="col">
+      <b-button
+        variant="info"
+        class="text-dark float-right"
+        v-b-modal.help-modal
+      >
         ?
       </b-button>
     </div>

@@ -1,6 +1,6 @@
 <template>
   <div class="helpmodal-container">
-    <b-modal id="help-modal"> test </b-modal>
+    <b-modal id="help-modal" title="Help"> test </b-modal>
   </div>
 </template>
 <script lang="ts">
