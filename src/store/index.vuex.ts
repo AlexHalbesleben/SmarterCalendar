@@ -35,7 +35,7 @@ export class Store extends VuexModule {
 
   chunks: Chunk[] = [];
 
-  settings: Settings = new Settings();
+  settings: Settings = new Settings({});
 
   editedChunk: Chunk | undefined = undefined;
 
