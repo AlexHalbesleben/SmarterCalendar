@@ -76,5 +76,5 @@ export const SETTINGS_DESCRIPTIONS = {
   effortWeight:
     "The higher the value, the more the algorithm tries to make sure days have the same effort instead of the same time",
   timeChunkingModeSpent:
-    "Whether the algorithm should try to make sure every day has the same time spent on tasks or time remaining after tasks are completed",
+    "Whether the algorithm should consider time from events when trying to make days have the same amount of time spent",
 };
