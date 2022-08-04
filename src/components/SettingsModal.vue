@@ -31,7 +31,12 @@
           </b-input-group>
         </div>
         <div class="row mb-2">
-          <b-input-group prepend="Time chunking mode" class="col">
+          <b-input-group
+            prepend="Time chunking mode"
+            class="col"
+            v-b-tooltip.hover
+            :title="settingsTooltips['timeChunkingModeSpent']"
+          >
             <b-form-radio-group
               class="flex-grow-1 time-select-radio"
               button-variant="info"
