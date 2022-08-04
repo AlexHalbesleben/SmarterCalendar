@@ -20,6 +20,23 @@
           {{ Math.round(chunk.duration * 100) / 100 }} min
         </div>
       </div>
+      <p class="h6" v-show="events.length">Events ({{ events.length }})</p>
+      <div class="day-events-container">
+        <div
+          v-for="(event, i) in events"
+          :key="`${month}/${day}_event_${i}`"
+          class="event row m-0 mb-1 justify-content-between rounded"
+          @click.stop="launchEvent(event)"
+        >
+          <div class="col-auto">
+            {{ event.name }}
+          </div>
+          <div class="col-auto">
+            <!-- Rounds to 2 decimal places -->
+            {{ Math.round(event.duration * 100) / 100 }} min
+          </div>
+        </div>
+      </div>
       <div class="">
         <div class="row">
           <div class="col">Time spent</div>
@@ -74,6 +91,14 @@
           </b-input-group>
         </div>
       </div>
+      <template #modal-footer="{ ok, cancel }">
+        <b-button @click="cancel()" variant="info" class="text-dark"
+          >Cancel</b-button
+        >
+        <b-button @click="ok()" variant="primary" class="text-dark"
+          >OK</b-button
+        >
+      </template>
     </b-modal>
   </div>
 </template>

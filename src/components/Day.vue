@@ -1,5 +1,9 @@
 <template>
-  <div class="day p-1" @click="launchModal" v-b-modal.day-modal>
+  <div
+    class="day p-1 border border-right-0 border-bottom-0"
+    @click="launchModal"
+    v-b-modal.day-modal
+  >
     <div
       class="row justify-content-center font-weight-bold"
       :class="`${isCurrentDay ? 'text-primary' : ''}`"
@@ -19,6 +23,22 @@
         <div class="col-auto">
           <!-- Rounds to 2 decimal places -->
           {{ Math.round(chunk.duration * 100) / 100 }} min
+        </div>
+      </div>
+    </div>
+    <div class="day-events-container">
+      <div
+        v-for="(event, i) in events"
+        :key="`${month}/${day}_event_${i}`"
+        class="event row m-0 mb-1 justify-content-between rounded"
+        @click.stop="launchEvent(event)"
+      >
+        <div class="col-auto">
+          {{ event.name }}
+        </div>
+        <div class="col-auto">
+          <!-- Rounds to 2 decimal places -->
+          {{ Math.round(event.duration * 100) / 100 }} min
         </div>
       </div>
     </div>

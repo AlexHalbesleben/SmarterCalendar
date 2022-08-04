@@ -6,7 +6,7 @@
         <span class="text-secondary">v2.0.0</span></b-navbar-brand
       >
       <b-navbar-nav class="ml-auto">
-        <b-button class="" variant="secondary" v-b-modal.settings-modal>
+        <b-button class="" variant="info" v-b-modal.settings-modal>
           Settings
         </b-button>
       </b-navbar-nav>

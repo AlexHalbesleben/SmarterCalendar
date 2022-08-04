@@ -90,4 +90,13 @@ hr {
 .chunk:hover {
   background-color: $primary-darkened !important;
 }
+
+.event {
+  background-color: $info;
+  color: $dark;
+}
+
+.event:hover {
+  background-color: $info-darkened;
+}
 </style>
