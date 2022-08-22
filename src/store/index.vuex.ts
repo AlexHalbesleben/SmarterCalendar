@@ -23,6 +23,9 @@ const VuexModule = createModule({
 export class Store extends VuexModule {
   tasks: UserTask[] = []; // The user's tasks
 
+  completedTasks: UserTask[] = [];
+  completedChunks: Chunk[] = [];
+
   events: UserEvent[] = [];
 
   editedIndex = -1; // -1 indicates a new task is being created (as opposed to an existing one being edited)
@@ -42,8 +45,7 @@ export class Store extends VuexModule {
   /**
    * Splits the tasks into chunks
    */
-  @mutation
-  updateChunks() {
+  @mutation updateChunks() {
     // Each day is referenced by a number (the number of days after the current day) and has a list of chunks
     const chunksByDay: Record<number, Chunk[]> = {};
 
@@ -207,19 +209,20 @@ export class Store extends VuexModule {
     this.chunks = (Object.values(chunksByDay) as Chunk[][]).flat(1);
   }
 
-  @action
-  async uploadTasks() {
+  @action async uploadTasks() {
     localStorage["tasks"] = JSON.stringify(this.tasks);
   }
 
-  @action
-  async uploadSettings() {
+  @action async uploadSettings() {
     localStorage["settings"] = JSON.stringify(this.settings);
   }
 
-  @action
-  async uploadEvents() {
+  @action async uploadEvents() {
     localStorage["events"] = JSON.stringify(this.events);
+  }
+
+  @action async uploadCompleted() {
+    localStorage["completed"] = JSON.stringify(this.completedChunks);
   }
 
   constructor() {
@@ -253,6 +256,21 @@ export class Store extends VuexModule {
             duration: event.duration,
             description: event.description,
           })
+      );
+    }
+
+    if (localStorage["completed"]) {
+      this.completedChunks = JSON.parse(localStorage["completed"]).map(
+        (chunk: Chunk) =>
+          new Chunk(
+            new UserTask({
+              ...chunk.task,
+              due: new Date(chunk.task.due),
+            }),
+            chunk.duration,
+            new Date(chunk.date),
+            chunk.number
+          )
       );
     }
 

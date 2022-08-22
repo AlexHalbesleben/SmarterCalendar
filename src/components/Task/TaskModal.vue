@@ -104,7 +104,7 @@ export default class TaskModal extends Vue {
     // Sets the template based on whether a new task is being created or an exisiting one is being edited
     this.task =
       editedIndex === -1 // If there's no task to copy from
-        ? new UserTask() // Use sensible defaults
+        ? new UserTask({}) // Use sensible defaults
         : {
             get totalEffort(): number {
               return this.effort * this.duration;
@@ -143,10 +143,21 @@ export default class TaskModal extends Vue {
       return; // We can't delete a task that hasn't been created
     }
 
+    const shallowEq = <T extends Record<string, any>>(a: T, b: T): boolean => {
+      return [...Object.keys(a), ...Object.keys(b)].every((k) => b[k] === a[k]);
+    };
+
+    for (let chunk of vxm.store.chunks.filter((chunk) =>
+      shallowEq(chunk.task, this.task)
+    )) {
+      vxm.store.completedChunks.push(chunk);
+    }
+
     // Using Vue.delete ensures reactivity
     Vue.delete(vxm.store.tasks, this.editedIndex);
     vxm.store.updateChunks(); // Update chunks
     vxm.store.uploadTasks();
+    vxm.store.uploadCompleted();
   }
 
   get taskTooltips(): Record<string, string> {

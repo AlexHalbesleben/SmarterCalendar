@@ -112,6 +112,10 @@ hr {
   background-color: $primary-darkened !important;
 }
 
+.completed-chunk:hover {
+  background-color: $warning-darkened !important;
+}
+
 .event {
   background-color: $info;
   color: $dark;
