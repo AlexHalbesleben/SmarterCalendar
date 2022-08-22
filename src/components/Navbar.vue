@@ -3,7 +3,7 @@
     <b-navbar variant="primary">
       <b-navbar-brand>
         SmarterCalendar
-        <span class="text-secondary">v3.0.1</span></b-navbar-brand
+        <span class="text-secondary">v3.1.0</span></b-navbar-brand
       >
       <b-navbar-nav class="ml-auto">
         <b-button class="text-dark" variant="info" v-b-modal.settings-modal>
