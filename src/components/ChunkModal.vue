@@ -2,7 +2,9 @@
   <div class="chunkmodal-container">
     <b-modal
       id="chunk-modal"
-      :title="`${chunk?.task.name} - ${chunk?.duration} minutes`"
+      :title="`${chunk?.task.name} - ${chunk?.duration} minutes ${
+        completed ? '(completed)' : ''
+      }`"
       cancel-title="Complete"
       @cancel="completeChunk"
       cancel-variant="info"
@@ -33,7 +35,7 @@
       </div>
       <template #modal-footer="{ ok, cancel }">
         <b-button variant="info" @click="cancel()" class="text-dark">
-          Complete
+          {{ completed ? "Uncomplete" : "Complete" }}
         </b-button>
         <b-button variant="primary" @click="ok()" class="text-dark">
           OK
@@ -52,6 +54,11 @@ import DateUtils from "@/util/DateUtils";
 export default class ChunkModal extends Vue {
   get chunk(): Chunk | undefined {
     return vxm.store.editedChunk;
+  }
+
+  get completed(): boolean {
+    if (!this.chunk) return false;
+    return vxm.store.completedChunks.includes(this.chunk);
   }
 
   get simplifiedChunk(): {
@@ -121,17 +128,34 @@ export default class ChunkModal extends Vue {
     }
     const { duration } = this.chunk;
 
-    if (this.locked) this.unlock();
+    if (this.completed) {
+      this.chunk.task.chunks++;
+      this.chunk.task.duration += duration;
 
-    this.chunk.task.chunks--;
-    this.chunk.task.duration -= duration;
+      if (!vxm.store.tasks.includes(this.chunk.task)) {
+        vxm.store.tasks.push(this.chunk.task);
+      }
 
-    if (this.chunk.task.chunks === 0) {
-      Vue.delete(vxm.store.tasks, vxm.store.tasks.indexOf(this.chunk.task));
+      Vue.delete(
+        vxm.store.completedChunks,
+        vxm.store.completedChunks.indexOf(this.chunk)
+      );
+    } else {
+      if (this.locked) this.unlock();
+
+      this.chunk.task.chunks--;
+      this.chunk.task.duration -= duration;
+
+      vxm.store.completedChunks.push(this.chunk);
+
+      if (this.chunk.task.chunks === 0) {
+        Vue.delete(vxm.store.tasks, vxm.store.tasks.indexOf(this.chunk.task));
+      }
     }
 
     vxm.store.uploadTasks();
     vxm.store.updateChunks();
+    vxm.store.uploadCompleted();
   }
 
   displayed = false;

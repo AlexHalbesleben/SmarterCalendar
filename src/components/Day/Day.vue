@@ -26,6 +26,22 @@
         </div>
       </div>
     </div>
+    <div class="day-completed-chunks-container">
+      <div
+        v-for="(chunk, i) in completedChunks"
+        :key="`${month}/${day}_completed-chunk_${i}`"
+        class="completed-chunk row m-0 mb-1 justify-content-between rounded text-dark bg-warning"
+        @click.stop="launchChunk(chunk)"
+      >
+        <div class="col-auto">
+          {{ chunk.task.name }}
+        </div>
+        <div class="col-auto">
+          <!-- Rounds to 2 decimal places -->
+          {{ Math.round(chunk.duration * 100) / 100 }} min
+        </div>
+      </div>
+    </div>
     <div class="day-events-container">
       <div
         v-for="(event, i) in events"
@@ -74,6 +90,14 @@ export default class Day extends Vue {
    */
   get chunks(): Chunk[] {
     return vxm.store.chunks.filter(
+      (chunk) =>
+        chunk.date.getDate() === this.day &&
+        chunk.date.getMonth() === this.month
+    );
+  }
+
+  get completedChunks(): Chunk[] {
+    return vxm.store.completedChunks.filter(
       (chunk) =>
         chunk.date.getDate() === this.day &&
         chunk.date.getMonth() === this.month

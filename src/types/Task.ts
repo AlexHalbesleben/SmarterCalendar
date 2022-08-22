@@ -11,6 +11,24 @@ export default class UserTask {
   get totalEffort(): number {
     return this.effort * this.duration;
   }
+
+  constructor({
+    name = "",
+    duration = 60,
+    chunks = 1,
+    due = new Date(),
+    effort = 1,
+    description = "",
+    lockedChunks = [] as { date: Date; number: number }[],
+  }) {
+    this.name = name;
+    this.duration = duration;
+    this.chunks = chunks;
+    this.due = due;
+    this.effort = effort;
+    this.description = description;
+    this.lockedChunks = lockedChunks;
+  }
 }
 
 export const TASK_DESCRIPTIONS = {
