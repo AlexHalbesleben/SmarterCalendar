@@ -5,8 +5,9 @@
       @show="onShow"
       @ok="submit"
       :title="`${editedIndex === -1 ? 'Create' : 'Edit'} Task`"
-      @cancel="deleteTask"
+      @cancel="completeTask"
       v-model="displayed"
+      @hide="deleteTask"
     >
       <div class="container" @keydown.stop @keypress.enter="submit">
         <div class="row mb-2">
@@ -66,13 +67,17 @@
           </b-input-group>
         </div>
       </div>
-      <template #modal-footer="{ ok, cancel }">
+      <template #modal-footer="{ ok, cancel, hide }">
+        <b-button variant="danger" @click="hide">
+          {{ editedIndex === -1 ? "Cancel" : "Delete" }}</b-button
+        >
         <b-button
-          :variant="editedIndex !== -1 ? 'info' : 'danger'"
-          :class="editedIndex !== -1 ? 'text-dark' : 'text-light'"
+          v-show="editedIndex !== -1"
+          variant="info"
+          class="text-dark"
           @click="cancel()"
         >
-          {{ editedIndex === -1 ? "Cancel" : "Complete" }}
+          Complete
         </b-button>
         <b-button @click="ok()" variant="primary" class="text-dark">
           OK
@@ -137,7 +142,7 @@ export default class TaskModal extends Vue {
     vxm.store.uploadTasks();
   }
 
-  deleteTask() {
+  completeTask() {
     if (this.editedIndex === -1) {
       // If we're creating a task
       return; // We can't delete a task that hasn't been created
@@ -151,6 +156,19 @@ export default class TaskModal extends Vue {
       shallowEq(chunk.task, this.task)
     )) {
       vxm.store.completedChunks.push(chunk);
+    }
+
+    // Using Vue.delete ensures reactivity
+    Vue.delete(vxm.store.tasks, this.editedIndex);
+    vxm.store.updateChunks(); // Update chunks
+    vxm.store.uploadTasks();
+    vxm.store.uploadCompleted();
+  }
+
+  deleteTask() {
+    if (this.editedIndex === -1) {
+      // If we're creating a task
+      return; // We can't delete a task that hasn't been created
     }
 
     // Using Vue.delete ensures reactivity
