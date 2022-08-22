@@ -52,6 +52,27 @@
           </b-input-group>
         </div>
         <div class="row mb-2">
+          <b-input-group
+            prepend="Consider completed chunks for"
+            class="col"
+            v-b-tooltip.hover
+            :title="settingsTooltips['considerCompletedChunks']"
+          >
+            <b-form-radio-group
+              class="flex-grow-1 time-select-radio"
+              button-variant="info"
+              buttons
+              :options="[
+                { text: 'all days', value: true },
+                { text: 'only the current day', value: false },
+              ]"
+              v-model="vxm.store.settings.considerCompletedChunksOnAllDays"
+              @input="pushUpdate"
+            >
+            </b-form-radio-group>
+          </b-input-group>
+        </div>
+        <div class="row mb-2">
           <b-input-group class="col" prepend="Start time">
             <b-form-timepicker
               @input="updateStart"
