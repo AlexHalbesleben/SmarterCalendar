@@ -122,13 +122,35 @@ export class Store extends VuexModule {
           return events.reduce((prev, curr) => prev + curr.duration, 0);
         };
 
+        const completedTimeOnDay = (d: number) => {
+          const trueDate = DateUtils.applyDayOffset(d, DateUtils.currentDate);
+          const chunks = this.completedChunks.filter(
+            (chunk: Chunk) =>
+              DateUtils.daysBetween(trueDate, chunk.date) === 0 &&
+              DateUtils.daysBetween(chunk.date, trueDate) === 0
+          );
+          return chunks.reduce((prev, curr) => prev + curr.duration, 0);
+        };
+
+        const completedEffortOnDay = (d: number) => {
+          const trueDate = DateUtils.applyDayOffset(d, DateUtils.currentDate);
+          const chunks = this.completedChunks.filter(
+            (chunk: Chunk) =>
+              DateUtils.daysBetween(trueDate, chunk.date) === 0 &&
+              DateUtils.daysBetween(chunk.date, trueDate) === 0
+          );
+          return chunks.reduce((prev, curr) => prev + curr.effort, 0);
+        };
+
         /** Same format as {@link dayDifferences} but combines the effort and time differences into a single value */
         const combinedDayDifferences: number[] = Object.values(
           dayDifferences
         ).map(
           (day, d) =>
             day.effort * this.settings.effortWeight +
+            completedEffortOnDay(d) * this.settings.effortWeight +
             day.time +
+            completedTimeOnDay(d) +
             (this.settings.timeIncludesEvents ? eventTimeOnDay(d) : 0)
         );
 
