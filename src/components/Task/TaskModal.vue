@@ -157,6 +157,9 @@ export default class TaskModal extends Vue {
       vxm.store.completedChunks.push(chunk);
     }
 
+    // If this doesn't happen, uncompleting the task adds chunks when it shouldn't
+    this.task.chunks = 0;
+
     // Using Vue.delete ensures reactivity
     Vue.delete(vxm.store.tasks, this.editedIndex);
     vxm.store.updateChunks(); // Update chunks
