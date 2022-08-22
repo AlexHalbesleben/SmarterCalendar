@@ -7,7 +7,6 @@
       :title="`${editedIndex === -1 ? 'Create' : 'Edit'} Task`"
       @cancel="completeTask"
       v-model="displayed"
-      @hide="deleteTask"
     >
       <div class="container" @keydown.stop @keypress.enter="submit">
         <div class="row mb-2">
@@ -67,8 +66,8 @@
           </b-input-group>
         </div>
       </div>
-      <template #modal-footer="{ ok, cancel, hide }">
-        <b-button variant="danger" @click="hide">
+      <template #modal-footer="{ ok, cancel }">
+        <b-button variant="danger" @click="deleteTask">
           {{ editedIndex === -1 ? "Cancel" : "Delete" }}</b-button
         >
         <b-button
