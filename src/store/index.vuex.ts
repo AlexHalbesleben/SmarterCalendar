@@ -129,6 +129,8 @@ export class Store extends VuexModule {
               DateUtils.daysBetween(trueDate, chunk.date) === 0 &&
               DateUtils.daysBetween(chunk.date, trueDate) === 0
           );
+          if (!this.settings.considerCompletedChunksOnAllDays && d !== 0)
+            return 0;
           return chunks.reduce((prev, curr) => prev + curr.duration, 0);
         };
 
@@ -139,6 +141,8 @@ export class Store extends VuexModule {
               DateUtils.daysBetween(trueDate, chunk.date) === 0 &&
               DateUtils.daysBetween(chunk.date, trueDate) === 0
           );
+          if (!this.settings.considerCompletedChunksOnAllDays && d !== 0)
+            return 0;
           return chunks.reduce((prev, curr) => prev + curr.effort, 0);
         };
 
