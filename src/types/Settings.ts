@@ -8,6 +8,8 @@ export default class Settings {
 
   timeIncludesEvents: boolean;
 
+  considerCompletedChunksOnAllDays: boolean;
+
   dailyStartTimes: Record<number, string>;
   dailyEndTimes: Record<number, string>;
 
@@ -23,6 +25,7 @@ export default class Settings {
     dayStartTimes = {},
     dayEndTimes = {},
     timeIncludesEvents = false,
+    considerCompletedChunksOnAllDays = false,
   }) {
     this.effortWeight = effortWeight;
     this.baseStartTime = baseStartTime;
@@ -32,6 +35,7 @@ export default class Settings {
     this.dayStartTimes = dayStartTimes;
     this.dayEndTimes = dayEndTimes;
     this.timeIncludesEvents = timeIncludesEvents;
+    this.considerCompletedChunksOnAllDays = considerCompletedChunksOnAllDays;
   }
 
   stringToTime(str: string): number {
@@ -77,4 +81,6 @@ export const SETTINGS_DESCRIPTIONS = {
     "The higher the value, the more the algorithm tries to make sure days have the same effort instead of the same time",
   timeChunkingModeSpent:
     "Whether the algorithm should consider time from events when trying to make days have the same amount of time spent",
+  considerCompletedChunks:
+    "On which days the algorithm should consider chunks that you've already completed",
 };
