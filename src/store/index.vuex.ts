@@ -107,8 +107,12 @@ export class Store extends VuexModule {
             nextDay.effort <= 0 && nextDay.time <= 0 && i === daysUntilDue;
 
           dayDifferences.push({
-            effort: !dontCountDiff ? currentDay.effort - nextDay.effort : 0,
-            time: !dontCountDiff ? currentDay.time - nextDay.time : 0,
+            effort: !dontCountDiff
+              ? Math.max(0, currentDay.effort - nextDay.effort)
+              : 0,
+            time: !dontCountDiff
+              ? Math.max(0, currentDay.time - nextDay.time)
+              : 0,
           });
         }
 
