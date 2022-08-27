@@ -49,8 +49,10 @@ export class Store extends VuexModule {
     // Each day is referenced by a number (the number of days after the current day) and has a list of chunks
     const chunksByDay: Record<number, Chunk[]> = {};
 
-    const getTotalTime = (day: Chunk[]) =>
-      day.reduce((prev, curr) => prev + curr.duration, 0);
+    const getTotalTime = (day: Chunk[]) => {
+      console.log(day, chunksByDay);
+      return day.reduce((prev, curr) => prev + curr.duration, 0);
+    };
     const getTotalEffort = (day: Chunk[]) =>
       day.reduce((prev, curr) => prev + curr.effort, 0);
 
@@ -71,10 +73,25 @@ export class Store extends VuexModule {
       }
     }
 
+    this.tasks.sort((a, b) => a.due.getTime() - b.due.getTime());
+
+    if (this.tasks.length > 0) {
+      const lastTask = this.tasks[this.tasks.length - 1];
+
+      for (
+        let i = 0;
+        i <= DateUtils.daysBetween(DateUtils.currentDate, lastTask.due);
+        i++
+      ) {
+        chunksByDay[i] = chunksByDay[i] ?? [];
+        console.count("thing");
+      }
+    }
+
+    console.countReset("thing");
+
     // For each task, with tasks due earlier scheduled first
-    for (const task of this.tasks.sort(
-      (a, b) => a.due.getTime() - b.due.getTime()
-    )) {
+    for (const task of this.tasks) {
       let { chunks } = task;
       chunks -= task.lockedChunks.length;
       const { due } = task;
@@ -85,37 +102,6 @@ export class Store extends VuexModule {
 
       // For each chunk
       for (let i = 0; i < chunks; i++) {
-        /** The effort and time of each day, with the first value (index 0) being the current date */
-        const dayData: { effort: number; time: number }[] = [];
-        for (let i = 0; i <= daysUntilDue + 1; i++) {
-          chunksByDay[i] = chunksByDay[i] || [];
-          const day = chunksByDay[i];
-          dayData.push({
-            effort: getTotalEffort(day),
-            time: getTotalTime(day),
-          });
-        }
-
-        /** Each index of this array refers to a date that is index number of days after the current day. The values are the current day's effort and time minus the next day's. */
-        const dayDifferences: { effort: number; time: number }[] = [];
-        for (let i = 0; i <= daysUntilDue; i++) {
-          const currentDay = dayData[i];
-          const nextDay = dayData[i + 1];
-
-          // Don't consider this if this is the due date and the next day has no tasks
-          const dontCountDiff =
-            nextDay.effort <= 0 && nextDay.time <= 0 && i === daysUntilDue;
-
-          dayDifferences.push({
-            effort: !dontCountDiff
-              ? Math.max(0, currentDay.effort - nextDay.effort)
-              : 0,
-            time: !dontCountDiff
-              ? Math.max(0, currentDay.time - nextDay.time)
-              : 0,
-          });
-        }
-
         const eventTimeOnDay = (d: number) => {
           const trueDate = DateUtils.applyDayOffset(d, DateUtils.currentDate);
           const events = this.events.filter(
@@ -150,17 +136,16 @@ export class Store extends VuexModule {
           return chunks.reduce((prev, curr) => prev + curr.effort, 0);
         };
 
-        /** Same format as {@link dayDifferences} but combines the effort and time differences into a single value */
-        const combinedDayDifferences: number[] = Object.values(
-          dayDifferences
-        ).map(
-          (day, d) =>
-            day.effort * this.settings.effortWeight +
-            completedEffortOnDay(d) * this.settings.effortWeight +
-            day.time +
-            completedTimeOnDay(d) +
-            (this.settings.timeIncludesEvents ? eventTimeOnDay(d) : 0)
-        );
+        const combinedDayData: Record<number, number> = {};
+
+        for (let i = 0; i <= daysUntilDue; i++) {
+          combinedDayData[i] =
+            getTotalTime(chunksByDay[i]) +
+            getTotalEffort(chunksByDay[i]) * this.settings.effortWeight +
+            completedTimeOnDay(i) +
+            completedEffortOnDay(i) * this.settings.effortWeight +
+            (this.settings.timeIncludesEvents ? eventTimeOnDay(i) : 0);
+        }
 
         let dayToAssign = daysUntilDue;
 
@@ -195,9 +180,7 @@ export class Store extends VuexModule {
             continue; // If the time is greater than what we can spend on this day, try the next one
           }
 
-          if (
-            combinedDayDifferences[d] <= combinedDayDifferences[dayToAssign]
-          ) {
+          if (combinedDayData[d] <= combinedDayData[dayToAssign]) {
             dayToAssign = d;
           }
         }
@@ -206,9 +189,7 @@ export class Store extends VuexModule {
         if (!anyDaysWork) {
           // Finds the day with that has the lowest effort compared to the next and sets that as the chunk's due date
           for (let d = 0; d <= daysUntilDue; d++) {
-            if (
-              combinedDayDifferences[d] <= combinedDayDifferences[dayToAssign]
-            ) {
+            if (combinedDayData[d] <= combinedDayData[dayToAssign]) {
               dayToAssign = d;
             }
           }
