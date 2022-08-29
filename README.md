@@ -11,3 +11,5 @@ This is my attempt at creating an intelligent calendar. This calendar will divid
 This project is under active development but is usable in its current state. Click the link above to try it out.
 
 If you want to contribute, thank you! See [CONTRIBUTING.md](CONTRIBUTING.md) for more information.
+
+Please email me at [alexhalbesleben1@gmail.com](mailto:alexhalbesleben1@gmail.com) with any questions. 
