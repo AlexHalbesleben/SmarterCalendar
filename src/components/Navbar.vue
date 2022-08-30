@@ -1,6 +1,6 @@
 <template>
   <div class="navbar-container">
-    <b-navbar variant="primary">
+    <b-navbar variant="primary" fixed="top">
       <b-navbar-brand>
         SmarterCalendar
         <span class="text-secondary">v3.2.6</span>
