@@ -140,7 +140,7 @@ export default class Day extends Vue {
 </script>
 <style lang="scss" scoped>
 .day-container {
-  max-height: 208px;
+  max-height: 416px;
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 2px;
