@@ -10,51 +10,53 @@
     >
       <div>{{ month + 1 }}/{{ day }}</div>
     </div>
-    <div class="day-chunks-container">
-      <div
-        v-for="(chunk, i) in chunks"
-        :key="`${month}/${day}_chunk_${i}`"
-        class="chunk row m-0 mb-1 justify-content-between bg-primary rounded text-dark"
-        @click.stop="launchChunk(chunk)"
-      >
-        <div class="col-auto">
-          {{ chunk.task.name }}
-        </div>
-        <div class="col-auto">
-          <!-- Rounds to 2 decimal places -->
-          {{ Math.round(chunk.duration * 100) / 100 }} min
-        </div>
-      </div>
-    </div>
-    <div class="day-completed-chunks-container">
-      <div
-        v-for="(chunk, i) in completedChunks"
-        :key="`${month}/${day}_completed-chunk_${i}`"
-        class="completed-chunk row m-0 mb-1 justify-content-between rounded text-dark bg-warning"
-        @click.stop="launchChunk(chunk)"
-      >
-        <div class="col-auto">
-          {{ chunk.task.name }}
-        </div>
-        <div class="col-auto">
-          <!-- Rounds to 2 decimal places -->
-          {{ Math.round(chunk.duration * 100) / 100 }} min
+    <div class="day-container">
+      <div class="day-chunks-container">
+        <div
+          v-for="(chunk, i) in chunks"
+          :key="`${month}/${day}_chunk_${i}`"
+          class="chunk row m-0 mb-1 justify-content-between bg-primary rounded text-dark"
+          @click.stop="launchChunk(chunk)"
+        >
+          <div class="col-auto">
+            {{ chunk.task.name }}
+          </div>
+          <div class="col-auto">
+            <!-- Rounds to 2 decimal places -->
+            {{ Math.round(chunk.duration * 100) / 100 }} min
+          </div>
         </div>
       </div>
-    </div>
-    <div class="day-events-container">
-      <div
-        v-for="(event, i) in events"
-        :key="`${month}/${day}_event_${i}`"
-        class="event row m-0 mb-1 justify-content-between rounded text-dark"
-        @click.stop="launchEvent(event)"
-      >
-        <div class="col-auto">
-          {{ event.name }}
+      <div class="day-completed-chunks-container">
+        <div
+          v-for="(chunk, i) in completedChunks"
+          :key="`${month}/${day}_completed-chunk_${i}`"
+          class="completed-chunk row m-0 mb-1 justify-content-between rounded text-dark bg-warning"
+          @click.stop="launchChunk(chunk)"
+        >
+          <div class="col-auto">
+            {{ chunk.task.name }}
+          </div>
+          <div class="col-auto">
+            <!-- Rounds to 2 decimal places -->
+            {{ Math.round(chunk.duration * 100) / 100 }} min
+          </div>
         </div>
-        <div class="col-auto">
-          <!-- Rounds to 2 decimal places -->
-          {{ Math.round(event.duration * 100) / 100 }} min
+      </div>
+      <div class="day-events-container">
+        <div
+          v-for="(event, i) in events"
+          :key="`${month}/${day}_event_${i}`"
+          class="event row m-0 mb-1 justify-content-between rounded text-dark"
+          @click.stop="launchEvent(event)"
+        >
+          <div class="col-auto">
+            {{ event.name }}
+          </div>
+          <div class="col-auto">
+            <!-- Rounds to 2 decimal places -->
+            {{ Math.round(event.duration * 100) / 100 }} min
+          </div>
         </div>
       </div>
     </div>
@@ -137,10 +139,12 @@ export default class Day extends Vue {
 }
 </script>
 <style lang="scss" scoped>
-.day-chunks-container {
+.day-container {
   max-height: 208px;
   overflow-y: auto;
   overflow-x: hidden;
+  padding-right: 2px;
+  padding-left: 2px;
 }
 
 .day {
