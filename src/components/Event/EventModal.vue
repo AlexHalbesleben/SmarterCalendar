@@ -15,7 +15,7 @@
           </b-input-group>
         </div>
         <div class="row mb-2">
-          <b-input-group prepend="Due" class="col">
+          <b-input-group prepend="Date" class="col">
             <b-form-datepicker v-model="event.date" value-as-date />
           </b-input-group>
         </div>
