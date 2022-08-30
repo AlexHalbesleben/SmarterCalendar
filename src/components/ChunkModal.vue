@@ -143,6 +143,7 @@ export default class ChunkModal extends Vue {
     } else {
       if (this.locked) this.unlock();
 
+      this.chunk.date = DateUtils.currentDate;
       this.chunk.task.chunks--;
       this.chunk.task.duration -= duration;
 
