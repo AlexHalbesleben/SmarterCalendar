@@ -83,6 +83,10 @@ body {
   background-color: $secondary !important;
 }
 
+#content {
+  margin-top: 56px;
+}
+
 @include media-breakpoint-up(sm) {
   .day {
     min-height: 100px;
