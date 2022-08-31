@@ -112,5 +112,5 @@ Typing a hotkey in the description field in the task modal could open modals/tri
     title: "Update changelog",
     description:
       "Updates the changelog to include past entries"
-  }
+  },
 ];
