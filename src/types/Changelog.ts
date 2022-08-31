@@ -26,8 +26,7 @@ export const changelog: ChangelogEntry[] = [
   {
     version: "3.1.0",
     title: "More big upgrades",
-    description:
-      `Lots of stuff comes in v3. SmarterCalendar is now actually usable. The main changes are as follows:
+    description: `Lots of stuff comes in v3. SmarterCalendar is now actually usable. The main changes are as follows:
 
 The user can manually chunk tasks
 The algorithm considers the time available each day (default value for all days, can be overridden for days of the week, can be further overridden for individual days)
@@ -37,8 +36,7 @@ There's a lot of other small stuff. This is a big step, as this is now a real, w
   {
     version: "3.1.1",
     title: "Minor bug fixes",
-    description:
-      `Fixes the following bugs:
+    description: `Fixes the following bugs:
 
 The footer could obscure content
 Attempting to create a new event with the n hotkey opened the settings modal
@@ -70,8 +68,7 @@ Typing a hotkey in the description field in the task modal could open modals/tri
   {
     version: "3.3.3",
     title: "Minor improvements",
-    description:
-      "Chunks are set to the current date when they are completed",
+    description: "Chunks are set to the current date when they are completed",
   },
   {
     version: "3.3.4",
@@ -87,13 +84,12 @@ Typing a hotkey in the description field in the task modal could open modals/tri
     version: "3.3.6",
     title: "Minor fix",
     description:
-      "The \"due\" field on the event modal has been changed to \"date.\"",
+      'The "due" field on the event modal has been changed to "date."',
   },
   {
     version: "3.3.7",
     title: "Minor fix",
-    description:
-      "The navbar is now fixed to the top of the screen",
+    description: "The navbar is now fixed to the top of the screen",
   },
   {
     version: "3.3.8",
@@ -110,7 +106,6 @@ Typing a hotkey in the description field in the task modal could open modals/tri
   {
     version: "3.4.1",
     title: "Update changelog",
-    description:
-      "Updates the changelog to include past entries"
+    description: "Updates the changelog to include past entries"
   },
 ];
