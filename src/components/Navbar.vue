@@ -4,7 +4,7 @@
       <b-navbar-brand>
         SmarterCalendar
         <span class="text-secondary version" v-b-modal.changelog-modal
-          >v3.3.0</span
+          >v3.4.0</span
         >
       </b-navbar-brand>
       <b-navbar-nav class="ml-auto">
