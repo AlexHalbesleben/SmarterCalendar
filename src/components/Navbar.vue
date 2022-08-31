@@ -3,7 +3,9 @@
     <b-navbar variant="primary" fixed="top">
       <b-navbar-brand>
         SmarterCalendar
-        <span class="text-secondary" v-b-modal.changelog-modal>v3.3.0</span>
+        <span class="text-secondary version" v-b-modal.changelog-modal
+          >v3.3.0</span
+        >
       </b-navbar-brand>
       <b-navbar-nav class="ml-auto">
         <b-button class="text-dark" variant="info" v-b-modal.settings-modal>
@@ -19,4 +21,9 @@ import { Component, Vue } from "vue-property-decorator";
 @Component
 export default class Navbar extends Vue {}
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.version:hover,
+.version:focus {
+  text-decoration: underline;
+}
+</style>
