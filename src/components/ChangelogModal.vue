@@ -45,7 +45,6 @@
 </template>
 <script lang="ts">
 import { changelog, ChangelogEntry } from "@/types/Changelog";
-import { version } from "vue";
 import { Component, Prop, Vue } from "vue-property-decorator";
 
 @Component
