@@ -7,11 +7,12 @@
       :title="`${editedIndex === -1 ? 'Create' : 'Edit'} Task`"
       @cancel="completeTask"
       v-model="displayed"
+      size="lg"
     >
       <div class="container" @keydown.stop @keypress.enter="submit">
         <div class="row mb-2">
           <b-input-group prepend="Name" class="col">
-            <b-form-input v-model="task.name" @keypress.stop />
+            <b-form-input v-model="task.name" @keypress.stop trim />
           </b-input-group>
         </div>
         <div class="row mb-2">
@@ -21,7 +22,11 @@
             v-b-tooltip.hover
             :title="taskTooltips['due']"
           >
-            <b-form-datepicker v-model="task.due" value-as-date />
+            <b-form-datepicker
+              v-model="task.due"
+              value-as-date
+              :min="currentDate"
+            />
           </b-input-group>
         </div>
         <div class="row mb-2">
@@ -32,6 +37,7 @@
               :number="true"
               v-b-tooltip.hover
               :title="taskTooltips['duration']"
+              min="0"
             />
           </b-input-group>
         </div>
@@ -41,6 +47,7 @@
             class="col"
             v-b-tooltip.hover
             :title="taskTooltips['chunks']"
+            min="0"
           >
             <b-form-input v-model="task.chunks" type="number" :number="true" />
           </b-input-group>
@@ -51,6 +58,7 @@
             prepend="Effort"
             v-b-tooltip.hover
             :title="taskTooltips['effort']"
+            min="0"
           >
             <b-form-input v-model="task.effort" type="number" :number="true" />
           </b-input-group>
@@ -89,6 +97,7 @@
 import UserTask, { TASK_DESCRIPTIONS } from "@/types/Task";
 import { Component, Vue } from "vue-property-decorator";
 import vxm from "@/store/index.vuex";
+import DateUtils from "@/util/DateUtils";
 
 @Component
 export default class TaskModal extends Vue {
@@ -193,6 +202,10 @@ export default class TaskModal extends Vue {
         this.$bvModal.hide("task-modal");
       }
     });
+  }
+
+  get currentDate(): Date {
+    return DateUtils.currentDate;
   }
 }
 </script>
