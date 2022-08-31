@@ -6,6 +6,7 @@
     <ChunkModal />
     <EventModal />
     <HelpModal />
+    <ChangelogModal />
     <div id="content">
       <Navbar />
       <div class="row mr-0 ml-0">
@@ -35,6 +36,7 @@ import EventList from "./components/Event/EventList.vue";
 import EventModal from "./components/Event/EventModal.vue";
 import Footer from "@/components/Footer.vue";
 import HelpModal from "./components/HelpModal.vue";
+import ChangelogModal from "./components/ChangelogModal.vue";
 
 @Component({
   components: {
@@ -49,6 +51,7 @@ import HelpModal from "./components/HelpModal.vue";
     EventModal,
     Footer,
     HelpModal,
+    ChangelogModal,
   },
 })
 export default class App extends Vue {
