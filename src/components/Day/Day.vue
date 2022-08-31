@@ -4,11 +4,12 @@
     @click="launchModal"
     v-b-modal.day-modal
   >
-    <div
-      class="row justify-content-center font-weight-bold"
-      :class="`${isCurrentDay ? 'text-primary' : ''}`"
-    >
-      <div>{{ month + 1 }}/{{ day }}</div>
+    <div class="row justify-content-center font-weight-bold mb-1">
+      <div
+        :class="`${isCurrentDay ? 'bg-primary rounded px-1 text-dark' : ''}`"
+      >
+        {{ month + 1 }}/{{ day }}
+      </div>
     </div>
     <div class="day-container">
       <div class="day-chunks-container">
