@@ -50,7 +50,6 @@ export class Store extends VuexModule {
     const chunksByDay: Record<number, Chunk[]> = {};
 
     const getTotalTime = (day: Chunk[]) => {
-      console.log(day, chunksByDay);
       return day.reduce((prev, curr) => prev + curr.duration, 0);
     };
     const getTotalEffort = (day: Chunk[]) =>
@@ -84,11 +83,8 @@ export class Store extends VuexModule {
         i++
       ) {
         chunksByDay[i] = chunksByDay[i] ?? [];
-        console.count("thing");
       }
     }
-
-    console.countReset("thing");
 
     // For each task, with tasks due earlier scheduled first
     for (const task of this.tasks) {
