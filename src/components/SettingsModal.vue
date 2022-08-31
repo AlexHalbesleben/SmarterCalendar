@@ -101,6 +101,7 @@
                   ? null
                   : false
               "
+              :readonly="false"
             />
           </b-input-group>
         </div>
@@ -201,8 +202,12 @@ export default class SettingsModal extends Vue {
   }
 
   updateStart(time: string) {
-    vxm.store.settings.baseStartTime = vxm.store.settings.stringToTime(time);
-    vxm.store.uploadSettings();
+    let { store } = vxm;
+    if (store.settings.stringToTime(time) > store.settings.baseEndTime) {
+      return;
+    }
+    store.settings.baseStartTime = store.settings.stringToTime(time);
+    store.uploadSettings();
   }
 
   get startTime(): string {
@@ -210,8 +215,12 @@ export default class SettingsModal extends Vue {
   }
 
   updateEnd(time: string) {
-    vxm.store.settings.baseEndTime = vxm.store.settings.stringToTime(time);
-    vxm.store.uploadSettings();
+    let { store } = vxm;
+    if (store.settings.stringToTime(time) < store.settings.baseStartTime) {
+      return;
+    }
+    store.settings.baseEndTime = store.settings.stringToTime(time);
+    store.uploadSettings();
   }
 
   get endTime(): string {
@@ -300,6 +309,22 @@ export default class SettingsModal extends Vue {
   pushUpdate() {
     vxm.store.uploadSettings();
     vxm.store.updateChunks();
+  }
+
+  /**
+   * Compares two time strings
+   * @param str1 the first string time to compare
+   * @param str2 the second string time to compare
+   * @return a boolean that is true if the second string is AFTER or EQUAl to the first string
+   */
+  stringTimeComparison(str1: string, str2: string): boolean {
+    const { settings } = vxm.store;
+    const time1 =
+      /* settings.stringToTimeOptional(str1) ?? */ settings.baseStartTime;
+    const time2 =
+      /* settings.stringToTimeOptional(str2) ?? */ settings.baseStartTime;
+
+    return time2 >= time1;
   }
 }
 </script>
