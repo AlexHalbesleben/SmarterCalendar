@@ -106,6 +106,6 @@ Typing a hotkey in the description field in the task modal could open modals/tri
   {
     version: "3.4.1",
     title: "Update changelog",
-    description: "Updates the changelog to include past entries"
+    description: "Updates the changelog to include past entries",
   },
 ];
