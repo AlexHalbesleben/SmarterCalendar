@@ -7,6 +7,7 @@
     <EventModal />
     <HelpModal />
     <ChangelogModal />
+    <ReminderModal />
     <div id="content">
       <Navbar />
       <div class="row mr-0 ml-0">
@@ -16,6 +17,7 @@
       <div class="row mr-0 ml-0 last-row">
         <TaskList class="col-sm" />
         <EventList class="col-sm" />
+        <ReminderList class="col-sm" />
       </div>
       <Footer />
     </div>
@@ -37,6 +39,8 @@ import EventModal from "./components/Event/EventModal.vue";
 import Footer from "@/components/Footer.vue";
 import HelpModal from "./components/HelpModal.vue";
 import ChangelogModal from "./components/ChangelogModal.vue";
+import ReminderModal from "./components/Reminder/ReminderModal.vue";
+import ReminderList from "./components/Reminder/ReminderList.vue";
 
 @Component({
   components: {
@@ -52,6 +56,8 @@ import ChangelogModal from "./components/ChangelogModal.vue";
     Footer,
     HelpModal,
     ChangelogModal,
+    ReminderModal,
+    ReminderList,
   },
 })
 export default class App extends Vue {

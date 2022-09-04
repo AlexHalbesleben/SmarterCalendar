@@ -1,6 +1,6 @@
 import DateUtils from "@/util/DateUtils";
 
-export default class Reminder {
+export default class UserReminder {
   date: Date;
   name: string;
   description: string;
