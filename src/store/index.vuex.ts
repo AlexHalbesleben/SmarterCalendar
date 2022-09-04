@@ -291,7 +291,14 @@ export class Store extends VuexModule {
     }
 
     if (localStorage["reminders"]) {
-      this.reminders = JSON.parse(localStorage["reminders"]);
+      this.reminders = JSON.parse(localStorage["reminders"]).map(
+        (reminder: UserReminder) =>
+          new UserReminder({
+            date: new Date(reminder.date),
+            name: reminder.name,
+            description: reminder.description,
+          })
+      );
     }
 
     this.updateChunks();
