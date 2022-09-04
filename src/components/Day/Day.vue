@@ -16,7 +16,7 @@
         <div
           v-for="(chunk, i) in chunks"
           :key="`${month}/${day}_chunk_${i}`"
-          class="chunk row m-0 mb-1 justify-content-between bg-primary rounded text-dark"
+          class="chunk row m-0 mb-1 justify-content-between bg-primary rounded text-dark no-gutters px-1"
           @click.stop="launchChunk(chunk)"
         >
           <div class="col-auto">
@@ -32,7 +32,7 @@
         <div
           v-for="(chunk, i) in completedChunks"
           :key="`${month}/${day}_completed-chunk_${i}`"
-          class="completed-chunk row m-0 mb-1 justify-content-between rounded text-dark bg-warning"
+          class="completed-chunk row m-0 mb-1 justify-content-between rounded text-dark bg-warning no-gutters px-1"
           @click.stop="launchChunk(chunk)"
         >
           <div class="col-auto">
@@ -48,7 +48,7 @@
         <div
           v-for="(event, i) in events"
           :key="`${month}/${day}_event_${i}`"
-          class="event row m-0 mb-1 justify-content-between rounded text-dark"
+          class="event row m-0 mb-1 justify-content-between rounded text-dark no-gutters px-1"
           @click.stop="launchEvent(event)"
         >
           <div class="col-auto">
@@ -57,6 +57,18 @@
           <div class="col-auto">
             <!-- Rounds to 2 decimal places -->
             {{ Math.round(event.duration * 100) / 100 }} min
+          </div>
+        </div>
+      </div>
+      <div class="day-reminders-container">
+        <div
+          v-for="(reminder, i) in reminders"
+          :key="`${month}/${day}_reminder_${i}`"
+          class="reminder row m-0 mb-1 justify-content-between rounded bg-tertiary text-dark no-gutters px-1"
+          @click.stop="launchReminder(reminder)"
+        >
+          <div class="col-auto">
+            {{ reminder.name }}
           </div>
         </div>
       </div>
@@ -70,6 +82,7 @@ import vxm from "@/store/index.vuex";
 import Chunk from "@/types/Chunk";
 import DateUtils from "@/util/DateUtils";
 import UserEvent from "@/types/Event";
+import UserReminder from "@/types/Reminder";
 
 @Component
 export default class Day extends Vue {
@@ -115,6 +128,14 @@ export default class Day extends Vue {
     );
   }
 
+  get reminders(): UserReminder[] {
+    return vxm.store.reminders.filter(
+      (reminder: UserReminder) =>
+        reminder.date.getDate() === this.day &&
+        reminder.date.getMonth() === this.month
+    );
+  }
+
   launchModal() {
     vxm.store.dayModalDay = this.day;
     vxm.store.dayModalMonth = this.month;
@@ -128,6 +149,11 @@ export default class Day extends Vue {
   launchEvent(event: UserEvent) {
     vxm.store.editedEventIndex = vxm.store.events.indexOf(event);
     this.$bvModal.show("event-modal");
+  }
+
+  launchReminder(reminder: UserReminder) {
+    vxm.store.editedReminderIndex = vxm.store.reminders.indexOf(reminder);
+    this.$bvModal.show("reminder-modal");
   }
 
   get isCurrentDay(): boolean {
