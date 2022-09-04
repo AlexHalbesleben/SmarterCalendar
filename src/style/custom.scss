@@ -14,7 +14,7 @@ $warning-darkened: #f58d00;
 
 $alternate: #4C2E05;
 
-$tertiary: #0C7C59;
+$tertiary: #0F956A;
 
 .bg-tertiary {
   background-color: $tertiary !important;
@@ -22,6 +22,12 @@ $tertiary: #0C7C59;
 
 .text-tertiary {
   color: $tertiary !important;
+}
+
+.btn-tertiary {
+  background-color: $tertiary !important;
+  border-color: $tertiary !important;
+  color: white !important;
 }
 
 $dark: rgba(0, 0, 0, 0.9);

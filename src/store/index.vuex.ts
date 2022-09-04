@@ -1,6 +1,6 @@
 import Chunk from "@/types/Chunk";
 import UserEvent from "@/types/Event";
-import Reminder from "@/types/Reminder";
+import UserReminder from "@/types/Reminder";
 import Settings from "@/types/Settings";
 import DateUtils from "@/util/DateUtils";
 import Vue from "vue";
@@ -29,7 +29,7 @@ export class Store extends VuexModule {
 
   events: UserEvent[] = [];
 
-  reminders: Reminder[] = [];
+  reminders: UserReminder[] = [];
 
   editedIndex = -1; // -1 indicates a new task is being created (as opposed to an existing one being edited)
 

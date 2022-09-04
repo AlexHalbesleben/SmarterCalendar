@@ -1,6 +1,6 @@
 <template>
-  <b-list-group-item @click="editEvent" class="event-list-item">
-    {{ event.name }}
+  <b-list-group-item @click="editReminder" class="reminder-list-item">
+    {{ reminder.name }}
   </b-list-group-item>
 </template>
 <script lang="ts">
@@ -9,16 +9,16 @@ import UserEvent from "@/types/Event";
 import vxm from "@/store/index.vuex";
 
 @Component
-export default class Event extends Vue {
+export default class Reminder extends Vue {
   @Prop({ required: true })
-  event!: UserEvent;
+  reminder!: UserEvent;
 
   @Prop({ required: true })
   idx!: number;
 
-  editEvent() {
-    vxm.store.editedEventIndex = this.idx;
-    this.$bvModal.show("event-modal");
+  editReminder() {
+    vxm.store.editedReminderIndex = this.idx;
+    this.$bvModal.show("reminder-modal");
   }
 
   get vxm(): typeof vxm {
