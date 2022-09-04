@@ -14,6 +14,14 @@ $warning-darkened: #f58d00;
 
 $alternate: #4C2E05;
 
-$tertiary: #F7EBE8;
+$tertiary: #0C7C59;
+
+.bg-tertiary {
+  background-color: $tertiary !important;
+}
+
+.text-tertiary {
+  color: $tertiary !important;
+}
 
 $dark: rgba(0, 0, 0, 0.9);
