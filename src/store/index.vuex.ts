@@ -1,5 +1,6 @@
 import Chunk from "@/types/Chunk";
 import UserEvent from "@/types/Event";
+import Reminder from "@/types/Reminder";
 import Settings from "@/types/Settings";
 import DateUtils from "@/util/DateUtils";
 import Vue from "vue";
@@ -28,9 +29,13 @@ export class Store extends VuexModule {
 
   events: UserEvent[] = [];
 
+  reminders: Reminder[] = [];
+
   editedIndex = -1; // -1 indicates a new task is being created (as opposed to an existing one being edited)
 
   editedEventIndex = -1;
+
+  editedReminderIndex = -1;
 
   dayModalMonth = 0;
 
@@ -232,6 +237,10 @@ export class Store extends VuexModule {
     localStorage["completed"] = JSON.stringify(this.completedChunks);
   }
 
+  @action async uploadReminders() {
+    localStorage["reminders"] = JSON.stringify(this.reminders);
+  }
+
   constructor() {
     super();
 
@@ -279,6 +288,10 @@ export class Store extends VuexModule {
             chunk.number
           )
       );
+    }
+
+    if (localStorage["reminders"]) {
+      this.reminders = JSON.parse(localStorage["reminders"]);
     }
 
     this.updateChunks();
