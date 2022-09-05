@@ -204,6 +204,8 @@ export class Store extends VuexModule {
             try {
               getTotalTime(chunksByDay[d]);
             } catch (err) {
+              alert(chunksByDay[d]);
+              alert(d);
               alert("error 1: getting total time " + err);
             }
 
