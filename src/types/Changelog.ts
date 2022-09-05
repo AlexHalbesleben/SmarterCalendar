@@ -114,4 +114,10 @@ Typing a hotkey in the description field in the task modal could open modals/tri
     description:
       "Implements reminders. Reminders are like events, but they have no duration and don't affect chunking.",
   },
+  {
+    version: "3.6.0",
+    title: "Frontloading tasks",
+    description:
+      "The user can now assign tasks to be scheduled on the first possible time instead of the last possible time.",
+  },
 ];

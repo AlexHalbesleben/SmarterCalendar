@@ -7,18 +7,12 @@ export default class DateUtils {
   }
 
   static stripTime(date: Date): Date {
-    try {
-      const newDate = new Date(date.getTime());
-      newDate.setHours(0);
-      newDate.setMinutes(0);
-      newDate.setSeconds(0);
-      newDate.setMilliseconds(0);
-      // alert(`Successfully stripped time from ${date} to get ${newDate}`);
-      return newDate;
-    } catch (e) {
-      alert(`error in stripping time from ${date}: ${e}`);
-      return date;
-    }
+    const newDate = new Date(date.getTime());
+    newDate.setHours(0);
+    newDate.setMinutes(0);
+    newDate.setSeconds(0);
+    newDate.setMilliseconds(0);
+    return newDate;
   }
 
   /**
