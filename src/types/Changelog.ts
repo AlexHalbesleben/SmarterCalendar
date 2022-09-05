@@ -108,4 +108,10 @@ Typing a hotkey in the description field in the task modal could open modals/tri
     title: "Update changelog",
     description: "Updates the changelog to include past entries",
   },
+  {
+    version: "3.5.0",
+    title: "Add reminders",
+    description:
+      "Implements reminders. Reminders are like events, but they have no duration and don't affect chunking.",
+  },
 ];
