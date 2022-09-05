@@ -30,4 +30,19 @@ $tertiary: #0F956A;
   color: white !important;
 }
 
+$quaternary: #E88873;
+
+.bg-quaternary {
+  background-color: $quaternary !important;
+}
+
+.text-quaternary {
+  color: $quaternary !important;
+}
+
+.btn-quaternary {
+  background-color: $quaternary !important;
+  border-color: $quaternary !important;
+}
+
 $dark: rgba(0, 0, 0, 0.9);

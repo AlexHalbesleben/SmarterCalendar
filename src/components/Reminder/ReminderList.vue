@@ -16,8 +16,7 @@
     <b-button
       @click="createReminder"
       v-b-modal.reminder-modal
-      variant="tertiary"
-      class="text-dark"
+      variant="quaternary"
     >
       Add Reminder
     </b-button>
