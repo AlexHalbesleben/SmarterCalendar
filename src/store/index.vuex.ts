@@ -166,7 +166,7 @@ export class Store extends VuexModule {
 
         let anyDaysWork = false;
 
-        const loopStart = task.backloaded ? 0 : daysUntilDue;
+        const loopStart = task.backloaded ? 0 : Math.floor(daysUntilDue);
         const loopEnded = (d: number) =>
           task.backloaded ? d <= daysUntilDue : d >= 0;
         const loopIncrement = task.backloaded ? 1 : -1;
@@ -201,7 +201,7 @@ export class Store extends VuexModule {
               ) -
                 eventTimeOnDay(d); */
 
-            try {
+            /* try {
               getTotalTime(chunksByDay[d]);
             } catch (err) {
               alert(`chunksByDay[d]: ${chunksByDay[d]}`);
@@ -239,7 +239,7 @@ export class Store extends VuexModule {
               alert("error 4: getting event time on day " + err);
             }
 
-            dayToAssign = d;
+            dayToAssign = d; */
             /*
             if (dayHasTime) {
               anyDaysWork = true;
@@ -250,6 +250,23 @@ export class Store extends VuexModule {
             if (combinedDayData[d] <= combinedDayData[dayToAssign]) {
               dayToAssign = d;
             } */
+
+            const dayHasTime =
+              getTotalTime(chunksByDay[d]) + chunkDuration <=
+              this.settings.timeOnDay(
+                DateUtils.applyDayOffset(d, DateUtils.currentDate)
+              ) -
+                eventTimeOnDay(d);
+
+            if (dayHasTime) {
+              anyDaysWork = true;
+            } else {
+              continue; // If the time is greater than what we can spend on this day, try the next one
+            }
+
+            if (combinedDayData[d] <= combinedDayData[dayToAssign]) {
+              dayToAssign = d;
+            }
           }
         }
 
