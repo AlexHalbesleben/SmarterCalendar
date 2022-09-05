@@ -171,23 +171,45 @@ export class Store extends VuexModule {
           task.backloaded ? d <= daysUntilDue : d >= 0;
         const loopIncrement = task.backloaded ? 1 : -1;
 
-        // Finds the day with that has the lowest effort compared to the next and sets that as the chunk's due date
-        for (let d = 0; d <= daysUntilDue; d++) {
-          const dayHasTime =
-            getTotalTime(chunksByDay[d]) + chunkDuration <=
-            this.settings.timeOnDay(
-              DateUtils.applyDayOffset(d, DateUtils.currentDate)
-            ) -
-              eventTimeOnDay(d);
+        if (task.backloaded) {
+          // Finds the day with that has the lowest effort compared to the next and sets that as the chunk's due date
+          for (let d = 0; d <= daysUntilDue; d++) {
+            const dayHasTime =
+              getTotalTime(chunksByDay[d]) + chunkDuration <=
+              this.settings.timeOnDay(
+                DateUtils.applyDayOffset(d, DateUtils.currentDate)
+              ) -
+                eventTimeOnDay(d);
 
-          if (dayHasTime) {
-            anyDaysWork = true;
-          } else {
-            continue; // If the time is greater than what we can spend on this day, try the next one
+            if (dayHasTime) {
+              anyDaysWork = true;
+            } else {
+              continue; // If the time is greater than what we can spend on this day, try the next one
+            }
+
+            if (combinedDayData[d] <= combinedDayData[dayToAssign]) {
+              dayToAssign = d;
+            }
           }
+        } else {
+          // Finds the day with that has the lowest effort compared to the next and sets that as the chunk's due date
+          for (let d = daysUntilDue; d >= 0; d--) {
+            const dayHasTime =
+              getTotalTime(chunksByDay[d]) + chunkDuration <=
+              this.settings.timeOnDay(
+                DateUtils.applyDayOffset(d, DateUtils.currentDate)
+              ) -
+                eventTimeOnDay(d);
 
-          if (combinedDayData[d] <= combinedDayData[dayToAssign]) {
-            dayToAssign = d;
+            if (dayHasTime) {
+              anyDaysWork = true;
+            } else {
+              continue; // If the time is greater than what we can spend on this day, try the next one
+            }
+
+            if (combinedDayData[d] <= combinedDayData[dayToAssign]) {
+              dayToAssign = d;
+            }
           }
         }
 
