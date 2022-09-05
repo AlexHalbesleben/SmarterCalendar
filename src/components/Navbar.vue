@@ -4,7 +4,7 @@
       <b-navbar-brand>
         SmarterCalendar
         <span class="text-secondary version" v-b-modal.changelog-modal
-          >v3.6.1</span
+          >v{{ currentVersion }}</span
         >
       </b-navbar-brand>
       <b-navbar-nav class="ml-auto">
@@ -17,9 +17,14 @@
 </template>
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
+import { changelog } from "@/types/Changelog";
 
 @Component
-export default class Navbar extends Vue {}
+export default class Navbar extends Vue {
+  get currentVersion(): string {
+    return changelog[changelog.length - 1].version;
+  }
+}
 </script>
 <style lang="scss" scoped>
 .version:hover,
