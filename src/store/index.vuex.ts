@@ -196,54 +196,16 @@ export class Store extends VuexModule {
         } else {
           // Finds the day with that has the lowest effort compared to the next and sets that as the chunk's due date
           for (let d = daysUntilDue; d >= 0; d--) {
-            /* const dayHasTime =
+            alert("version 7");
+            const dayHasTime =
               getTotalTime(chunksByDay[d]) + chunkDuration <=
               this.settings.timeOnDay(
                 DateUtils.applyDayOffset(d, DateUtils.currentDate)
               ) -
-                eventTimeOnDay(d); */
-
-            try {
-              getTotalTime(chunksByDay[d]);
-            } catch (err) {
-              alert("version 6");
-              alert(`chunksByDay[d]: ${chunksByDay[d]}`);
-              alert(`d: ${d}`);
-
-              alert(`daysUntilDue: ${daysUntilDue}`);
-              alert(`DateUtils.currentDate: ${DateUtils.currentDate}`);
-              alert(
-                `DateUtils.stripTime(DateUtils.currentDate): ${DateUtils.stripTime(
-                  DateUtils.currentDate
-                )}`
-              );
-              alert(`due: ${due}`);
-
-              alert("error 1: getting total time " + err);
-            }
-
-            try {
-              chunkDuration;
-            } catch (err) {
-              alert("error 2: getting chunk duration " + err);
-            }
-
-            try {
-              this.settings.timeOnDay(
-                DateUtils.applyDayOffset(d, DateUtils.currentDate)
-              );
-            } catch (err) {
-              alert("error 3: time on day " + err);
-            }
-
-            try {
-              eventTimeOnDay(d);
-            } catch (err) {
-              alert("error 4: getting event time on day " + err);
-            }
+                eventTimeOnDay(d);
 
             dayToAssign = d;
-            /*
+
             if (dayHasTime) {
               anyDaysWork = true;
             } else {
@@ -252,7 +214,7 @@ export class Store extends VuexModule {
 
             if (combinedDayData[d] <= combinedDayData[dayToAssign]) {
               dayToAssign = d;
-            } */
+            }
           }
         }
 
