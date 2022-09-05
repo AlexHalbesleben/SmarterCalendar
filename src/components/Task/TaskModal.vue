@@ -55,6 +55,23 @@
             <b-form-input v-model="task.effort" type="number" :number="true" />
           </b-input-group>
         </div>
+        <div class="row mb-2">
+          <b-input-group
+            class="col"
+            prepend="Task is scheduled as "
+            append=" as possible"
+          >
+            <b-form-radio-group
+              :options="[
+                { text: 'late', value: true },
+                { text: 'soon', value: false },
+              ]"
+              v-model="task.backloaded"
+              buttons
+              button-variant="info"
+            />
+          </b-input-group>
+        </div>
         <div class="row mb-2 no-gutters">
           <b-input-group class="col" prepend="Description">
             <b-form-textarea
@@ -196,4 +213,8 @@ export default class TaskModal extends Vue {
   }
 }
 </script>
-<style lang="scss" scoped></style>
+<style lang="scss">
+#task-modal .btn-group > label.btn.btn-info {
+  border-radius: 0 !important;
+}
+</style>
