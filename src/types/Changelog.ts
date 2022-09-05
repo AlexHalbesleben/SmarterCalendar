@@ -126,4 +126,10 @@ Typing a hotkey in the description field in the task modal could open modals/tri
     description:
       "Chunk and task modals are now closed when tasks/chunks are completed or deleted.",
   },
+  {
+    version: "3.6.2",
+    title: "Arrow keys work in changelog modal",
+    description:
+      "The arrow keys now work in the changelog modal. This allows the user to scroll through the changelog.",
+  },
 ];
