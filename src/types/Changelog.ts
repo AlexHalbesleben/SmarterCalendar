@@ -120,4 +120,10 @@ Typing a hotkey in the description field in the task modal could open modals/tri
     description:
       "The user can now assign tasks to be scheduled on the first possible time instead of the last possible time.",
   },
+  {
+    version: "3.6.1",
+    title: "Modal closing",
+    description:
+      "Chunk and task modals are now closed when tasks/chunks are completed or deleted.",
+  },
 ];
