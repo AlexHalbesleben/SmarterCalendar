@@ -194,7 +194,6 @@ export class Store extends VuexModule {
             }
           }
         } else {
-          alert("version 5");
           // Finds the day with that has the lowest effort compared to the next and sets that as the chunk's due date
           for (let d = daysUntilDue; d >= 0; d--) {
             /* const dayHasTime =
@@ -207,6 +206,7 @@ export class Store extends VuexModule {
             try {
               getTotalTime(chunksByDay[d]);
             } catch (err) {
+              alert("version 6");
               alert(`chunksByDay[d]: ${chunksByDay[d]}`);
               alert(`d: ${d}`);
 
