@@ -194,12 +194,23 @@ export class Store extends VuexModule {
         } else {
           // Finds the day with that has the lowest effort compared to the next and sets that as the chunk's due date
           for (let d = daysUntilDue; d >= 0; d--) {
-            const dayHasTime =
+            /* const dayHasTime =
               getTotalTime(chunksByDay[d]) + chunkDuration <=
               this.settings.timeOnDay(
                 DateUtils.applyDayOffset(d, DateUtils.currentDate)
               ) -
-                eventTimeOnDay(d);
+                eventTimeOnDay(d); */
+
+            try {
+              const dayHasTime =
+                getTotalTime(chunksByDay[d]) + chunkDuration <=
+                this.settings.timeOnDay(
+                  DateUtils.applyDayOffset(d, DateUtils.currentDate)
+                ) -
+                  eventTimeOnDay(d);
+            } catch (err) {
+              alert(JSON.stringify(err, null, 2));
+            }
 
             dayToAssign = d;
             /*
