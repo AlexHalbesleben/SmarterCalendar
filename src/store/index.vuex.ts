@@ -166,8 +166,13 @@ export class Store extends VuexModule {
 
         let anyDaysWork = false;
 
+        const loopStart = task.backloaded ? 0 : daysUntilDue;
+        const loopEnded = (d: number) =>
+          task.backloaded ? d <= daysUntilDue : d >= 0;
+        const loopIncrement = task.backloaded ? 1 : -1;
+
         // Finds the day with that has the lowest effort compared to the next and sets that as the chunk's due date
-        for (let d = 0; d <= daysUntilDue; d++) {
+        for (let d = loopStart; loopEnded(d); d += loopIncrement) {
           const dayHasTime =
             getTotalTime(chunksByDay[d]) + chunkDuration <=
             this.settings.timeOnDay(
@@ -189,7 +194,7 @@ export class Store extends VuexModule {
         // If none of the days have enough time, choose the one using the normal algorithm disregarding the time limits
         if (!anyDaysWork) {
           // Finds the day with that has the lowest effort compared to the next and sets that as the chunk's due date
-          for (let d = 0; d <= daysUntilDue; d++) {
+          for (let d = loopStart; loopEnded(d); d += loopIncrement) {
             if (combinedDayData[d] <= combinedDayData[dayToAssign]) {
               dayToAssign = d;
             }
