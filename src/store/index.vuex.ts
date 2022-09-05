@@ -201,8 +201,6 @@ export class Store extends VuexModule {
               ) -
                 eventTimeOnDay(d);
 
-            alert(dayHasTime);
-            alert(d);
             dayToAssign = d;
             /*
             if (dayHasTime) {
