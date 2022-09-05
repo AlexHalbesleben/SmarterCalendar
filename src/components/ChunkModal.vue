@@ -17,6 +17,7 @@
               v-model="chunk.date"
               value-as-date
               @input="lock"
+              :min="currentDate"
             />
             <b-input-group-append is-text>
               <b-form-checkbox
@@ -168,6 +169,10 @@ export default class ChunkModal extends Vue {
         this.$bvModal.hide("chunk-modal");
       }
     });
+  }
+
+  get currentDate(): Date {
+    return DateUtils.currentDate;
   }
 }
 </script>

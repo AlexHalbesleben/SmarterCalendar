@@ -11,12 +11,16 @@
       <div class="container" @keydown.stop @keypress.enter="submit">
         <div class="row mb-2">
           <b-input-group prepend="Name" class="col">
-            <b-form-input v-model="event.name" @keypress.stop />
+            <b-form-input v-model="event.name" @keypress.stop trim />
           </b-input-group>
         </div>
         <div class="row mb-2">
           <b-input-group prepend="Date" class="col">
-            <b-form-datepicker v-model="event.date" value-as-date />
+            <b-form-datepicker
+              v-model="event.date"
+              value-as-date
+              :min="currentDate"
+            />
           </b-input-group>
         </div>
         <div class="row mb-2">
@@ -25,6 +29,7 @@
               v-model="event.duration"
               type="number"
               :number="true"
+              min="0"
             />
           </b-input-group>
         </div>
@@ -54,6 +59,7 @@
 import { Component, Vue } from "vue-property-decorator";
 import vxm from "@/store/index.vuex";
 import UserEvent from "@/types/Event";
+import DateUtils from "@/util/DateUtils";
 
 @Component
 export default class EventModal extends Vue {
@@ -108,6 +114,10 @@ export default class EventModal extends Vue {
   }
 
   displayed = false;
+
+  get currentDate(): Date {
+    return DateUtils.currentDate;
+  }
 }
 </script>
 <style lang="scss" scoped></style>
