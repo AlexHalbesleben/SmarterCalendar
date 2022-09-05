@@ -13,7 +13,7 @@ export default class DateUtils {
       newDate.setMinutes(0);
       newDate.setSeconds(0);
       newDate.setMilliseconds(0);
-      alert(`Successfully stripped time from ${date} to get ${newDate}`);
+      // alert(`Successfully stripped time from ${date} to get ${newDate}`);
       return newDate;
     } catch (e) {
       alert(`error in stripping time from ${date}: ${e}`);
