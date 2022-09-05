@@ -185,6 +185,8 @@ export default class TaskModal extends Vue {
     vxm.store.updateChunks(); // Update chunks
     vxm.store.uploadTasks();
     vxm.store.uploadCompleted();
+
+    this.$bvModal.hide("task-modal");
   }
 
   deleteTask() {
@@ -198,6 +200,8 @@ export default class TaskModal extends Vue {
     vxm.store.updateChunks(); // Update chunks
     vxm.store.uploadTasks();
     vxm.store.uploadCompleted();
+
+    this.$bvModal.hide("task-modal");
   }
 
   get taskTooltips(): Record<string, string> {
