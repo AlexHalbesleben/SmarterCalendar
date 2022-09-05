@@ -202,14 +202,29 @@ export class Store extends VuexModule {
                 eventTimeOnDay(d); */
 
             try {
-              const dayHasTime =
-                getTotalTime(chunksByDay[d]) + chunkDuration <=
-                this.settings.timeOnDay(
-                  DateUtils.applyDayOffset(d, DateUtils.currentDate)
-                ) -
-                  eventTimeOnDay(d);
+              getTotalTime(chunksByDay[d]);
             } catch (err) {
-              alert(JSON.stringify(err, null, 2));
+              alert("error 1: getting total time " + err);
+            }
+
+            try {
+              chunkDuration;
+            } catch (err) {
+              alert("error 2: getting chunk duration " + err);
+            }
+
+            try {
+              this.settings.timeOnDay(
+                DateUtils.applyDayOffset(d, DateUtils.currentDate)
+              );
+            } catch (err) {
+              alert("error 3: time on day " + err);
+            }
+
+            try {
+              eventTimeOnDay(d);
+            } catch (err) {
+              alert("error 4: getting event time on day " + err);
             }
 
             dayToAssign = d;
