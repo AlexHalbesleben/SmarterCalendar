@@ -166,7 +166,9 @@ export class Store extends VuexModule {
 
         let anyDaysWork = false;
 
-        const loopStart = task.backloaded ? 0 : Math.floor(daysUntilDue);
+        daysUntilDue = Math.floor(daysUntilDue);
+
+        const loopStart = task.backloaded ? 0 : daysUntilDue;
         const loopEnded = (d: number) =>
           task.backloaded ? d <= daysUntilDue : d >= 0;
         const loopIncrement = task.backloaded ? 1 : -1;
@@ -192,6 +194,7 @@ export class Store extends VuexModule {
             }
           }
         } else {
+          alert("version 5");
           // Finds the day with that has the lowest effort compared to the next and sets that as the chunk's due date
           for (let d = daysUntilDue; d >= 0; d--) {
             /* const dayHasTime =
