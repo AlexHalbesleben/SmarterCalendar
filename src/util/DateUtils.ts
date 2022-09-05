@@ -3,7 +3,7 @@
  */
 export default class DateUtils {
   static get currentDate() {
-    return new Date();
+    return this.stripTime(new Date());
   }
 
   static stripTime(date: Date): Date {
