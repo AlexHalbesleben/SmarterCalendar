@@ -157,6 +157,8 @@ export default class ChunkModal extends Vue {
     vxm.store.uploadTasks();
     vxm.store.updateChunks();
     vxm.store.uploadCompleted();
+
+    this.$bvModal.hide("chunk-modal");
   }
 
   displayed = false;
