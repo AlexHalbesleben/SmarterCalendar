@@ -1,8 +1,10 @@
 <template>
   <div class="reminder-list-container pt-2 pb-2">
     <b-list-group class="mb-2">
-      <b-list-group-item v-if="reminders.length === 0">
-        No reminders!
+      <b-list-group-item
+        v-if="!reminders.find((reminder) => notInPast(reminder.date))"
+      >
+        No {{ reminders.length === 0 ? "" : "future " }}reminders!
       </b-list-group-item>
       <Reminder
         v-for="(reminder, i) in reminders"
@@ -11,6 +13,7 @@
         :reminder="reminder"
         role="button"
         tabindex="0"
+        v-show="notInPast(reminder.date)"
       />
     </b-list-group>
     <b-button
@@ -27,6 +30,7 @@ import { Component, Vue } from "vue-property-decorator";
 import vxm from "@/store/index.vuex";
 import UserReminder from "@/types/Reminder";
 import Reminder from "./Reminder.vue";
+import DateUtils from "@/util/DateUtils";
 
 @Component({
   components: {
@@ -44,6 +48,13 @@ export default class ReminderList extends Vue {
 
   createReminder() {
     vxm.store.editedReminderIndex = -1; // No task is being edited
+  }
+
+  // Returns true if the date is in the future
+  notInPast(date: Date): boolean {
+    return (
+      date.getTime() >= DateUtils.stripTime(DateUtils.currentDate).getTime()
+    );
   }
 }
 </script>
