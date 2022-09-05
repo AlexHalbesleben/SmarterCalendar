@@ -64,7 +64,7 @@
         <div
           v-for="(reminder, i) in reminders"
           :key="`${month}/${day}_reminder_${i}`"
-          class="reminder row m-0 mb-1 justify-content-between rounded bg-tertiary text-dark no-gutters px-1"
+          class="reminder row m-0 mb-1 justify-content-between rounded bg-quaternary text-dark no-gutters px-1"
           @click.stop="launchReminder(reminder)"
         >
           <div class="col-auto">
