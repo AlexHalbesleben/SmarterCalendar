@@ -204,12 +204,17 @@ export class Store extends VuexModule {
             try {
               getTotalTime(chunksByDay[d]);
             } catch (err) {
-              alert(chunksByDay[d]);
-              alert(d);
+              alert(`chunksByDay[d]: ${chunksByDay[d]}`);
+              alert(`d: ${d}`);
 
-              alert(daysUntilDue);
-              alert(DateUtils.currentDate);
-              alert(due);
+              alert(`daysUntilDue: ${daysUntilDue}`);
+              alert(`DateUtils.currentDate: ${DateUtils.currentDate}`);
+              alert(
+                `DateUtils.stripTime(DateUtils.currentDate): ${DateUtils.stripTime(
+                  DateUtils.currentDate
+                )}`
+              );
+              alert(`due: ${due}`);
 
               alert("error 1: getting total time " + err);
             }
