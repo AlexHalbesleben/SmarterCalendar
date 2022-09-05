@@ -209,11 +209,11 @@ export class Store extends VuexModule {
 
               alert(`daysUntilDue: ${daysUntilDue}`);
               alert(`DateUtils.currentDate: ${DateUtils.currentDate}`);
-              /* alert(
+              alert(
                 `DateUtils.stripTime(DateUtils.currentDate): ${DateUtils.stripTime(
                   DateUtils.currentDate
                 )}`
-              ); */
+              );
               alert(`due: ${due}`);
 
               alert("error 1: getting total time " + err);
