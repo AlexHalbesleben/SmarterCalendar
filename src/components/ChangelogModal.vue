@@ -1,6 +1,11 @@
 <template>
   <div class="changelog-modal-container">
-    <b-modal id="changelog-modal" title="Changelog" ok-only>
+    <b-modal
+      id="changelog-modal"
+      title="Changelog"
+      ok-only
+      v-model="vxm.store.changelogModalShown"
+    >
       <b-input-group prepend="v" class="mb-3">
         <b-form-input
           :min="minMajorVersion"
@@ -46,6 +51,7 @@
 <script lang="ts">
 import { changelog, ChangelogEntry } from "@/types/Changelog";
 import { Component, Prop, Vue } from "vue-property-decorator";
+import vxm from "@/store/index.vuex";
 
 @Component
 export default class ChangelogModal extends Vue {
@@ -56,6 +62,10 @@ export default class ChangelogModal extends Vue {
       const nums = entry.version.split(".").map((str) => parseInt(str));
       return [nums[0], nums[1], nums[2]];
     });
+  }
+
+  get vxm(): typeof vxm {
+    return vxm;
   }
 
   currentIndex = this.data.length - 1;
@@ -138,6 +148,18 @@ export default class ChangelogModal extends Vue {
           version[1] === this.currentVersion[1]
       )
       .reduce((prev, curr) => Math.max(prev, curr[2]), Number.MIN_VALUE);
+  }
+
+  backVersion() {
+    if (this.currentIndex > 0) {
+      this.currentIndex--;
+    }
+  }
+
+  forwardVersion() {
+    if (this.currentIndex < this.versions.length - 1) {
+      this.currentIndex++;
+    }
   }
 }
 </script>

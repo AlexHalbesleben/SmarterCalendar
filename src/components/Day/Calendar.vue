@@ -61,6 +61,7 @@
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import Day from "@/components/Day/Day.vue";
+import vxm from "@/store/index.vuex";
 
 const DaysPerMonth: Record<number, number> = {
   0: 31, // January
@@ -87,6 +88,9 @@ export default class Calendar extends Vue {
 
   mounted() {
     window.addEventListener("keydown", (ev) => {
+      if (vxm.store.changelogModalShown) {
+        return;
+      }
       switch (ev.code) {
         case "ArrowRight":
           this.month = (this.month + 1) % 12;
