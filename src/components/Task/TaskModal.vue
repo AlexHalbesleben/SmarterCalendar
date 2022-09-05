@@ -164,12 +164,15 @@ export default class TaskModal extends Vue {
       return; // We can't delete a task that hasn't been created
     }
 
-    const shallowEq = <T extends Record<string, any>>(a: T, b: T): boolean => {
+    const shallowEq = <T extends Record<string, unknown>>(
+      a: T,
+      b: T
+    ): boolean => {
       return [...Object.keys(a), ...Object.keys(b)].every((k) => b[k] === a[k]);
     };
 
     for (let chunk of vxm.store.chunks.filter((chunk) =>
-      shallowEq(chunk.task, this.task)
+      shallowEq({ ...chunk.task }, { ...this.task })
     )) {
       vxm.store.completedChunks.push(chunk);
     }
