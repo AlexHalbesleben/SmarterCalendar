@@ -47,6 +47,8 @@ export class Store extends VuexModule {
 
   editedChunk: Chunk | undefined = undefined;
 
+  changelogModalShown = false;
+
   /**
    * Splits the tasks into chunks
    */

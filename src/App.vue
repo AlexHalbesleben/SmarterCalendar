@@ -6,7 +6,7 @@
     <ChunkModal />
     <EventModal />
     <HelpModal />
-    <ChangelogModal />
+    <ChangelogModal ref="changelogModal" />
     <ReminderModal />
     <div id="content">
       <Navbar />
@@ -66,10 +66,24 @@ export default class App extends Vue {
   }
 
   mounted() {
-    window.addEventListener("keypress", (ev: KeyboardEvent) => {
+    window.addEventListener("keydown", (ev: KeyboardEvent) => {
+      const changelogModal = this.$refs.changelogModal as ChangelogModal;
+
+      if (ev.keyCode === 37) {
+        if (vxm.store.changelogModalShown) {
+          changelogModal.backVersion();
+        }
+      } else if (ev.keyCode === 39) {
+        if (vxm.store.changelogModalShown) {
+          changelogModal.forwardVersion();
+        }
+      }
+
       let fn = (
         {
-          n: () => this.newTask(),
+          t: () => this.newTask(),
+          e: () => this.newEvent(),
+          r: () => this.newReminder(),
           s: () => this.$bvModal.show("settings-modal"),
           h: () => this.$bvModal.show("help-modal"),
         } as Record<string, () => void>
@@ -81,6 +95,16 @@ export default class App extends Vue {
   newTask() {
     vxm.store.editedIndex = -1;
     this.$bvModal.show("task-modal");
+  }
+
+  newEvent() {
+    vxm.store.editedEventIndex = -1;
+    this.$bvModal.show("event-modal");
+  }
+
+  newReminder() {
+    vxm.store.editedReminderIndex = -1;
+    this.$bvModal.show("reminder-modal");
   }
 }
 </script>
