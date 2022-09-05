@@ -96,7 +96,7 @@ export class Store extends VuexModule {
       let { chunks } = task;
       chunks -= task.lockedChunks.length;
       const { due } = task;
-      const daysUntilDue = DateUtils.daysBetween(DateUtils.currentDate, due);
+      let daysUntilDue = DateUtils.daysBetween(DateUtils.currentDate, due);
       const chunkDuration = task.duration / task.chunks;
 
       const usedNumbers = task.lockedChunks.map((chunk) => chunk.number);
