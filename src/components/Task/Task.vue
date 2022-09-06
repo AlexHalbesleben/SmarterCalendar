@@ -18,6 +18,7 @@ export default class Task extends Vue {
 
   editTask() {
     vxm.store.editedIndex = this.idx;
+    vxm.store.editedTaskCompleted = false;
     this.$bvModal.show("task-modal");
   }
 

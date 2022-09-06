@@ -94,6 +94,7 @@ export default class App extends Vue {
 
   newTask() {
     vxm.store.editedIndex = -1;
+    vxm.store.editedTaskCompleted = false;
     this.$bvModal.show("task-modal");
   }
 
