@@ -33,6 +33,8 @@ export class Store extends VuexModule {
 
   editedIndex = -1; // -1 indicates a new task is being created (as opposed to an existing one being edited)
 
+  editedTaskCompleted = false;
+
   editedEventIndex = -1;
 
   editedReminderIndex = -1;
@@ -97,6 +99,9 @@ export class Store extends VuexModule {
     for (const task of this.tasks) {
       let { chunks } = task;
       chunks -= task.lockedChunks.length;
+      chunks -= this.completedChunks.filter(
+        (chunk) => chunk.task === task
+      ).length;
       const { due } = task;
       let daysUntilDue = DateUtils.daysBetween(DateUtils.currentDate, due);
       const chunkDuration = task.duration / task.chunks;
@@ -309,6 +314,10 @@ export class Store extends VuexModule {
           })
       );
     }
+
+    this.completedTasks = this.completedChunks
+      .map((chunk) => chunk.task)
+      .filter((task) => !this.tasks.includes(task));
 
     this.updateChunks();
   }

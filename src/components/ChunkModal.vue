@@ -119,6 +119,14 @@ export default class ChunkModal extends Vue {
       return;
     }
     vxm.store.editedIndex = vxm.store.tasks.indexOf(this.chunk?.task);
+    vxm.store.editedTaskCompleted = false;
+    if (vxm.store.editedIndex === -1) {
+      console.log(vxm.store.completedTasks, this.chunk?.task);
+      vxm.store.editedIndex = vxm.store.completedTasks.indexOf(
+        this.chunk?.task
+      );
+      vxm.store.editedTaskCompleted = true;
+    }
     this.$bvModal.show("task-modal");
   }
 
@@ -129,9 +137,6 @@ export default class ChunkModal extends Vue {
     const { duration } = this.chunk;
 
     if (this.completed) {
-      this.chunk.task.chunks++;
-      this.chunk.task.duration += duration;
-
       if (!vxm.store.tasks.includes(this.chunk.task)) {
         vxm.store.tasks.push(this.chunk.task);
       }
@@ -144,13 +149,12 @@ export default class ChunkModal extends Vue {
       if (this.locked) this.unlock();
 
       this.chunk.date = DateUtils.currentDate;
-      this.chunk.task.chunks--;
-      this.chunk.task.duration -= duration;
 
       vxm.store.completedChunks.push(this.chunk);
 
       if (this.chunk.task.chunks === 0) {
         Vue.delete(vxm.store.tasks, vxm.store.tasks.indexOf(this.chunk.task));
+        vxm.store.completedTasks.push(this.chunk.task);
       }
     }
 

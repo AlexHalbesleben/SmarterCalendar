@@ -130,7 +130,9 @@ export default class TaskModal extends Vue {
             get totalEffort(): number {
               return this.effort * this.duration;
             },
-            ...vxm.store.tasks[editedIndex],
+            ...(vxm.store.editedTaskCompleted
+              ? vxm.store.completedTasks
+              : vxm.store.tasks)[editedIndex],
           }; // If there's a task to copy from, do that
   }
 
@@ -177,9 +179,6 @@ export default class TaskModal extends Vue {
       vxm.store.completedChunks.push(chunk);
     }
 
-    // If this doesn't happen, uncompleting the task adds chunks when it shouldn't
-    this.task.chunks = 0;
-
     // Using Vue.delete ensures reactivity
     Vue.delete(vxm.store.tasks, this.editedIndex);
     vxm.store.updateChunks(); // Update chunks
@@ -196,7 +195,12 @@ export default class TaskModal extends Vue {
     }
 
     // Using Vue.delete ensures reactivity
-    Vue.delete(vxm.store.tasks, this.editedIndex);
+    Vue.delete(
+      vxm.store.editedTaskCompleted
+        ? vxm.store.completedTasks
+        : vxm.store.tasks,
+      this.editedIndex
+    );
     vxm.store.updateChunks(); // Update chunks
     vxm.store.uploadTasks();
     vxm.store.uploadCompleted();
