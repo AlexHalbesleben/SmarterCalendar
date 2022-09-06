@@ -132,4 +132,10 @@ Typing a hotkey in the description field in the task modal could open modals/tri
     description:
       "The arrow keys now work in the changelog modal. This allows the user to scroll through the changelog.",
   },
+  {
+    version: "3.6.3",
+    title: "Scheduling fix",
+    description:
+      "Fixes a bug tasks could not be set to be scheduled at the latest possible date",
+  },
 ];
