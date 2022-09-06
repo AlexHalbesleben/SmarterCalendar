@@ -50,7 +50,7 @@
 </template>
 <script lang="ts">
 import { changelog, ChangelogEntry } from "@/types/Changelog";
-import { Component, Prop, Vue } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import vxm from "@/store/index.vuex";
 
 @Component
