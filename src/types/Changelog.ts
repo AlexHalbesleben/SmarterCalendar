@@ -138,4 +138,10 @@ Typing a hotkey in the description field in the task modal could open modals/tri
     description:
       "Fixes a bug tasks could not be set to be scheduled at the latest possible date",
   },
+  {
+    version: "3.6.4",
+    title: "Task completion fix",
+    description:
+      "Fixes bugs where task/chunk completion sometimes didn't work or created multiple copies of the task/chunk",
+  },
 ];
