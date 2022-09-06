@@ -21,7 +21,7 @@ export default class UserTask {
     effort = 1,
     description = "",
     lockedChunks = [] as { date: Date; number: number }[],
-    backloaded = false,
+    backloaded = true,
   }) {
     this.name = name;
     this.duration = duration;

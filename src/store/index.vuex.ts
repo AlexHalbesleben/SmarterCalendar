@@ -176,7 +176,7 @@ export class Store extends VuexModule {
         const loopIncrement = task.backloaded ? 1 : -1;
 
         // Finds the day with that has the lowest effort compared to the next and sets that as the chunk's due date
-        for (let d = loopStart; loopEnded(d); d--) {
+        for (let d = loopStart; loopEnded(d); d += loopIncrement) {
           const dayHasTime =
             getTotalTime(chunksByDay[d]) + chunkDuration <=
             this.settings.timeOnDay(
