@@ -148,6 +148,8 @@ export default class TaskModal extends Vue {
         },
         ...this.task,
       });
+
+      editedIndex = vxm.store.tasks.length - 1;
     } else {
       vxm.store.tasks[editedIndex] = {
         get totalEffort(): number {
@@ -156,6 +158,24 @@ export default class TaskModal extends Vue {
         ...this.task,
       };
     }
+
+    for (let i = 0; i < vxm.store.tasks.length; i++) {
+      if (i === editedIndex) continue;
+
+      let t = vxm.store.tasks[i];
+      if (t.due.getTime() > this.task.due.getTime()) {
+        console.log(
+          `Condition passed on ${i}: swapping indices ${i} and ${editedIndex}`
+        );
+        let editedTask = vxm.store.tasks[editedIndex];
+        Vue.delete(vxm.store.tasks, editedIndex);
+        vxm.store.tasks.splice(i, 0, editedTask);
+        break;
+      }
+    }
+
+    console.log(vxm.store.tasks.map((task) => task.due));
+
     vxm.store.updateChunks();
     vxm.store.uploadTasks();
   }

@@ -88,8 +88,6 @@ export class Store extends VuexModule {
       `After dealing with locked chunks: ${intermediateTime1 - startTime}`
     );
 
-    this.tasks.sort((a, b) => a.due.getTime() - b.due.getTime());
-
     const intermediateTime2 = performance.now();
     console.log(`After sorting tasks: ${intermediateTime2 - startTime}ms`);
 
