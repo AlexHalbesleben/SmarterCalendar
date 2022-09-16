@@ -55,6 +55,8 @@ export class Store extends VuexModule {
    * Splits the tasks into chunks
    */
   @mutation updateChunks() {
+    const startTime = performance.now();
+
     // Each day is referenced by a number (the number of days after the current day) and has a list of chunks
     const chunksByDay: Record<number, Chunk[]> = {};
 
@@ -81,22 +83,66 @@ export class Store extends VuexModule {
       }
     }
 
+    const intermediateTime1 = performance.now();
+    console.log(
+      `After dealing with locked chunks: ${intermediateTime1 - startTime}`
+    );
+
     this.tasks.sort((a, b) => a.due.getTime() - b.due.getTime());
 
-    if (this.tasks.length > 0) {
-      const lastTask = this.tasks[this.tasks.length - 1];
+    const intermediateTime2 = performance.now();
+    console.log(`After sorting tasks: ${intermediateTime2 - startTime}ms`);
 
-      for (
-        let i = 0;
-        i <= DateUtils.daysBetween(DateUtils.currentDate, lastTask.due);
-        i++
-      ) {
+    const lastTask = this.tasks[this.tasks.length - 1];
+    const totalDays = DateUtils.daysBetween(
+      DateUtils.currentDate,
+      lastTask.due
+    );
+
+    if (this.tasks.length > 0) {
+      for (let i = 0; i <= totalDays; i++) {
         chunksByDay[i] = chunksByDay[i] ?? [];
       }
     }
 
+    const intermediateTime3 = performance.now();
+    console.log(
+      `After creating empty days: ${intermediateTime3 - startTime}ms`
+    );
+
+    const eventTimes: Record<number, number> = {};
+    for (let i = 0; i <= totalDays; i++) {
+      eventTimes[i] = 0;
+    }
+    for (const event of this.events) {
+      if (event.date.getTime() > DateUtils.currentDate.getTime()) {
+        const convertedDay = DateUtils.daysBetween(
+          DateUtils.currentDate,
+          event.date
+        );
+        eventTimes[convertedDay] += event.duration;
+      }
+    }
+
+    const completedTimes: Record<number, number> = {};
+    const completedEfforts: Record<number, number> = {};
+    for (let i = 0; i <= totalDays; i++) {
+      completedTimes[i] = 0;
+      completedEfforts[i] = 0;
+    }
+    for (const chunk of this.completedChunks) {
+      const convertedDay = DateUtils.daysBetween(
+        DateUtils.currentDate,
+        chunk.date
+      );
+      completedTimes[convertedDay] += chunk.duration;
+      completedEfforts[convertedDay] += chunk.effort;
+    }
+
     // For each task, with tasks due earlier scheduled first
+    let i = 0;
     for (const task of this.tasks) {
+      i++;
       let { chunks } = task;
       chunks -= task.lockedChunks.length;
       chunks -= this.completedChunks.filter(
@@ -110,49 +156,15 @@ export class Store extends VuexModule {
 
       // For each chunk
       for (let i = 0; i < chunks; i++) {
-        const eventTimeOnDay = (d: number) => {
-          const trueDate = DateUtils.applyDayOffset(d, DateUtils.currentDate);
-          const events = this.events.filter(
-            (event: UserEvent) =>
-              DateUtils.daysBetween(trueDate, event.date) === 0 &&
-              DateUtils.daysBetween(event.date, trueDate) === 0
-          );
-          return events.reduce((prev, curr) => prev + curr.duration, 0);
-        };
-
-        const completedTimeOnDay = (d: number) => {
-          const trueDate = DateUtils.applyDayOffset(d, DateUtils.currentDate);
-          const chunks = this.completedChunks.filter(
-            (chunk: Chunk) =>
-              DateUtils.daysBetween(trueDate, chunk.date) === 0 &&
-              DateUtils.daysBetween(chunk.date, trueDate) === 0
-          );
-          if (!this.settings.considerCompletedChunksOnAllDays && d !== 0)
-            return 0;
-          return chunks.reduce((prev, curr) => prev + curr.duration, 0);
-        };
-
-        const completedEffortOnDay = (d: number) => {
-          const trueDate = DateUtils.applyDayOffset(d, DateUtils.currentDate);
-          const chunks = this.completedChunks.filter(
-            (chunk: Chunk) =>
-              DateUtils.daysBetween(trueDate, chunk.date) === 0 &&
-              DateUtils.daysBetween(chunk.date, trueDate) === 0
-          );
-          if (!this.settings.considerCompletedChunksOnAllDays && d !== 0)
-            return 0;
-          return chunks.reduce((prev, curr) => prev + curr.effort, 0);
-        };
-
         const combinedDayData: Record<number, number> = {};
 
         for (let i = 0; i <= daysUntilDue; i++) {
           combinedDayData[i] =
             getTotalTime(chunksByDay[i]) +
             getTotalEffort(chunksByDay[i]) * this.settings.effortWeight +
-            completedTimeOnDay(i) +
-            completedEffortOnDay(i) * this.settings.effortWeight +
-            (this.settings.timeIncludesEvents ? eventTimeOnDay(i) : 0);
+            completedTimes[i] +
+            completedEfforts[i] * this.settings.effortWeight +
+            (this.settings.timeIncludesEvents ? eventTimes[i] : 0);
         }
 
         let dayToAssign = daysUntilDue;
@@ -164,7 +176,7 @@ export class Store extends VuexModule {
             this.settings.timeOnDay(
               DateUtils.applyDayOffset(d, DateUtils.currentDate)
             ) -
-              eventTimeOnDay(d);
+              eventTimes[d];
 
           if (dayHasTime) {
             dayToAssign = d;
@@ -187,7 +199,7 @@ export class Store extends VuexModule {
             this.settings.timeOnDay(
               DateUtils.applyDayOffset(d, DateUtils.currentDate)
             ) -
-              eventTimeOnDay(d);
+              eventTimes[d];
 
           if (dayHasTime) {
             anyDaysWork = true;
@@ -229,10 +241,21 @@ export class Store extends VuexModule {
           )
         );
       }
+
+      const intermediateTime4 = performance.now();
+      console.log(
+        `After assigning task ${i}: ${intermediateTime4 - startTime}ms`
+      );
     }
+
+    const intermediateTime5 = performance.now();
+    console.log(`After assigning chunks: ${intermediateTime5 - startTime}ms`);
 
     // Get the values of the chunksByDay object (a nested array of Chunks) and flatten
     this.chunks = (Object.values(chunksByDay) as Chunk[][]).flat(1);
+
+    const endTime = performance.now();
+    console.log(`Chunking took ${endTime - startTime}ms`);
   }
 
   @action async uploadTasks() {
