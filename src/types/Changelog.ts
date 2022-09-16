@@ -144,4 +144,10 @@ Typing a hotkey in the description field in the task modal could open modals/tri
     description:
       "Fixes bugs where task/chunk completion sometimes didn't work or created multiple copies of the task/chunk",
   },
+  {
+    version: "3.6.5",
+    title: "Optimize chunking algorithm",
+    description:
+      "Implements a couple of optimizations to the chunking algorithm that should speed it up, especially on lower-end devices",
+  },
 ];
