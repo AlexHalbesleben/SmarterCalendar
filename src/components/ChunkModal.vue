@@ -134,7 +134,6 @@ export default class ChunkModal extends Vue {
     if (!this.chunk) {
       return;
     }
-    const { duration } = this.chunk;
 
     if (this.completed) {
       if (!vxm.store.tasks.includes(this.chunk.task)) {
