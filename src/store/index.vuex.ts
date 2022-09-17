@@ -130,9 +130,7 @@ export class Store extends VuexModule {
     }
 
     // For each task, with tasks due earlier scheduled first
-    let i = 0;
     for (const task of this.tasks) {
-      i++;
       let { chunks } = task;
       chunks -= task.lockedChunks.length;
       chunks -= this.completedChunks.filter(
@@ -150,8 +148,8 @@ export class Store extends VuexModule {
 
         for (let i = 0; i <= daysUntilDue; i++) {
           combinedDayData[i] =
-            getTotalTime(chunksByDay[i]) +
-            getTotalEffort(chunksByDay[i]) * this.settings.effortWeight +
+            getTotalTime(i) +
+            getTotalEffort(i) * this.settings.effortWeight +
             completedTimes[i] +
             completedEfforts[i] * this.settings.effortWeight +
             (this.settings.timeIncludesEvents ? eventTimes[i] : 0);
@@ -162,7 +160,7 @@ export class Store extends VuexModule {
         // Assign to the latest possible day (if none work, will be due date) by default
         for (let d = 0; d <= daysUntilDue; d++) {
           const dayHasTime =
-            getTotalTime(chunksByDay[d]) + chunkDuration <=
+            getTotalTime(d) + chunkDuration <=
             this.settings.timeOnDay(
               DateUtils.applyDayOffset(d, DateUtils.currentDate)
             ) -
@@ -185,7 +183,7 @@ export class Store extends VuexModule {
         // Finds the day with that has the lowest effort compared to the next and sets that as the chunk's due date
         for (let d = loopStart; loopEnded(d); d += loopIncrement) {
           const dayHasTime =
-            getTotalTime(chunksByDay[d]) + chunkDuration <=
+            getTotalTime(d) + chunkDuration <=
             this.settings.timeOnDay(
               DateUtils.applyDayOffset(d, DateUtils.currentDate)
             ) -
