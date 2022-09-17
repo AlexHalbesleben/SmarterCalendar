@@ -150,4 +150,10 @@ Typing a hotkey in the description field in the task modal could open modals/tri
     description:
       "Implements a couple of optimizations to the chunking algorithm that should speed it up, especially on lower-end devices",
   },
+  {
+    version: "3.6.6",
+    title: "Bug fix",
+    description:
+      "Fixes a bug where the chunking algorithm would crash and the page would not load",
+  },
 ];
