@@ -55,16 +55,21 @@ export class Store extends VuexModule {
    * Splits the tasks into chunks
    */
   @mutation updateChunks() {
-    const startTime = performance.now();
-
     // Each day is referenced by a number (the number of days after the current day) and has a list of chunks
     const chunksByDay: Record<number, Chunk[]> = {};
 
-    const getTotalTime = (day: Chunk[]) => {
-      return day.reduce((prev, curr) => prev + curr.duration, 0);
+    const getTotalTime = (day: number) => {
+      if (!chunksByDay[day]) {
+        chunksByDay[day] = [];
+      }
+      return chunksByDay[day].reduce((prev, curr) => prev + curr.duration, 0);
     };
-    const getTotalEffort = (day: Chunk[]) =>
-      day.reduce((prev, curr) => prev + curr.effort, 0);
+    const getTotalEffort = (day: number) => {
+      if (!chunksByDay[day]) {
+        chunksByDay[day] = [];
+      }
+      return chunksByDay[day].reduce((prev, curr) => prev + curr.effort, 0);
+    };
 
     for (const task of this.tasks) {
       for (const lockedChunk of task.lockedChunks) {
@@ -83,14 +88,6 @@ export class Store extends VuexModule {
       }
     }
 
-    const intermediateTime1 = performance.now();
-    console.log(
-      `After dealing with locked chunks: ${intermediateTime1 - startTime}`
-    );
-
-    const intermediateTime2 = performance.now();
-    console.log(`After sorting tasks: ${intermediateTime2 - startTime}ms`);
-
     const lastTask = this.tasks[this.tasks.length - 1];
     const totalDays = DateUtils.daysBetween(
       DateUtils.currentDate,
@@ -102,11 +99,6 @@ export class Store extends VuexModule {
         chunksByDay[i] = chunksByDay[i] ?? [];
       }
     }
-
-    const intermediateTime3 = performance.now();
-    console.log(
-      `After creating empty days: ${intermediateTime3 - startTime}ms`
-    );
 
     const eventTimes: Record<number, number> = {};
     for (let i = 0; i <= totalDays; i++) {
@@ -239,21 +231,9 @@ export class Store extends VuexModule {
           )
         );
       }
-
-      const intermediateTime4 = performance.now();
-      console.log(
-        `After assigning task ${i}: ${intermediateTime4 - startTime}ms`
-      );
     }
-
-    const intermediateTime5 = performance.now();
-    console.log(`After assigning chunks: ${intermediateTime5 - startTime}ms`);
-
     // Get the values of the chunksByDay object (a nested array of Chunks) and flatten
     this.chunks = (Object.values(chunksByDay) as Chunk[][]).flat(1);
-
-    const endTime = performance.now();
-    console.log(`Chunking took ${endTime - startTime}ms`);
   }
 
   @action async uploadTasks() {
@@ -348,6 +328,8 @@ export class Store extends VuexModule {
         alert(`message: ${e.message}`);
         alert(`stack:\n ${e.stack}`);
         alert(`cause: ${e.cause}`);
+
+        this.tasks.sort((a, b) => a.due.getTime() - b.due.getTime());
       }
     }
   }
