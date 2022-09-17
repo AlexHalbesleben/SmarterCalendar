@@ -66,12 +66,6 @@ export default class App extends Vue {
   }
 
   mounted() {
-    window.addEventListener("error", (ev: ErrorEvent) => {
-      alert("ERROR");
-      alert(ev.message);
-      alert(`${ev.lineno}:${ev.colno}`);
-      alert(JSON.stringify(ev.error, null, 2));
-    });
     window.addEventListener("keydown", (ev: KeyboardEvent) => {
       const changelogModal = this.$refs.changelogModal as ChangelogModal;
 

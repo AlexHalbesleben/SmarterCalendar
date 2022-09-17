@@ -340,7 +340,16 @@ export class Store extends VuexModule {
       .map((chunk) => chunk.task)
       .filter((task) => !this.tasks.includes(task));
 
-    this.updateChunks();
+    try {
+      this.updateChunks();
+    } catch (e) {
+      if (e instanceof Error) {
+        alert(`ERROR: ${e.name}`);
+        alert(`message: ${e.message}`);
+        alert(`stack:\n ${e.stack}`);
+        alert(`cause: ${e.cause}`);
+      }
+    }
   }
 }
 
