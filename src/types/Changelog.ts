@@ -156,4 +156,10 @@ Typing a hotkey in the description field in the task modal could open modals/tri
     description:
       "Fixes a bug where the chunking algorithm would crash and the page would not load",
   },
+  {
+    version: "3.6.7",
+    title: "Bug fixes",
+    description:
+      "Fixes bugs where completing tasks in the task modal wouldn't set the chunks to the current date and where tasks didn't disappear from the task list when completed through the chunk modal",
+  },
 ];
