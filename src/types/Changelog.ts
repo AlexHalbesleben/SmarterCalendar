@@ -162,4 +162,10 @@ Typing a hotkey in the description field in the task modal could open modals/tri
     description:
       "Fixes bugs where completing tasks in the task modal wouldn't set the chunks to the current date and where tasks didn't disappear from the task list when completed through the chunk modal",
   },
+  {
+    version: "3.6.8",
+    title: "Styling fix",
+    description:
+      "Updates styles so that reminder-colored elements darken on hover",
+  },
 ];
