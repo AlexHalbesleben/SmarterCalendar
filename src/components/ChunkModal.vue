@@ -151,7 +151,10 @@ export default class ChunkModal extends Vue {
 
       vxm.store.completedChunks.push(this.chunk);
 
-      if (this.chunk.task.chunks === 0) {
+      if (
+        vxm.store.chunks.filter((chunk) => chunk.task === this.chunk?.task)
+          .length <= 1
+      ) {
         Vue.delete(vxm.store.tasks, vxm.store.tasks.indexOf(this.chunk.task));
         vxm.store.completedTasks.push(this.chunk.task);
       }
