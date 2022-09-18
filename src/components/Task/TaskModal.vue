@@ -8,7 +8,7 @@
       @cancel="completeTask"
       v-model="displayed"
     >
-      <div class="container" @keydown.stop @keypress.enter="submit">
+      <div class="container" @keyup.stop @keypress.enter="submit">
         <div class="row mb-2">
           <b-input-group prepend="Name" class="col">
             <b-form-input v-model="task.name" @keypress.stop />
@@ -22,6 +22,22 @@
             :title="taskTooltips['due']"
           >
             <b-form-datepicker v-model="task.due" value-as-date />
+          </b-input-group>
+        </div>
+        <div class="row mb-2">
+          <b-input-group prepend="Start date" class="col">
+            <b-form-datepicker
+              :value="task.startDate === null ? currentDate : task.startDate"
+              value-as-date
+              @input="setStartDate"
+            />
+            <b-input-group-append is-text>
+              <b-form-checkbox
+                :checked="task.startDate !== null"
+                @input="setStartLocked"
+                class="mr-n2"
+              />
+            </b-input-group-append>
           </b-input-group>
         </div>
         <div class="row mb-2">
@@ -104,17 +120,26 @@
 </template>
 <script lang="ts">
 import UserTask, { TASK_DESCRIPTIONS } from "@/types/Task";
-import { Component, Vue } from "vue-property-decorator";
+import { Component, Vue, Watch } from "vue-property-decorator";
 import vxm from "@/store/index.vuex";
 import DateUtils from "@/util/DateUtils";
 
 @Component
 export default class TaskModal extends Vue {
-  task!: UserTask;
+  task: UserTask =
+    this.editedIndex === -1 // If there's no task to copy from
+      ? new UserTask({}) // Use sensible defaults
+      : {
+          get totalEffort(): number {
+            return this.effort * this.duration;
+          },
+          ...(vxm.store.editedTaskCompleted
+            ? vxm.store.completedTasks
+            : vxm.store.tasks)[this.editedIndex],
+        }; // If there's a task to copy from, do that
 
-  // So the inputs don't get mad that there is no current task
-  created() {
-    this.onShow();
+  get currentDate(): Date {
+    return DateUtils.currentDate;
   }
 
   get editedIndex(): number {
@@ -235,6 +260,16 @@ export default class TaskModal extends Vue {
   }
 
   displayed = false;
+
+  setStartDate(newDate: Date) {
+    this.$set(this.task, "startDate", newDate);
+  }
+
+  setStartLocked(locked: boolean) {
+    if (!locked) {
+      this.$set(this.task, "startDate", null);
+    }
+  }
 
   mounted() {
     window.addEventListener("keypress", (ev) => {
