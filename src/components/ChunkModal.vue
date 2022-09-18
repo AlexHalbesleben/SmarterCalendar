@@ -121,7 +121,6 @@ export default class ChunkModal extends Vue {
     vxm.store.editedIndex = vxm.store.tasks.indexOf(this.chunk?.task);
     vxm.store.editedTaskCompleted = false;
     if (vxm.store.editedIndex === -1) {
-      console.log(vxm.store.completedTasks, this.chunk?.task);
       vxm.store.editedIndex = vxm.store.completedTasks.indexOf(
         this.chunk?.task
       );
