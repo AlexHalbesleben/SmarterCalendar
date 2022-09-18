@@ -66,18 +66,8 @@ export default class App extends Vue {
   }
 
   mounted() {
-    window.addEventListener("keydown", (ev: KeyboardEvent) => {
+    window.addEventListener("keyup", (ev: KeyboardEvent) => {
       const changelogModal = this.$refs.changelogModal as ChangelogModal;
-
-      if (ev.keyCode === 37) {
-        if (vxm.store.changelogModalShown) {
-          changelogModal.backVersion();
-        }
-      } else if (ev.keyCode === 39) {
-        if (vxm.store.changelogModalShown) {
-          changelogModal.forwardVersion();
-        }
-      }
 
       let fn = (
         {
@@ -86,8 +76,19 @@ export default class App extends Vue {
           r: () => this.newReminder(),
           s: () => this.$bvModal.show("settings-modal"),
           h: () => this.$bvModal.show("help-modal"),
+          ArrowRight: () => {
+            if (vxm.store.changelogModalShown) {
+              changelogModal.forwardVersion();
+            }
+          },
+          ArrowLeft: () => {
+            if (vxm.store.changelogModalShown) {
+              changelogModal.backVersion();
+            }
+          },
         } as Record<string, () => void>
       )[ev.key];
+
       if (fn) fn();
     });
   }
