@@ -106,6 +106,7 @@
 import UserTask, { TASK_DESCRIPTIONS } from "@/types/Task";
 import { Component, Vue } from "vue-property-decorator";
 import vxm from "@/store/index.vuex";
+import DateUtils from "@/util/DateUtils";
 
 @Component
 export default class TaskModal extends Vue {
@@ -196,6 +197,7 @@ export default class TaskModal extends Vue {
     for (let chunk of vxm.store.chunks.filter((chunk) =>
       shallowEq({ ...chunk.task }, { ...this.task })
     )) {
+      chunk.date = DateUtils.currentDate;
       vxm.store.completedChunks.push(chunk);
     }
 
