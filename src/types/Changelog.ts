@@ -174,4 +174,9 @@ Typing a hotkey in the description field in the task modal could open modals/tri
     description:
       "Refreshing the page with a keyboard shortcut no longer brings up the reminder modal",
   },
+  {
+    version: "3.7.0",
+    title: "Tasks have a started completion date",
+    description: "Users can now set dates before which tasks cannot start",
+  },
 ];
