@@ -31,6 +31,7 @@ $tertiary: #0F956A;
 }
 
 $quaternary: #E88873;
+$quaternary-darkened: #e36c52;
 
 .bg-quaternary {
   background-color: $quaternary !important;
@@ -43,6 +44,11 @@ $quaternary: #E88873;
 .btn-quaternary {
   background-color: $quaternary !important;
   border-color: $quaternary !important;
+}
+
+.btn-quaternary:hover {
+  background-color: $quaternary-darkened !important;
+  border-color: $quaternary-darkened !important;
 }
 
 $dark: rgba(0, 0, 0, 0.9);

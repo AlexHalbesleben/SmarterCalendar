@@ -163,6 +163,10 @@ hr {
   background-color: $info-darkened;
 }
 
+.reminder:hover {
+  background-color: $quaternary-darkened !important;
+}
+
 input[type="radio"] + span {
   color: $dark !important;
 }
