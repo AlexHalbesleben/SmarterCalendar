@@ -295,6 +295,9 @@ export class Store extends VuexModule {
             new UserTask({
               ...chunk.task,
               due: new Date(chunk.task.due),
+              startDate: chunk.task.startDate
+                ? new Date(chunk.task.startDate)
+                : null,
             }),
             chunk.duration,
             new Date(chunk.date),
