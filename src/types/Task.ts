@@ -6,6 +6,7 @@ export default class UserTask {
   effort = 1;
   description = "";
   backloaded = false;
+  startDate: Date | null = null;
 
   lockedChunks: { date: Date; number: number }[] = [];
 
@@ -22,6 +23,7 @@ export default class UserTask {
     description = "",
     lockedChunks = [] as { date: Date; number: number }[],
     backloaded = true,
+    startDate = null as Date | null,
   }) {
     this.name = name;
     this.duration = duration;
@@ -31,6 +33,7 @@ export default class UserTask {
     this.description = description;
     this.lockedChunks = lockedChunks;
     this.backloaded = backloaded;
+    this.startDate = startDate;
   }
 }
 
