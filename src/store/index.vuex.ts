@@ -141,6 +141,13 @@ export class Store extends VuexModule {
       const chunkDuration = task.duration / task.chunks;
 
       const usedNumbers = task.lockedChunks.map((chunk) => chunk.number);
+      const startDay = task.startDate
+        ? DateUtils.daysBetween(DateUtils.currentDate, task.startDate)
+        : 0;
+
+      if (startDay > daysUntilDue) {
+        continue;
+      }
 
       // For each chunk
       for (let i = 0; i < chunks; i++) {
@@ -158,7 +165,7 @@ export class Store extends VuexModule {
         let dayToAssign = daysUntilDue;
 
         // Assign to the latest possible day (if none work, will be due date) by default
-        for (let d = 0; d <= daysUntilDue; d++) {
+        for (let d = startDay; d <= daysUntilDue; d++) {
           const dayHasTime =
             getTotalTime(d) + chunkDuration <=
             this.settings.timeOnDay(
@@ -175,9 +182,9 @@ export class Store extends VuexModule {
 
         daysUntilDue = Math.floor(daysUntilDue);
 
-        const loopStart = task.backloaded ? 0 : daysUntilDue;
+        const loopStart = task.backloaded ? startDay : daysUntilDue;
         const loopEnded = (d: number) =>
-          task.backloaded ? d <= daysUntilDue : d >= 0;
+          task.backloaded ? d <= daysUntilDue : d >= startDay;
         const loopIncrement = task.backloaded ? 1 : -1;
 
         // Finds the day with that has the lowest effort compared to the next and sets that as the chunk's due date
@@ -321,9 +328,9 @@ export class Store extends VuexModule {
       .map((chunk) => chunk.task)
       .filter((task) => !this.tasks.includes(task));
 
-    try {
-      this.updateChunks();
-    } catch (e) {
+    // try {
+    this.updateChunks();
+    /* } catch (e) {
       if (e instanceof Error) {
         alert(`ERROR: ${e.name}`);
         alert(`message: ${e.message}`);
@@ -332,7 +339,7 @@ export class Store extends VuexModule {
 
         this.tasks.sort((a, b) => a.due.getTime() - b.due.getTime());
       }
-    }
+    } */
   }
 }
 

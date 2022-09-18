@@ -27,7 +27,7 @@
         <div class="row mb-2">
           <b-input-group prepend="Start date" class="col">
             <b-form-datepicker
-              :value="task.startDate === null ? currentDate : task.startDate"
+              :value="task.startDate ?? currentDate"
               value-as-date
               @input="setStartDate"
             />
@@ -190,17 +190,12 @@ export default class TaskModal extends Vue {
 
       let t = vxm.store.tasks[i];
       if (t.due.getTime() > this.task.due.getTime()) {
-        console.log(
-          `Condition passed on ${i}: swapping indices ${i} and ${editedIndex}`
-        );
         let editedTask = vxm.store.tasks[editedIndex];
         Vue.delete(vxm.store.tasks, editedIndex);
         vxm.store.tasks.splice(i, 0, editedTask);
         break;
       }
     }
-
-    console.log(vxm.store.tasks.map((task) => task.due));
 
     vxm.store.updateChunks();
     vxm.store.uploadTasks();
