@@ -168,4 +168,10 @@ Typing a hotkey in the description field in the task modal could open modals/tri
     description:
       "Updates styles so that reminder-colored elements darken on hover",
   },
+  {
+    version: "3.6.9",
+    title: "Hotkey fix",
+    description:
+      "Refreshing the page with a keyboard shortcut no longer brings up the reminder modal",
+  },
 ];
