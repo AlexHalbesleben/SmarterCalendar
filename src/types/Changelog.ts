@@ -179,4 +179,9 @@ Typing a hotkey in the description field in the task modal could open modals/tri
     title: "Tasks have a started completion date",
     description: "Users can now set dates before which tasks cannot start",
   },
+  {
+    version: "3.7.1",
+    title: "Bug fix",
+    description: "Fix bug where tasks didn't load properly from local storage",
+  },
 ];
