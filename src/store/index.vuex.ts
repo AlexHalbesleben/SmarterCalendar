@@ -269,6 +269,7 @@ export class Store extends VuexModule {
         return {
           ...task,
           due: new Date(task.due),
+          startDate: task.startDate ? new Date(task.startDate) : null,
           lockedChunks: task.lockedChunks.map((lockedChunk) => {
             return {
               date: new Date(lockedChunk.date),
