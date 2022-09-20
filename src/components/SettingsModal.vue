@@ -88,6 +88,7 @@
               type="number"
               :number="true"
               :disabled="!vxm.store.settings.useMinimumTime"
+              step="5"
             />
             <b-input-group-append is-text>minutes</b-input-group-append>
             <b-form-input
