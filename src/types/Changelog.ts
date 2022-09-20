@@ -184,4 +184,10 @@ Typing a hotkey in the description field in the task modal could open modals/tri
     title: "Bug fix",
     description: "Fix bug where tasks didn't load properly from local storage",
   },
+  {
+    version: "3.8.0",
+    title: "Add minimum time spent setting",
+    description:
+      "Users can have the option to set all days a certain number of days following the current date to have a given minimum time spent",
+  },
 ];
