@@ -55,6 +55,8 @@ export class Store extends VuexModule {
    * Splits the tasks into chunks
    */
   @mutation updateChunks() {
+    if (this.tasks.length === 0) return;
+
     // Each day is referenced by a number (the number of days after the current day) and has a list of chunks
     const chunksByDay: Record<number, Chunk[]> = {};
 
