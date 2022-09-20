@@ -165,7 +165,10 @@ export class Store extends VuexModule {
             this.settings.useMinimumTime &&
             i > this.settings.minimumTimeGap
           ) {
-            combinedDayData[i] += this.settings.minimumDailyTime;
+            combinedDayData[i] = Math.max(
+              this.settings.minimumDailyTime,
+              combinedDayData[i]
+            );
           }
         }
 
