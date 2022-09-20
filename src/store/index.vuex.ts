@@ -55,7 +55,10 @@ export class Store extends VuexModule {
    * Splits the tasks into chunks
    */
   @mutation updateChunks() {
-    if (this.tasks.length === 0) return;
+    if (this.tasks.length === 0) {
+      this.chunks = [];
+      return;
+    }
 
     // Each day is referenced by a number (the number of days after the current day) and has a list of chunks
     const chunksByDay: Record<number, Chunk[]> = {};
@@ -167,7 +170,8 @@ export class Store extends VuexModule {
             this.settings.useMinimumTime &&
             i > this.settings.minimumTimeGap
           ) {
-            combinedDayData[i] += this.settings.minimumDailyTime;
+            combinedDayData[i] +=
+              this.settings.minimumDailyTime * (1 + this.settings.effortWeight);
           }
         }
 
