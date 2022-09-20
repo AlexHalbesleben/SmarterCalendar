@@ -160,6 +160,13 @@ export class Store extends VuexModule {
             completedTimes[i] +
             completedEfforts[i] * this.settings.effortWeight +
             (this.settings.timeIncludesEvents ? eventTimes[i] : 0);
+
+          if (
+            this.settings.useMinimumTime &&
+            i > this.settings.minimumTimeGap
+          ) {
+            combinedDayData[i] += this.settings.minimumDailyTime;
+          }
         }
 
         let dayToAssign = daysUntilDue;
