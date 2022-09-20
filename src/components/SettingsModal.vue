@@ -73,6 +73,36 @@
           </b-input-group>
         </div>
         <div class="row mb-2">
+          <b-input-group class="col">
+            <b-input-group-prepend is-text>
+              <b-form-checkbox
+                v-model="vxm.store.settings.useMinimumTime"
+                class="mr-n2"
+              />
+            </b-input-group-prepend>
+            <b-input-group-append is-text
+              >Minimum time of
+            </b-input-group-append>
+            <b-form-input
+              v-model="vxm.store.settings.minimumDailyTime"
+              type="number"
+              :number="true"
+              :disabled="!vxm.store.settings.useMinimumTime"
+            />
+            <b-input-group-append is-text>minutes</b-input-group-append>
+            <b-form-input
+              v-model="vxm.store.settings.minimumTimeGap"
+              type="number"
+              :number="true"
+              :disabled="!vxm.store.settings.useMinimumTime"
+            />
+            <b-input-group-append is-text>
+              {{ `day${vxm.store.settings.minimumTimeGap > 1 ? "s" : ""}` }}
+              after the current day</b-input-group-append
+            >
+          </b-input-group>
+        </div>
+        <div class="row mb-2">
           <b-input-group class="col" prepend="Start time">
             <b-form-timepicker
               @input="updateStart"

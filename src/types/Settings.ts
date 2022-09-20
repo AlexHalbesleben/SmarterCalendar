@@ -16,6 +16,10 @@ export default class Settings {
   dayStartTimes: Record<number, string>;
   dayEndTimes: Record<number, string>;
 
+  useMinimumTime: boolean;
+  minimumDailyTime: number;
+  minimumTimeGap: number;
+
   constructor({
     effortWeight = 1,
     baseStartTime = 930,
@@ -26,6 +30,9 @@ export default class Settings {
     dayEndTimes = {},
     timeIncludesEvents = false,
     considerCompletedChunksOnAllDays = false,
+    useMinimumTime = false,
+    minimumDailyTime = 60,
+    minimumTimeGap = 1,
   }) {
     this.effortWeight = effortWeight;
     this.baseStartTime = baseStartTime;
@@ -36,6 +43,9 @@ export default class Settings {
     this.dayEndTimes = dayEndTimes;
     this.timeIncludesEvents = timeIncludesEvents;
     this.considerCompletedChunksOnAllDays = considerCompletedChunksOnAllDays;
+    this.useMinimumTime = useMinimumTime;
+    this.minimumDailyTime = minimumDailyTime;
+    this.minimumTimeGap = minimumTimeGap;
   }
 
   stringToTime(str: string): number {
