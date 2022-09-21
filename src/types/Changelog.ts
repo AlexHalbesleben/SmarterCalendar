@@ -190,4 +190,9 @@ Typing a hotkey in the description field in the task modal could open modals/tri
     description:
       "Users can have the option to set all days a certain number of days following the current date to have a given minimum time spent",
   },
+  {
+    version: "3.8.1",
+    title: "Bug fix",
+    description: "Fix bug where tasks didn't complete properly",
+  },
 ];
