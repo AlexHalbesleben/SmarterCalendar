@@ -123,6 +123,7 @@ import UserTask, { TASK_DESCRIPTIONS } from "@/types/Task";
 import { Component, Vue, Watch } from "vue-property-decorator";
 import vxm from "@/store/index.vuex";
 import DateUtils from "@/util/DateUtils";
+import TaskUtils from "@/util/TaskUtils";
 
 @Component
 export default class TaskModal extends Vue {
@@ -207,15 +208,8 @@ export default class TaskModal extends Vue {
       return; // We can't delete a task that hasn't been created
     }
 
-    const shallowEq = <T extends Record<string, unknown>>(
-      a: T,
-      b: T
-    ): boolean => {
-      return [...Object.keys(a), ...Object.keys(b)].every((k) => b[k] === a[k]);
-    };
-
     for (let chunk of vxm.store.chunks.filter((chunk) =>
-      shallowEq({ ...chunk.task }, { ...this.task })
+      TaskUtils.tasksEqual(chunk.task, this.task)
     )) {
       chunk.date = DateUtils.currentDate;
       vxm.store.completedChunks.push(chunk);

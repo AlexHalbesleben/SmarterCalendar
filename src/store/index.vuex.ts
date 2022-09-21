@@ -3,6 +3,7 @@ import UserEvent from "@/types/Event";
 import UserReminder from "@/types/Reminder";
 import Settings from "@/types/Settings";
 import DateUtils from "@/util/DateUtils";
+import TaskUtils from "@/util/TaskUtils";
 import Vue from "vue";
 import Vuex from "vuex";
 import {
@@ -138,8 +139,8 @@ export class Store extends VuexModule {
     for (const task of this.tasks) {
       let { chunks } = task;
       chunks -= task.lockedChunks.length;
-      chunks -= this.completedChunks.filter(
-        (chunk) => chunk.task === task
+      chunks -= this.completedChunks.filter((chunk) =>
+        TaskUtils.tasksEqual(task, chunk.task)
       ).length;
       const { due } = task;
       let daysUntilDue = DateUtils.daysBetween(DateUtils.currentDate, due);

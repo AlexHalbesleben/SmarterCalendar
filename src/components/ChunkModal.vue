@@ -49,6 +49,8 @@ import { Component, Vue } from "vue-property-decorator";
 import vxm from "@/store/index.vuex";
 import Chunk from "@/types/Chunk";
 import DateUtils from "@/util/DateUtils";
+import TaskUtils from "@/util/TaskUtils";
+import UserTask from "@/types/Task";
 
 @Component
 export default class ChunkModal extends Vue {
@@ -151,8 +153,9 @@ export default class ChunkModal extends Vue {
       vxm.store.completedChunks.push(this.chunk);
 
       if (
-        vxm.store.chunks.filter((chunk) => chunk.task === this.chunk?.task)
-          .length <= 1
+        vxm.store.chunks.filter((chunk) =>
+          TaskUtils.tasksEqual(chunk.task, this.chunk?.task ?? new UserTask({}))
+        ).length <= 1
       ) {
         Vue.delete(vxm.store.tasks, vxm.store.tasks.indexOf(this.chunk.task));
         vxm.store.completedTasks.push(this.chunk.task);
