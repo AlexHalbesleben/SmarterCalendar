@@ -120,7 +120,7 @@
 </template>
 <script lang="ts">
 import UserTask, { TASK_DESCRIPTIONS } from "@/types/Task";
-import { Component, Vue, Watch } from "vue-property-decorator";
+import { Component, Vue } from "vue-property-decorator";
 import vxm from "@/store/index.vuex";
 import DateUtils from "@/util/DateUtils";
 import TaskUtils from "@/util/TaskUtils";
