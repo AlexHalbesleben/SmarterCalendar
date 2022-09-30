@@ -2,13 +2,10 @@ import Chunk from "@/types/Chunk";
 import UserEvent from "@/types/Event";
 import UserReminder from "@/types/Reminder";
 import Settings from "@/types/Settings";
-import DateUtils from "@/util/DateUtils";
-import TaskUtils from "@/util/TaskUtils";
 import Vue from "vue";
 import Vuex from "vuex";
 import {
   createModule,
-  mutation,
   action,
   extractVuexModule,
   createProxy,
