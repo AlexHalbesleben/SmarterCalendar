@@ -47,7 +47,7 @@ export default class ReminderList extends Vue {
   }
 
   createReminder() {
-    vxm.store.editedReminderIndex = -1; // No task is being edited
+    vxm.store.modals.reminder.index = -1; // No task is being edited
   }
 
   // Returns true if the date is in the future

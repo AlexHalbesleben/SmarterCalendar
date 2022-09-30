@@ -14,6 +14,7 @@ import {
   createProxy,
 } from "vuex-class-component";
 import UserTask from "../types/Task";
+import ChunkStore from "./ChunkStore";
 import ModalsStore from "./modals/ModalsStore";
 
 Vue.use(Vuex);
@@ -33,214 +34,11 @@ export class Store extends VuexModule {
 
   reminders: UserReminder[] = [];
 
-  chunks: Chunk[] = [];
+  chunks = new ChunkStore(this);
 
   settings: Settings = new Settings({});
 
   modals = new ModalsStore(this);
-
-  /**
-   * Splits the tasks into chunks
-   */
-  @mutation updateChunks() {
-    if (this.tasks.length === 0) {
-      this.chunks = [];
-      return;
-    }
-
-    // Each day is referenced by a number (the number of days after the current day) and has a list of chunks
-    const chunksByDay: Record<number, Chunk[]> = {};
-
-    const getTotalTime = (day: number) => {
-      if (!chunksByDay[day]) {
-        chunksByDay[day] = [];
-      }
-      return chunksByDay[day].reduce((prev, curr) => prev + curr.duration, 0);
-    };
-    const getTotalEffort = (day: number) => {
-      if (!chunksByDay[day]) {
-        chunksByDay[day] = [];
-      }
-      return chunksByDay[day].reduce((prev, curr) => prev + curr.effort, 0);
-    };
-
-    for (const task of this.tasks) {
-      for (const lockedChunk of task.lockedChunks) {
-        const convertedDay = DateUtils.daysBetween(
-          DateUtils.currentDate,
-          lockedChunk.date
-        );
-        chunksByDay[convertedDay] = chunksByDay[convertedDay] ?? [];
-        const newChunk = new Chunk(
-          task,
-          task.duration / task.chunks,
-          lockedChunk.date,
-          lockedChunk.number
-        );
-        chunksByDay[convertedDay].push(newChunk);
-      }
-    }
-
-    const lastTask = this.tasks[this.tasks.length - 1];
-    const totalDays = DateUtils.daysBetween(
-      DateUtils.currentDate,
-      lastTask.due
-    );
-
-    if (this.tasks.length > 0) {
-      for (let i = 0; i <= totalDays; i++) {
-        chunksByDay[i] = chunksByDay[i] ?? [];
-      }
-    }
-
-    const eventTimes: Record<number, number> = {};
-    for (let i = 0; i <= totalDays; i++) {
-      eventTimes[i] = 0;
-    }
-    for (const event of this.events) {
-      if (event.date.getTime() > DateUtils.currentDate.getTime()) {
-        const convertedDay = DateUtils.daysBetween(
-          DateUtils.currentDate,
-          event.date
-        );
-        eventTimes[convertedDay] += event.duration;
-      }
-    }
-
-    const completedTimes: Record<number, number> = {};
-    const completedEfforts: Record<number, number> = {};
-    for (let i = 0; i <= totalDays; i++) {
-      completedTimes[i] = 0;
-      completedEfforts[i] = 0;
-    }
-    for (const chunk of this.completedChunks) {
-      const convertedDay = DateUtils.daysBetween(
-        DateUtils.currentDate,
-        chunk.date
-      );
-      completedTimes[convertedDay] += chunk.duration;
-      completedEfforts[convertedDay] += chunk.effort;
-    }
-
-    // For each task, with tasks due earlier scheduled first
-    for (const task of this.tasks) {
-      let { chunks } = task;
-      chunks -= task.lockedChunks.length;
-      chunks -= this.completedChunks.filter((chunk) =>
-        TaskUtils.tasksEqual(task, chunk.task)
-      ).length;
-      const { due } = task;
-      let daysUntilDue = DateUtils.daysBetween(DateUtils.currentDate, due);
-      const chunkDuration = task.duration / task.chunks;
-
-      const usedNumbers = task.lockedChunks.map((chunk) => chunk.number);
-      const startDay = task.startDate
-        ? DateUtils.daysBetween(DateUtils.currentDate, task.startDate)
-        : 0;
-
-      if (startDay > daysUntilDue) {
-        continue;
-      }
-
-      // For each chunk
-      for (let i = 0; i < chunks; i++) {
-        const combinedDayData: Record<number, number> = {};
-
-        for (let i = 0; i <= daysUntilDue; i++) {
-          combinedDayData[i] =
-            getTotalTime(i) +
-            getTotalEffort(i) * this.settings.effortWeight +
-            completedTimes[i] +
-            completedEfforts[i] * this.settings.effortWeight +
-            (this.settings.timeIncludesEvents ? eventTimes[i] : 0);
-
-          if (
-            this.settings.useMinimumTime &&
-            i > this.settings.minimumTimeGap
-          ) {
-            combinedDayData[i] +=
-              this.settings.minimumDailyTime * (1 + this.settings.effortWeight);
-          }
-        }
-
-        let dayToAssign = daysUntilDue;
-
-        // Assign to the latest possible day (if none work, will be due date) by default
-        for (let d = startDay; d <= daysUntilDue; d++) {
-          const dayHasTime =
-            getTotalTime(d) + chunkDuration <=
-            this.settings.timeOnDay(
-              DateUtils.applyDayOffset(d, DateUtils.currentDate)
-            ) -
-              eventTimes[d];
-
-          if (dayHasTime) {
-            dayToAssign = d;
-          }
-        }
-
-        let anyDaysWork = false;
-
-        daysUntilDue = Math.floor(daysUntilDue);
-
-        const loopStart = task.backloaded ? startDay : daysUntilDue;
-        const loopEnded = (d: number) =>
-          task.backloaded ? d <= daysUntilDue : d >= startDay;
-        const loopIncrement = task.backloaded ? 1 : -1;
-
-        // Finds the day with that has the lowest effort compared to the next and sets that as the chunk's due date
-        for (let d = loopStart; loopEnded(d); d += loopIncrement) {
-          const dayHasTime =
-            getTotalTime(d) + chunkDuration <=
-            this.settings.timeOnDay(
-              DateUtils.applyDayOffset(d, DateUtils.currentDate)
-            ) -
-              eventTimes[d];
-
-          if (dayHasTime) {
-            anyDaysWork = true;
-          } else {
-            continue; // If the time is greater than what we can spend on this day, try the next one
-          }
-
-          if (combinedDayData[d] <= combinedDayData[dayToAssign]) {
-            dayToAssign = d;
-          }
-        }
-
-        // If none of the days have enough time, choose the one using the normal algorithm disregarding the time limits
-        if (!anyDaysWork) {
-          // Finds the day with that has the lowest effort compared to the next and sets that as the chunk's due date
-          for (let d = loopStart; loopEnded(d); d += loopIncrement) {
-            if (combinedDayData[d] <= combinedDayData[dayToAssign]) {
-              dayToAssign = d;
-            }
-          }
-        }
-
-        // Avoids errors (if there are no tasks/chunks)
-        chunksByDay[dayToAssign] = chunksByDay[dayToAssign] ?? [];
-
-        let number = 0;
-        while (usedNumbers.includes(number)) {
-          number++;
-        }
-        usedNumbers.push(number);
-
-        // Create the chunk and add it to the list
-        chunksByDay[dayToAssign].push(
-          new Chunk(
-            task,
-            chunkDuration,
-            DateUtils.applyDayOffset(dayToAssign, DateUtils.currentDate),
-            number
-          )
-        );
-      }
-    }
-    // Get the values of the chunksByDay object (a nested array of Chunks) and flatten
-    this.chunks = (Object.values(chunksByDay) as Chunk[][]).flat(1);
-  }
 
   @action async uploadTasks() {
     localStorage["tasks"] = JSON.stringify(this.tasks);
@@ -331,7 +129,7 @@ export class Store extends VuexModule {
       .filter((task) => !this.tasks.includes(task));
 
     // try {
-    this.updateChunks();
+    this.chunks.update();
     /* } catch (e) {
       if (e instanceof Error) {
         alert(`ERROR: ${e.name}`);

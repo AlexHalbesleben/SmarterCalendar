@@ -44,8 +44,8 @@ export default class TaskList extends Vue {
   }
 
   createTask() {
-    vxm.store.editedIndex = -1; // No task is being edited
-    vxm.store.editedTaskCompleted = false;
+    vxm.store.modals.task.index = -1; // No task is being edited
+    vxm.store.modals.task.completed = false;
   }
 }
 </script>

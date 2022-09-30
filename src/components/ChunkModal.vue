@@ -100,7 +100,7 @@ export default class ChunkModal extends Vue {
       (chunk) => chunk.number !== this.chunk?.number
     );
     vxm.store.uploadTasks();
-    vxm.store.updateChunks();
+    vxm.store.chunks.update();
   }
 
   lock() {
@@ -113,7 +113,7 @@ export default class ChunkModal extends Vue {
     }
     this.chunk?.task.lockedChunks.push(this.simplifiedChunk);
     vxm.store.uploadTasks();
-    vxm.store.updateChunks();
+    vxm.store.chunks.update();
   }
 
   launchTask() {
@@ -153,7 +153,7 @@ export default class ChunkModal extends Vue {
       vxm.store.completedChunks.push(this.chunk);
 
       if (
-        vxm.store.chunks.filter((chunk) =>
+        vxm.store.chunks.chunks.filter((chunk) =>
           TaskUtils.tasksEqual(chunk.task, this.chunk?.task ?? new UserTask({}))
         ).length <= 1
       ) {
@@ -163,7 +163,7 @@ export default class ChunkModal extends Vue {
     }
 
     vxm.store.uploadTasks();
-    vxm.store.updateChunks();
+    vxm.store.chunks.update();
     vxm.store.uploadCompleted();
 
     this.$bvModal.hide("chunk-modal");

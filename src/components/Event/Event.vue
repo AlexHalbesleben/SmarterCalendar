@@ -17,7 +17,7 @@ export default class Event extends Vue {
   idx!: number;
 
   editEvent() {
-    vxm.store.editedEventIndex = this.idx;
+    vxm.store.modals.event.index = this.idx;
     this.$bvModal.show("event-modal");
   }
 
