@@ -65,7 +65,7 @@ export default class EventModal extends Vue {
   }
 
   get editedIndex(): number {
-    return vxm.store.editedEventIndex;
+    return vxm.store.modals.reminder.index;
   }
 
   onShow() {
