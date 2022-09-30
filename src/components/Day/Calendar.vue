@@ -88,7 +88,7 @@ export default class Calendar extends Vue {
 
   mounted() {
     window.addEventListener("keydown", (ev) => {
-      if (vxm.store.changelogModalShown) {
+      if (vxm.store.modals.changelog.shown) {
         return;
       }
       switch (ev.code) {

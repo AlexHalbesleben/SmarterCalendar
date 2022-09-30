@@ -17,7 +17,7 @@ export default class Reminder extends Vue {
   idx!: number;
 
   editReminder() {
-    vxm.store.editedReminderIndex = this.idx;
+    vxm.store.modals.reminder.index = this.idx;
     this.$bvModal.show("reminder-modal");
   }
 

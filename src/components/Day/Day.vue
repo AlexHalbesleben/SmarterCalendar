@@ -105,7 +105,7 @@ export default class Day extends Vue {
    * Gets the chunks scheduled for this day
    */
   get chunks(): Chunk[] {
-    return vxm.store.chunks.filter(
+    return vxm.store.chunks.chunks.filter(
       (chunk) =>
         chunk.date.getDate() === this.day &&
         chunk.date.getMonth() === this.month
@@ -137,22 +137,22 @@ export default class Day extends Vue {
   }
 
   launchModal() {
-    vxm.store.dayModalDay = this.day;
-    vxm.store.dayModalMonth = this.month;
+    vxm.store.modals.day.day = this.day;
+    vxm.store.modals.day.month = this.month;
   }
 
   launchChunk(chunk: Chunk) {
-    vxm.store.editedChunk = chunk;
+    vxm.store.modals.chunk.chunk = chunk;
     this.$bvModal.show("chunk-modal");
   }
 
   launchEvent(event: UserEvent) {
-    vxm.store.editedEventIndex = vxm.store.events.indexOf(event);
+    vxm.store.modals.event.index = vxm.store.events.indexOf(event);
     this.$bvModal.show("event-modal");
   }
 
   launchReminder(reminder: UserReminder) {
-    vxm.store.editedReminderIndex = vxm.store.reminders.indexOf(reminder);
+    vxm.store.modals.reminder.index = vxm.store.reminders.indexOf(reminder);
     this.$bvModal.show("reminder-modal");
   }
 

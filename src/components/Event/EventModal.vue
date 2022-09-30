@@ -91,7 +91,7 @@ export default class EventModal extends Vue {
     } else {
       Vue.set(vxm.store.events, editedIndex, { ...this.event });
     }
-    vxm.store.updateChunks();
+    vxm.store.chunks.update();
     vxm.store.uploadEvents();
   }
 
@@ -103,7 +103,7 @@ export default class EventModal extends Vue {
 
     // Using Vue.delete ensures reactivity
     Vue.delete(vxm.store.events, this.editedIndex);
-    vxm.store.updateChunks(); // Update chunks
+    vxm.store.chunks.update(); // Update chunks
     vxm.store.uploadEvents();
   }
 

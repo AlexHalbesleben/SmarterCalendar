@@ -134,7 +134,7 @@ export default class TaskModal extends Vue {
           get totalEffort(): number {
             return this.effort * this.duration;
           },
-          ...(vxm.store.taskModal.completed
+          ...(vxm.store.modals.task.completed
             ? vxm.store.completedTasks
             : vxm.store.tasks)[this.editedIndex],
         }; // If there's a task to copy from, do that
@@ -144,11 +144,11 @@ export default class TaskModal extends Vue {
   }
 
   get editedIndex(): number {
-    return vxm.store.taskModal.index;
+    return vxm.store.modals.task.index;
   }
 
   onShow() {
-    let editedIndex = vxm.store.taskModal.index;
+    let editedIndex = vxm.store.modals.task.index;
     // Sets the template based on whether a new task is being created or an exisiting one is being edited
     this.task =
       editedIndex === -1 // If there's no task to copy from
@@ -157,7 +157,7 @@ export default class TaskModal extends Vue {
             get totalEffort(): number {
               return this.effort * this.duration;
             },
-            ...(vxm.store.taskModal.completed
+            ...(vxm.store.modals.task.completed
               ? vxm.store.completedTasks
               : vxm.store.tasks)[editedIndex],
           }; // If there's a task to copy from, do that
@@ -166,7 +166,7 @@ export default class TaskModal extends Vue {
   submit() {
     this.$bvModal.hide("task-modal");
 
-    let editedIndex = vxm.store.taskModal.index;
+    let editedIndex = vxm.store.modals.task.index;
 
     if (editedIndex === -1) {
       // If creating a new task
@@ -199,7 +199,7 @@ export default class TaskModal extends Vue {
       }
     }
 
-    vxm.store.updateChunks();
+    vxm.store.chunks.update();
     vxm.store.uploadTasks();
   }
 
@@ -209,7 +209,7 @@ export default class TaskModal extends Vue {
       return; // We can't delete a task that hasn't been created
     }
 
-    for (let chunk of vxm.store.chunks.filter((chunk) =>
+    for (let chunk of vxm.store.chunks.chunks.filter((chunk) =>
       TaskUtils.tasksEqual(chunk.task, this.task)
     )) {
       chunk.date = DateUtils.currentDate;
@@ -218,7 +218,7 @@ export default class TaskModal extends Vue {
 
     // Using Vue.delete ensures reactivity
     Vue.delete(vxm.store.tasks, this.editedIndex);
-    vxm.store.updateChunks(); // Update chunks
+    vxm.store.chunks.update(); // Update chunks
     vxm.store.uploadTasks();
     vxm.store.uploadCompleted();
 
@@ -233,12 +233,12 @@ export default class TaskModal extends Vue {
 
     // Using Vue.delete ensures reactivity
     Vue.delete(
-      vxm.store.taskModal.completed
+      vxm.store.modals.task.completed
         ? vxm.store.completedTasks
         : vxm.store.tasks,
       this.editedIndex
     );
-    vxm.store.updateChunks(); // Update chunks
+    vxm.store.chunks.update(); // Update chunks
     vxm.store.uploadTasks();
     vxm.store.uploadCompleted();
 

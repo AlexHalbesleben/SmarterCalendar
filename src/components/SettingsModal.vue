@@ -108,7 +108,7 @@
             <b-form-timepicker
               @input="updateStart"
               :value="startTime"
-              @blur="vxm.store.updateChunks()"
+              @blur="vxm.store.chunks.update()"
               minutes-step="5"
               :state="
                 vxm.store.settings.baseEndTime >
@@ -124,7 +124,7 @@
             <b-form-timepicker
               @input="updateEnd"
               :value="endTime"
-              @blur="vxm.store.updateChunks()"
+              @blur="vxm.store.chunks.update()"
               minutes-step="5"
               :state="
                 vxm.store.settings.baseEndTime >
@@ -152,7 +152,7 @@
                     "
                     minutes-step="5"
                     @input="handleStartInput($event, i)"
-                    @blur="vxm.store.updateChunks"
+                    @blur="vxm.store.chunks.update"
                   />
                   <b-input-group-append is-text class="settings-day-append-top">
                     <b-form-checkbox
@@ -176,7 +176,7 @@
                     "
                     minutes-step="5"
                     @input="handleEndInput($event, i)"
-                    @blur="vxm.store.updateChunks"
+                    @blur="vxm.store.chunks.update"
                   />
                   <b-input-group-append
                     is-text
@@ -213,7 +213,7 @@ export default class SettingsModal extends Vue {
    */
   updateSettings() {
     vxm.store.uploadSettings();
-    vxm.store.updateChunks();
+    vxm.store.chunks.update();
   }
 
   get settingsTooltips(): Record<string, string> {
@@ -330,7 +330,7 @@ export default class SettingsModal extends Vue {
 
   pushUpdate() {
     vxm.store.uploadSettings();
-    vxm.store.updateChunks();
+    vxm.store.chunks.update();
   }
 }
 </script>

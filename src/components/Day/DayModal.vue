@@ -3,7 +3,7 @@
     <b-modal
       id="day-modal"
       :title="`${month + 1}/${day}`"
-      @hide="vxm.store.updateChunks"
+      @hide="vxm.store.chunks.update"
     >
       <p class="h6" v-show="chunks.length">Chunks ({{ chunks.length }})</p>
       <div
@@ -69,7 +69,7 @@
               :value="startTimeValue"
               @input="startInput"
               minutes-step="5"
-              @blur="vxm.store.updateChunks"
+              @blur="vxm.store.chunks.update"
             />
             <b-input-group-append is-text>
               <b-form-checkbox
@@ -89,7 +89,7 @@
               :value="endTimeValue"
               @input="endInput"
               minutes-step="5"
-              @blur="vxm.store.updateChunks"
+              @blur="vxm.store.chunks.update"
             />
             <b-input-group-append is-text>
               <b-form-checkbox
@@ -144,7 +144,7 @@ export default class DayModal extends Vue {
   }
 
   get chunks(): Chunk[] {
-    return vxm.store.chunks.filter(
+    return vxm.store.chunks.chunks.filter(
       (chunk) =>
         chunk.date.getDate() === this.day && chunk.date.getMonth() == this.month
     );
@@ -200,25 +200,25 @@ export default class DayModal extends Vue {
   lockStart() {
     Vue.set(vxm.store.settings.dayStartTimes, this.numKey, this.startTime);
     vxm.store.uploadSettings();
-    vxm.store.updateChunks();
+    vxm.store.chunks.update();
   }
 
   lockEnd() {
     Vue.set(vxm.store.settings.dayEndTimes, this.numKey, this.endTime);
     vxm.store.uploadSettings();
-    vxm.store.updateChunks();
+    vxm.store.chunks.update();
   }
 
   unlockStart() {
     Vue.delete(vxm.store.settings.dayStartTimes, this.numKey);
     vxm.store.uploadSettings();
-    vxm.store.updateChunks();
+    vxm.store.chunks.update();
   }
 
   unlockEnd() {
     Vue.delete(vxm.store.settings.dayEndTimes, this.numKey);
     vxm.store.uploadSettings();
-    vxm.store.updateChunks();
+    vxm.store.chunks.update();
   }
 
   startInput(event: string) {

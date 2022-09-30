@@ -44,7 +44,7 @@ export default class TaskList extends Vue {
   }
 
   createEvent() {
-    vxm.store.editedEventIndex = -1; // No task is being edited
+    vxm.store.modals.event.index = -1; // No task is being edited
   }
 }
 </script>
