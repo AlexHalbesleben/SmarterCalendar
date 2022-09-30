@@ -14,6 +14,7 @@ import {
   createProxy,
 } from "vuex-class-component";
 import UserTask from "../types/Task";
+import ModalsStore from "./modals/ModalsStore";
 
 Vue.use(Vuex);
 
@@ -32,25 +33,11 @@ export class Store extends VuexModule {
 
   reminders: UserReminder[] = [];
 
-  editedIndex = -1; // -1 indicates a new task is being created (as opposed to an existing one being edited)
-
-  editedTaskCompleted = false;
-
-  editedEventIndex = -1;
-
-  editedReminderIndex = -1;
-
-  dayModalMonth = 0;
-
-  dayModalDay = 0;
-
   chunks: Chunk[] = [];
 
   settings: Settings = new Settings({});
 
-  editedChunk: Chunk | undefined = undefined;
-
-  changelogModalShown = false;
+  modals = new ModalsStore(this);
 
   /**
    * Splits the tasks into chunks

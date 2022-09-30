@@ -134,7 +134,7 @@ export default class TaskModal extends Vue {
           get totalEffort(): number {
             return this.effort * this.duration;
           },
-          ...(vxm.store.editedTaskCompleted
+          ...(vxm.store.taskModal.completed
             ? vxm.store.completedTasks
             : vxm.store.tasks)[this.editedIndex],
         }; // If there's a task to copy from, do that
@@ -144,11 +144,11 @@ export default class TaskModal extends Vue {
   }
 
   get editedIndex(): number {
-    return vxm.store.editedIndex;
+    return vxm.store.taskModal.index;
   }
 
   onShow() {
-    let { editedIndex } = vxm.store;
+    let editedIndex = vxm.store.taskModal.index;
     // Sets the template based on whether a new task is being created or an exisiting one is being edited
     this.task =
       editedIndex === -1 // If there's no task to copy from
@@ -157,7 +157,7 @@ export default class TaskModal extends Vue {
             get totalEffort(): number {
               return this.effort * this.duration;
             },
-            ...(vxm.store.editedTaskCompleted
+            ...(vxm.store.taskModal.completed
               ? vxm.store.completedTasks
               : vxm.store.tasks)[editedIndex],
           }; // If there's a task to copy from, do that
@@ -166,7 +166,8 @@ export default class TaskModal extends Vue {
   submit() {
     this.$bvModal.hide("task-modal");
 
-    let { editedIndex } = vxm.store;
+    let editedIndex = vxm.store.taskModal.index;
+
     if (editedIndex === -1) {
       // If creating a new task
       vxm.store.tasks.push({
@@ -232,7 +233,7 @@ export default class TaskModal extends Vue {
 
     // Using Vue.delete ensures reactivity
     Vue.delete(
-      vxm.store.editedTaskCompleted
+      vxm.store.taskModal.completed
         ? vxm.store.completedTasks
         : vxm.store.tasks,
       this.editedIndex

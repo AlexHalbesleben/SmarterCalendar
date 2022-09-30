@@ -56,7 +56,7 @@ export default class ReminderModal extends Vue {
   }
 
   get editedIndex(): number {
-    return vxm.store.editedReminderIndex;
+    return vxm.store.modals.reminder.index;
   }
 
   onShow() {

@@ -126,20 +126,20 @@ export default class DayModal extends Vue {
   }
 
   get day(): number {
-    return vxm.store.dayModalDay;
+    return vxm.store.modals.day.day;
   }
 
   get month(): number {
-    return vxm.store.dayModalMonth;
+    return vxm.store.modals.day.month;
   }
 
   launchChunk(chunk: Chunk) {
-    vxm.store.editedChunk = chunk;
+    vxm.store.modals.chunk.chunk = chunk;
     this.$bvModal.show("chunk-modal");
   }
 
   launchEvent(event: UserEvent) {
-    vxm.store.editedEventIndex = vxm.store.events.indexOf(event);
+    vxm.store.modals.event.index = vxm.store.events.indexOf(event);
     this.$bvModal.show("event-modal");
   }
 

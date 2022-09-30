@@ -4,7 +4,7 @@
       id="changelog-modal"
       title="Changelog"
       ok-only
-      v-model="vxm.store.changelogModalShown"
+      v-model="vxm.store.modals.changelog.shown"
     >
       <b-input-group prepend="v" class="mb-3">
         <b-form-input

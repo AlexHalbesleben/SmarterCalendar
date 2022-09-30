@@ -55,7 +55,7 @@ import UserTask from "@/types/Task";
 @Component
 export default class ChunkModal extends Vue {
   get chunk(): Chunk | undefined {
-    return vxm.store.editedChunk;
+    return vxm.store.modals.chunk.chunk;
   }
 
   get completed(): boolean {
@@ -120,13 +120,13 @@ export default class ChunkModal extends Vue {
     if (!this.chunk) {
       return;
     }
-    vxm.store.editedIndex = vxm.store.tasks.indexOf(this.chunk?.task);
-    vxm.store.editedTaskCompleted = false;
-    if (vxm.store.editedIndex === -1) {
-      vxm.store.editedIndex = vxm.store.completedTasks.indexOf(
+    vxm.store.modals.task.index = vxm.store.tasks.indexOf(this.chunk?.task);
+    vxm.store.modals.task.completed = false;
+    if (vxm.store.modals.task.index === -1) {
+      vxm.store.modals.task.index = vxm.store.completedTasks.indexOf(
         this.chunk?.task
       );
-      vxm.store.editedTaskCompleted = true;
+      vxm.store.modals.task.completed = true;
     }
     this.$bvModal.show("task-modal");
   }

@@ -77,12 +77,12 @@ export default class App extends Vue {
           s: () => this.$bvModal.show("settings-modal"),
           h: () => this.$bvModal.show("help-modal"),
           ArrowRight: () => {
-            if (vxm.store.changelogModalShown) {
+            if (vxm.store.modals.changelog.shown) {
               changelogModal.forwardVersion();
             }
           },
           ArrowLeft: () => {
-            if (vxm.store.changelogModalShown) {
+            if (vxm.store.modals.changelog.shown) {
               changelogModal.backVersion();
             }
           },
@@ -94,18 +94,18 @@ export default class App extends Vue {
   }
 
   newTask() {
-    vxm.store.editedIndex = -1;
-    vxm.store.editedTaskCompleted = false;
+    vxm.store.modals.task.index = -1;
+    vxm.store.modals.task.completed = false;
     this.$bvModal.show("task-modal");
   }
 
   newEvent() {
-    vxm.store.editedEventIndex = -1;
+    vxm.store.modals.event.index = -1;
     this.$bvModal.show("event-modal");
   }
 
   newReminder() {
-    vxm.store.editedReminderIndex = -1;
+    vxm.store.modals.reminder.index = -1;
     this.$bvModal.show("reminder-modal");
   }
 }
