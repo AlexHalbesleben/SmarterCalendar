@@ -6,13 +6,13 @@ import Vue from "vue";
 import Vuex from "vuex";
 import {
   createModule,
-  action,
   extractVuexModule,
   createProxy,
 } from "vuex-class-component";
 import UserTask from "../types/Task";
 import ChunkStore from "./ChunkStore";
 import ModalsStore from "./modals/ModalsStore";
+import StorageStore from "./storage/StorageStore";
 
 Vue.use(Vuex);
 
@@ -37,89 +37,16 @@ export class Store extends VuexModule {
 
   modals = new ModalsStore(this);
 
-  @action async uploadTasks() {
-    localStorage["tasks"] = JSON.stringify(this.tasks);
-  }
-
-  @action async uploadSettings() {
-    localStorage["settings"] = JSON.stringify(this.settings);
-  }
-
-  @action async uploadEvents() {
-    localStorage["events"] = JSON.stringify(this.events);
-  }
-
-  @action async uploadCompleted() {
-    localStorage["completed"] = JSON.stringify(this.completedChunks);
-  }
-
-  @action async uploadReminders() {
-    localStorage["reminders"] = JSON.stringify(this.reminders);
-  }
+  storage = new StorageStore(this);
 
   constructor() {
     super();
 
-    if (localStorage["tasks"]) {
-      this.tasks = JSON.parse(localStorage["tasks"]).map((task: UserTask) => {
-        return {
-          ...task,
-          due: new Date(task.due),
-          startDate: task.startDate ? new Date(task.startDate) : null,
-          lockedChunks: task.lockedChunks.map((lockedChunk) => {
-            return {
-              date: new Date(lockedChunk.date),
-              number: lockedChunk.number,
-            };
-          }),
-        };
-      });
-    }
-
-    if (localStorage["settings"]) {
-      this.settings = new Settings(JSON.parse(localStorage["settings"]));
-    }
-
-    if (localStorage["events"]) {
-      this.events = JSON.parse(localStorage["events"]).map(
-        (event: UserEvent) =>
-          new UserEvent({
-            date: new Date(event.date),
-            name: event.name,
-            duration: event.duration,
-            description: event.description,
-          })
-      );
-    }
-
-    if (localStorage["completed"]) {
-      this.completedChunks = JSON.parse(localStorage["completed"]).map(
-        (chunk: Chunk) =>
-          new Chunk(
-            new UserTask({
-              ...chunk.task,
-              due: new Date(chunk.task.due),
-              startDate: chunk.task.startDate
-                ? new Date(chunk.task.startDate)
-                : null,
-            }),
-            chunk.duration,
-            new Date(chunk.date),
-            chunk.number
-          )
-      );
-    }
-
-    if (localStorage["reminders"]) {
-      this.reminders = JSON.parse(localStorage["reminders"]).map(
-        (reminder: UserReminder) =>
-          new UserReminder({
-            date: new Date(reminder.date),
-            name: reminder.name,
-            description: reminder.description,
-          })
-      );
-    }
+    this.tasks = this.storage.tasks.value;
+    this.settings = this.storage.settings.value;
+    this.events = this.storage.events.value;
+    this.completedChunks = this.storage.completed.value;
+    this.reminders = this.storage.reminders.value;
 
     this.completedTasks = this.completedChunks
       .map((chunk) => chunk.task)
