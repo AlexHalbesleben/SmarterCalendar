@@ -212,7 +212,7 @@ export default class SettingsModal extends Vue {
    * Formally updates the settings. Uploads them to local storage and rechunks.
    */
   updateSettings() {
-    vxm.store.uploadSettings();
+    vxm.store.storage.updateSettings();
     vxm.store.chunks.update();
   }
 
@@ -233,7 +233,7 @@ export default class SettingsModal extends Vue {
 
   updateStart(time: string) {
     vxm.store.settings.baseStartTime = vxm.store.settings.stringToTime(time);
-    vxm.store.uploadSettings();
+    vxm.store.storage.updateSettings();
   }
 
   get startTime(): string {
@@ -242,7 +242,7 @@ export default class SettingsModal extends Vue {
 
   updateEnd(time: string) {
     vxm.store.settings.baseEndTime = vxm.store.settings.stringToTime(time);
-    vxm.store.uploadSettings();
+    vxm.store.storage.updateSettings();
   }
 
   get endTime(): string {
@@ -291,7 +291,7 @@ export default class SettingsModal extends Vue {
     Vue.set(vxm.store.settings.dailyStartTimes, day, event);
 
     // Upload changes
-    vxm.store.uploadSettings();
+    vxm.store.storage.updateSettings();
   }
 
   /** {@link handleStartInput}, just for the end time */
@@ -300,7 +300,7 @@ export default class SettingsModal extends Vue {
 
     Vue.set(vxm.store.settings.dailyEndTimes, day, event);
 
-    vxm.store.uploadSettings();
+    vxm.store.storage.updateSettings();
   }
 
   handleStartCheck(day: number) {
@@ -329,7 +329,7 @@ export default class SettingsModal extends Vue {
   }
 
   pushUpdate() {
-    vxm.store.uploadSettings();
+    vxm.store.storage.updateSettings();
     vxm.store.chunks.update();
   }
 }
