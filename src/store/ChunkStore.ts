@@ -16,6 +16,20 @@ export default class ChunkStore extends Substore {
     return this.store.settings;
   }
 
+  getTotalTime(day: number, chunks: Record<number, Chunk[]>): number {
+    if (!chunks[day]) {
+      chunks[day] = [];
+    }
+    return chunks[day].reduce((prev, curr) => prev + curr.duration, 0);
+  }
+
+  getTotalEffort(day: number, chunks: Record<number, Chunk[]>): number {
+    if (!chunks[day]) {
+      chunks[day] = [];
+    }
+    return chunks[day].reduce((prev, curr) => prev + curr.effort, 0);
+  }
+
   update() {
     if (this.tasks.length === 0) {
       this.chunks = [];
@@ -24,19 +38,6 @@ export default class ChunkStore extends Substore {
 
     // Each day is referenced by a number (the number of days after the current day) and has a list of chunks
     const chunksByDay: Record<number, Chunk[]> = {};
-
-    const getTotalTime = (day: number) => {
-      if (!chunksByDay[day]) {
-        chunksByDay[day] = [];
-      }
-      return chunksByDay[day].reduce((prev, curr) => prev + curr.duration, 0);
-    };
-    const getTotalEffort = (day: number) => {
-      if (!chunksByDay[day]) {
-        chunksByDay[day] = [];
-      }
-      return chunksByDay[day].reduce((prev, curr) => prev + curr.effort, 0);
-    };
 
     for (const task of this.tasks) {
       for (const lockedChunk of task.lockedChunks) {
@@ -61,16 +62,19 @@ export default class ChunkStore extends Substore {
       lastTask.due
     );
 
-    if (this.tasks.length > 0) {
-      for (let i = 0; i <= totalDays; i++) {
-        chunksByDay[i] = chunksByDay[i] ?? [];
-      }
+    const eventTimes: Record<number, number> = {};
+
+    const completedTimes: Record<number, number> = {};
+    const completedEfforts: Record<number, number> = {};
+
+    for (let i = 0; i <= totalDays; i++) {
+      chunksByDay[i] = chunksByDay[i] ?? [];
+
+      eventTimes[i] = 0;
+      completedTimes[i] = 0;
+      completedEfforts[i] = 0;
     }
 
-    const eventTimes: Record<number, number> = {};
-    for (let i = 0; i <= totalDays; i++) {
-      eventTimes[i] = 0;
-    }
     for (const event of this.store.events) {
       if (event.date.getTime() > DateUtils.currentDate.getTime()) {
         const convertedDay = DateUtils.daysBetween(
@@ -81,12 +85,6 @@ export default class ChunkStore extends Substore {
       }
     }
 
-    const completedTimes: Record<number, number> = {};
-    const completedEfforts: Record<number, number> = {};
-    for (let i = 0; i <= totalDays; i++) {
-      completedTimes[i] = 0;
-      completedEfforts[i] = 0;
-    }
     for (const chunk of this.store.completedChunks) {
       const convertedDay = DateUtils.daysBetween(
         DateUtils.currentDate,
@@ -122,8 +120,8 @@ export default class ChunkStore extends Substore {
 
         for (let i = 0; i <= daysUntilDue; i++) {
           combinedDayData[i] =
-            getTotalTime(i) +
-            getTotalEffort(i) * this.settings.effortWeight +
+            this.getTotalTime(i, chunksByDay) +
+            this.getTotalEffort(i, chunksByDay) * this.settings.effortWeight +
             completedTimes[i] +
             completedEfforts[i] * this.settings.effortWeight +
             (this.settings.timeIncludesEvents ? eventTimes[i] : 0);
@@ -142,7 +140,7 @@ export default class ChunkStore extends Substore {
         // Assign to the latest possible day (if none work, will be due date) by default
         for (let d = startDay; d <= daysUntilDue; d++) {
           const dayHasTime =
-            getTotalTime(d) + chunkDuration <=
+            this.getTotalTime(d, chunksByDay) + chunkDuration <=
             this.settings.timeOnDay(
               DateUtils.applyDayOffset(d, DateUtils.currentDate)
             ) -
@@ -165,7 +163,7 @@ export default class ChunkStore extends Substore {
         // Finds the day with that has the lowest effort compared to the next and sets that as the chunk's due date
         for (let d = loopStart; loopEnded(d); d += loopIncrement) {
           const dayHasTime =
-            getTotalTime(d) + chunkDuration <=
+            this.getTotalTime(d, chunksByDay) + chunkDuration <=
             this.settings.timeOnDay(
               DateUtils.applyDayOffset(d, DateUtils.currentDate)
             ) -
