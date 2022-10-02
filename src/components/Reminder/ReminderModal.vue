@@ -83,7 +83,7 @@ export default class ReminderModal extends Vue {
       Vue.set(vxm.store.reminders, editedIndex, { ...this.reminder });
     }
     vxm.store.chunks.update();
-    vxm.store.uploadReminders();
+    vxm.store.storage.updateReminders();
   }
 
   deleteTask() {
@@ -95,7 +95,7 @@ export default class ReminderModal extends Vue {
     // Using Vue.delete ensures reactivity
     Vue.delete(vxm.store.reminders, this.editedIndex);
     vxm.store.chunks.update(); // Update chunks
-    vxm.store.uploadReminders();
+    vxm.store.storage.updateReminders();
   }
 
   displayed = false;

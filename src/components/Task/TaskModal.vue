@@ -200,7 +200,7 @@ export default class TaskModal extends Vue {
     }
 
     vxm.store.chunks.update();
-    vxm.store.uploadTasks();
+    vxm.store.storage.updateTasks();
   }
 
   completeTask() {
@@ -219,8 +219,8 @@ export default class TaskModal extends Vue {
     // Using Vue.delete ensures reactivity
     Vue.delete(vxm.store.tasks, this.editedIndex);
     vxm.store.chunks.update(); // Update chunks
-    vxm.store.uploadTasks();
-    vxm.store.uploadCompleted();
+    vxm.store.storage.updateTasks();
+    vxm.store.storage.updateCompleted();
 
     this.$bvModal.hide("task-modal");
   }
@@ -239,8 +239,8 @@ export default class TaskModal extends Vue {
       this.editedIndex
     );
     vxm.store.chunks.update(); // Update chunks
-    vxm.store.uploadTasks();
-    vxm.store.uploadCompleted();
+    vxm.store.storage.updateTasks();
+    vxm.store.storage.updateCompleted();
 
     this.$bvModal.hide("task-modal");
   }

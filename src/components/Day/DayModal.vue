@@ -199,38 +199,38 @@ export default class DayModal extends Vue {
 
   lockStart() {
     Vue.set(vxm.store.settings.dayStartTimes, this.numKey, this.startTime);
-    vxm.store.uploadSettings();
+    vxm.store.storage.updateSettings();
     vxm.store.chunks.update();
   }
 
   lockEnd() {
     Vue.set(vxm.store.settings.dayEndTimes, this.numKey, this.endTime);
-    vxm.store.uploadSettings();
+    vxm.store.storage.updateSettings();
     vxm.store.chunks.update();
   }
 
   unlockStart() {
     Vue.delete(vxm.store.settings.dayStartTimes, this.numKey);
-    vxm.store.uploadSettings();
+    vxm.store.storage.updateSettings();
     vxm.store.chunks.update();
   }
 
   unlockEnd() {
     Vue.delete(vxm.store.settings.dayEndTimes, this.numKey);
-    vxm.store.uploadSettings();
+    vxm.store.storage.updateSettings();
     vxm.store.chunks.update();
   }
 
   startInput(event: string) {
     this.startTime = event;
     Vue.set(vxm.store.settings.dayStartTimes, this.numKey, event);
-    vxm.store.uploadSettings();
+    vxm.store.storage.updateSettings();
   }
 
   endInput(event: string) {
     this.endTime = event;
     Vue.set(vxm.store.settings.dayEndTimes, this.numKey, event);
-    vxm.store.uploadSettings();
+    vxm.store.storage.updateSettings();
   }
 
   startCheck() {
