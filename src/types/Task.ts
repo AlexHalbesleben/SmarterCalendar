@@ -1,3 +1,5 @@
+import IDUtils from "@/util/IDUtils";
+
 export default class UserTask {
   name = "";
   duration = 60;
@@ -16,18 +18,21 @@ export default class UserTask {
     return this.effort * this.duration;
   }
 
-  constructor({
-    name = "",
-    duration = 60,
-    chunks = 1,
-    due = new Date(),
-    effort = 1,
-    description = "",
-    lockedChunks = [] as { date: Date; number: number }[],
-    backloaded = true,
-    startDate = null as Date | null,
-    id = -1,
-  }) {
+  constructor(
+    {
+      name = "",
+      duration = 60,
+      chunks = 1,
+      due = new Date(),
+      effort = 1,
+      description = "",
+      lockedChunks = [] as { date: Date; number: number }[],
+      backloaded = true,
+      startDate = null as Date | null,
+      id = -1,
+    },
+    noNewId = false
+  ) {
     this.name = name;
     this.duration = duration;
     this.chunks = chunks;
@@ -38,6 +43,15 @@ export default class UserTask {
     this.backloaded = backloaded;
     this.startDate = startDate;
     this.id = id;
+
+    if (this.id === -1 || !this.id) {
+      if (!noNewId) {
+        this.id = IDUtils.nextID();
+      } else {
+        this.id = IDUtils.lastID + 1;
+      }
+      IDUtils.store?.storage.updateTasks();
+    }
   }
 }
 

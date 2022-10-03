@@ -128,7 +128,7 @@ import DateUtils from "@/util/DateUtils";
 export default class TaskModal extends Vue {
   task: UserTask =
     this.editedIndex === -1 // If there's no task to copy from
-      ? new UserTask({}) // Use sensible defaults
+      ? new UserTask({}, true) // Use sensible defaults
       : {
           get totalEffort(): number {
             return this.effort * this.duration;

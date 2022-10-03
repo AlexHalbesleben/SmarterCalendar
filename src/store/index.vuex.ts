@@ -45,11 +45,34 @@ export class Store extends VuexModule {
 
     IDUtils.store = this;
 
-    this.tasks = this.storage.tasks.value;
-    this.settings = this.storage.settings.value;
-    this.events = this.storage.events.value;
-    this.completedChunks = this.storage.completed.value;
-    this.reminders = this.storage.reminders.value;
+    try {
+      this.tasks = this.storage.tasks.value;
+    } catch {
+      this.tasks = [];
+    }
+    try {
+      this.settings = this.storage.settings.value;
+    } catch {
+      this.settings = new Settings({});
+    }
+    try {
+      this.events = this.storage.events.value;
+    } catch {
+      this.events = [];
+    }
+    try {
+      this.completedChunks = this.storage.completed.value;
+    } catch {
+      this.completedChunks = [];
+    }
+    try {
+      this.reminders = this.storage.reminders.value;
+    } catch {
+      this.reminders = [];
+    }
+    if (!localStorage.id) {
+      localStorage.id = 0;
+    }
 
     this.completedTasks = this.completedChunks
       .map((chunk) => chunk.task)
