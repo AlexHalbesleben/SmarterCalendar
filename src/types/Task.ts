@@ -1,5 +1,3 @@
-import IDUtils from "@/util/IDUtils";
-
 export default class UserTask {
   name = "";
   duration = 60;

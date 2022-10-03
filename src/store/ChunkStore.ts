@@ -2,7 +2,6 @@ import Chunk from "@/types/Chunk";
 import Settings from "@/types/Settings";
 import UserTask from "@/types/Task";
 import DateUtils from "@/util/DateUtils";
-import TaskUtils from "@/util/TaskUtils";
 import Substore from "./Substore";
 
 export default class ChunkStore extends Substore {
@@ -98,8 +97,8 @@ export default class ChunkStore extends Substore {
     for (const task of this.tasks) {
       let { chunks } = task;
       chunks -= task.lockedChunks.length;
-      chunks -= this.store.completedChunks.filter((chunk) =>
-        TaskUtils.tasksEqual(task, chunk.task)
+      chunks -= this.store.completedChunks.filter(
+        (chunk) => task.id === chunk.task.id
       ).length;
       const { due } = task;
       let daysUntilDue = DateUtils.daysBetween(DateUtils.currentDate, due);

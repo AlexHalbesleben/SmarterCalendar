@@ -123,7 +123,6 @@ import UserTask, { TASK_DESCRIPTIONS } from "@/types/Task";
 import { Component, Vue } from "vue-property-decorator";
 import vxm from "@/store/index.vuex";
 import DateUtils from "@/util/DateUtils";
-import TaskUtils from "@/util/TaskUtils";
 
 @Component
 export default class TaskModal extends Vue {
@@ -209,8 +208,8 @@ export default class TaskModal extends Vue {
       return; // We can't delete a task that hasn't been created
     }
 
-    for (let chunk of vxm.store.chunks.chunks.filter((chunk) =>
-      TaskUtils.tasksEqual(chunk.task, this.task)
+    for (let chunk of vxm.store.chunks.chunks.filter(
+      (chunk) => chunk.task.id === this.task.id
     )) {
       chunk.date = DateUtils.currentDate;
       vxm.store.completedChunks.push(chunk);
