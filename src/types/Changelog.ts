@@ -195,4 +195,10 @@ Typing a hotkey in the description field in the task modal could open modals/tri
     title: "Bug fix",
     description: "Fix bug where tasks didn't complete properly",
   },
+  {
+    version: "3.8.2",
+    title: "Internal reworking",
+    description:
+      "Reworks the internal structure; should be no external changes",
+  },
 ];
