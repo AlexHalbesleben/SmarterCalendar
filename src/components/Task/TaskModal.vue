@@ -237,6 +237,14 @@ export default class TaskModal extends Vue {
         : vxm.store.tasks,
       this.editedIndex
     );
+
+    let { completedChunks } = vxm.store;
+    for (let i = completedChunks.length - 1; i >= 0; i--) {
+      if (vxm.store.completedChunks[i]?.task.id === this.task?.id) {
+        Vue.delete(vxm.store.completedChunks, i);
+      }
+    }
+
     vxm.store.chunks.update(); // Update chunks
     vxm.store.storage.updateTasks();
     vxm.store.storage.updateCompleted();
