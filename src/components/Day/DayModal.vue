@@ -1,10 +1,6 @@
 <template>
   <div class="daymodal-container">
-    <b-modal
-      id="day-modal"
-      :title="`${month + 1}/${day}`"
-      @hide="vxm.store.chunks.update"
-    >
+    <b-modal id="day-modal" :title="`${month + 1}/${day}`" @hide="updateChunks">
       <p class="h6" v-show="chunks.length">Chunks ({{ chunks.length }})</p>
       <div
         v-for="(chunk, i) in chunks"
@@ -69,7 +65,7 @@
               :value="startTimeValue"
               @input="startInput"
               minutes-step="5"
-              @blur="vxm.store.chunks.update"
+              @blur="updateChunks"
             />
             <b-input-group-append is-text>
               <b-form-checkbox
@@ -89,7 +85,7 @@
               :value="endTimeValue"
               @input="endInput"
               minutes-step="5"
-              @blur="vxm.store.chunks.update"
+              @blur="updateChunks"
             />
             <b-input-group-append is-text>
               <b-form-checkbox
@@ -200,25 +196,25 @@ export default class DayModal extends Vue {
   lockStart() {
     Vue.set(vxm.store.settings.dayStartTimes, this.numKey, this.startTime);
     vxm.store.storage.updateSettings();
-    vxm.store.chunks.update();
+    this.updateChunks();
   }
 
   lockEnd() {
     Vue.set(vxm.store.settings.dayEndTimes, this.numKey, this.endTime);
     vxm.store.storage.updateSettings();
-    vxm.store.chunks.update();
+    this.updateChunks();
   }
 
   unlockStart() {
     Vue.delete(vxm.store.settings.dayStartTimes, this.numKey);
     vxm.store.storage.updateSettings();
-    vxm.store.chunks.update();
+    this.updateChunks();
   }
 
   unlockEnd() {
     Vue.delete(vxm.store.settings.dayEndTimes, this.numKey);
     vxm.store.storage.updateSettings();
-    vxm.store.chunks.update();
+    this.updateChunks();
   }
 
   startInput(event: string) {
@@ -267,6 +263,10 @@ export default class DayModal extends Vue {
       dailyEndTimes[DateUtils.dayOfWeek(this.date)] ||
       timeToString(baseEndTime)
     );
+  }
+
+  updateChunks() {
+    this.vxm.store.chunks.update();
   }
 }
 </script>
