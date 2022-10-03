@@ -1,4 +1,5 @@
 import UserTask from "@/types/Task";
+import IDUtils from "@/util/IDUtils";
 import { Store } from "../index.vuex";
 import StorageStore from "./StorageStore";
 import StorageSubstore from "./StorageSubstore";
@@ -29,6 +30,7 @@ export default class TasksSubstore extends StorageSubstore<
         startDate: task.startDate ? new Date(task.startDate) : null,
         chunks: task.chunks,
         backloaded: task.backloaded,
+        id: task.id ?? -1,
         lockedChunks: task.lockedChunks?.map((lockedChunk) => {
           return {
             date: new Date(lockedChunk.date),
