@@ -1,3 +1,5 @@
+import IDUtils from "@/util/IDUtils";
+
 export default class UserTask {
   name = "";
   duration = 60;
@@ -9,6 +11,8 @@ export default class UserTask {
   startDate: Date | null = null;
 
   lockedChunks: { date: Date; number: number }[] = [];
+
+  id = 0;
 
   get totalEffort(): number {
     return this.effort * this.duration;
@@ -24,6 +28,7 @@ export default class UserTask {
     lockedChunks = [] as { date: Date; number: number }[],
     backloaded = true,
     startDate = null as Date | null,
+    id = -1,
   }) {
     this.name = name;
     this.duration = duration;
@@ -34,6 +39,7 @@ export default class UserTask {
     this.lockedChunks = lockedChunks;
     this.backloaded = backloaded;
     this.startDate = startDate;
+    this.id = id;
   }
 }
 

@@ -2,6 +2,7 @@ import Chunk from "@/types/Chunk";
 import UserEvent from "@/types/Event";
 import UserReminder from "@/types/Reminder";
 import Settings from "@/types/Settings";
+import IDUtils from "@/util/IDUtils";
 import Vue from "vue";
 import Vuex from "vuex";
 import {
@@ -41,6 +42,8 @@ export class Store extends VuexModule {
 
   constructor() {
     super();
+
+    IDUtils.store = this;
 
     this.tasks = this.storage.tasks.value;
     this.settings = this.storage.settings.value;

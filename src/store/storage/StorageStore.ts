@@ -1,6 +1,7 @@
 import Substore from "../Substore";
 import CompletedSubstore from "./CompletedSubstore";
 import EventsSubstore from "./EventsSubstore";
+import IDSubstore from "./IDSubstore";
 import RemindersSubstore from "./RemindersSubstore";
 import SettingsSubstore from "./SettingsSubstore";
 import TasksSubstore from "./TasksSubstore";
@@ -11,6 +12,7 @@ export default class StorageStore extends Substore {
   events = new EventsSubstore(this.store, this);
   completed = new CompletedSubstore(this.store, this);
   reminders = new RemindersSubstore(this.store, this);
+  id = new IDSubstore(this.store, this);
 
   updateTasks() {
     this.tasks.value = this.store.tasks;
