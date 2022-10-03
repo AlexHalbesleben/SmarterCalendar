@@ -7,9 +7,11 @@ export default class IDUtils {
     if (!this.store) {
       return -1;
     }
+
     try {
       return this.store.storage.id.value;
     } catch {
+      this.store.storage.id.value = 0;
       return -1;
     }
   }
