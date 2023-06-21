@@ -8,7 +8,7 @@ https://alexhalbesleben.github.io/SmarterCalendar/
 
 This is my attempt at creating an intelligent calendar. This calendar will divide your tasks into chunks and intelligently schedule them.
 
-This project is under active development but is usable in its current state. Click the link above to try it out.
+This project is under active development but is pretty usable in its current state. Click the link above to try it out.
 
 If you want to contribute, thank you! See [CONTRIBUTING.md](CONTRIBUTING.md) for more information.
 
